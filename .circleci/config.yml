@@ -34,7 +34,7 @@ jobs:
           prefix: coverage
       - store_test_results:
           path: test-results.xml
-workflows:
+workflow:
   version 2
   try run workflow:
     jobs:
