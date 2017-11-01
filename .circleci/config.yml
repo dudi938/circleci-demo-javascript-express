@@ -38,8 +38,8 @@ workflow:
   version 2
   try run workflow:
     jobs:
-      -test:
+      - test:
         requires:
-          -hold
+          - hold
   
 
