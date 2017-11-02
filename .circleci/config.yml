@@ -34,8 +34,9 @@ jobs:
           prefix: coverage
       - store_test_results:
           path: test-results.xml
-      -deploy:
-         command: echo hello world
+      - deploy:
+          name: try to deploy
+          command: echo hello world
 # workflows:
 #   version 2
 #   try_run_workflow:
