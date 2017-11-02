@@ -6,9 +6,6 @@ jobs:
     docker:
       - image: circleci/node:4.8.2
       - image: mongo:3.4.4
-      - run 
-          name: install chef sdk
-          command: curl https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/14.04/chefdk_2.3.4-1_amd64.deb
     steps:
       - checkout
       - run:
