@@ -37,7 +37,7 @@ jobs:
           prefix: coverage
       - store_test_results:
           path: test-results.xml
-      - deploy:
+      - run:
           name: try to deploy
           command: chef-shell --version
 
