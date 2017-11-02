@@ -34,11 +34,11 @@ jobs:
           prefix: coverage
       - store_test_results:
           path: test-results.xml
-  workflows:
-    version 2
-    try_run_workflow:
-      jobs:
-        - Checkout code
+# workflows:
+#   version 2
+#   try_run_workflow:
+#     jobs:
+#       - Checkout code
 #        - update-npm
 #        - restore_cache
 #        - install-npm-wee
