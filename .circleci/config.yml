@@ -39,15 +39,15 @@ jobs:
     try_run_workflow:
       jobs:
         - Checkout code
-        - update-npm
-        - restore_cache
-        - install-npm-wee
-        - save_cache
-        - test:
-        - code-coverage
-        - Uploading artifacts
-        - Uploading artifacts
-        - Uploading test results
+#        - update-npm
+#        - restore_cache
+#        - install-npm-wee
+#        - save_cache
+#        - test:
+#        - code-coverage
+#        - Uploading artifacts
+#        - Uploading artifacts
+#        - Uploading test results
 #          requires:
 #            - hold
   
