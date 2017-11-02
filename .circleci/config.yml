@@ -36,10 +36,10 @@ jobs:
           path: test-results.xml
 workflows:
   version 2
-#  try_run_workflow:
-#    jobs:
-#      - test:
-#        requires:
-#          - hold
+  try_run_workflow:
+    jobs:
+      - test:
+        requires:
+          - hold
   
 
