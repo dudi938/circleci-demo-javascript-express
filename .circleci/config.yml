@@ -38,8 +38,17 @@ workflows:
   version 2
   try_run_workflow:
     jobs:
+      - Checkout code
+      - update-npm
+      - restore_cache
+      - install-npm-wee
+      - save_cache
       - test:
-        requires:
-          - hold
+      - code-coverage
+      - Uploading artifacts
+      - Uploading artifacts
+      - Uploading test results
+#        requires:
+#          - hold
   
 
