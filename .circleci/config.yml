@@ -8,6 +8,9 @@ jobs:
       - image: mongo:3.4.4
     steps:
       - checkout
+      - run: 
+          name: install chef sdk
+          command: curl https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/14.04/chefdk_2.3.4-1_amd64.deb
       - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
