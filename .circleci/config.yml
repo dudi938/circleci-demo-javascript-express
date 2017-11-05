@@ -53,6 +53,7 @@ jobs:
       - store_test_results:
           path: test-results.xml
       - run:
+          name: check chef version
           command: chef-shell --version
           #command: chef-shell --version
 
