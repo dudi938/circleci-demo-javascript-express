@@ -52,7 +52,7 @@ jobs:
           prefix: coverage
       - store_test_results:
           path: test-results.xml
-      #- run:
-          #command: chef-shell --version
+      - run:
+          command: chef-shell --version
           #command: chef-shell --version
 
