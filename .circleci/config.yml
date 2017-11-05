@@ -10,7 +10,7 @@ jobs:
       - checkout
       - run: 
           name: install chef sdk
-          command: curl https://packages.chef.io/files/stable/chef-server/12.17.5/ubuntu/16.04/chef-server-core_12.17.5-1_amd64.deb
+          command: curl https://packages.chef.io/files/stable/chef-server/12.17.5/ubuntu/16.04/chef-server-core_12.17.5-1_amd64.deb --output chefImage
       - run:
           name: run ls
           command: ls -a
