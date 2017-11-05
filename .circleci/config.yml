@@ -14,7 +14,7 @@ jobs:
       - run:
           name: run ls
           command: ls -a
-     - run:
+      - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
