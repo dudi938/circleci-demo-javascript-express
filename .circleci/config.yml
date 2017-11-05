@@ -16,7 +16,7 @@ jobs:
           command: ls -a
       - run: 
           name: download chef SDK
-          command: sudo wget https://packages.chef.io/files/current/chef-server/12.17.5/ubuntu/16.04/chef-server-core_12.17.5-1_amd64.deb                        
+          command: sudo wget https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/16.04/chefdk_2.3.4-1_amd64.deb
       - run:
           name: run ls
           command: ls -lah
@@ -25,7 +25,7 @@ jobs:
           command: sudo apt-get update
       - run:
           name: install chef sdk
-          command: sudo apt-get install ./chef-server-core_12.17.5-1_amd64.deb
+          command: sudo dpkg i ./chefdk_2.3.4-1_amd64.deb
       - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
