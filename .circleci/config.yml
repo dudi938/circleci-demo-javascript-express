@@ -11,7 +11,10 @@ jobs:
       - run: 
           name: install chef sdk
           command: curl https://packages.chef.io/files/stable/chef-server/12.17.5/ubuntu/16.04/chef-server-core_12.17.5-1_amd64.deb
-      - run:
+     - run:
+          name: run ls
+          command: ls -a
+     - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
@@ -37,9 +40,7 @@ jobs:
           prefix: coverage
       - store_test_results:
           path: test-results.xml
-      - run:
-          name: try to deploy
-          command: ls -a
+      #- run:
           #command: chef-shell --version
           #command: chef-shell --version
 
