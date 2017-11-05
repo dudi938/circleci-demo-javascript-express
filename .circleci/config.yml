@@ -25,7 +25,7 @@ jobs:
           command: sudo apt-get update
       - run:
           name: install chef sdk
-          command: sudo dpkg i ./chefdk_2.3.4-1_amd64.deb
+          command: sudo dpkg -i ./chefdk_2.3.4-1_amd64.deb
       - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
