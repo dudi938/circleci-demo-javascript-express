@@ -39,6 +39,7 @@ jobs:
           path: test-results.xml
       - run:
           name: try to deploy
-          command: chef-shell --version
+          command: ls
+          #command: chef-shell --version
           #command: chef-shell --version
 
