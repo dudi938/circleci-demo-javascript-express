@@ -9,9 +9,14 @@ jobs:
     steps:
       - checkout
       - run: 
-          name: install chef sdk
+          name: check working directory
           command: pwd
-          #command: curl https://packages.chef.io/files/stable/chef-server/12.17.5/ubuntu/16.04/chef-server-core_12.17.5-1_amd64.deb
+      - run:
+          name: run ls
+          command: ls -a
+      - run: 
+          name: download chef SDK
+          command: curl https://packages.chef.io/files/stable/chef-server/12.17.5/ubuntu/16.04/chef-server-core_12.17.5-1_amd64.deb
       - run:
           name: run ls
           command: ls -a
