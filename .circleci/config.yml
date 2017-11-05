@@ -16,7 +16,7 @@ jobs:
           command: ls -a
       - run: 
           name: download chef SDK
-          command: wget https://www.iconfinder.com/icons/51413/download/png/64
+          command: https://packages.chef.io/files/stable/chef-server/12.17.5/ubuntu/16.04/chef-server-core_12.17.5-1_amd64.deb
       - run:
           name: run ls
           command: ls -a
