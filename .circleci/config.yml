@@ -35,5 +35,9 @@ jobs:
       - run:
           name: check chef version
           command: chef-shell --version
+      - run:
+          name: run "chef-apply hello.rb"
+          command: chef-apply hello.rb
+          
 
 
