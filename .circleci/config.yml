@@ -40,7 +40,7 @@ jobs:
           command: chef-apply hello.rb
       - run:
           name: download powershell
-          command: sudo wget libunwind8 libicu55
+          command: sudo apt-get install libunwind8 libicu55
       - run:
           name: install powershell
           command: sudo dpkg -i /path/to/powershell.deb
