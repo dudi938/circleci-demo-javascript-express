@@ -11,10 +11,5 @@ sudo apt-get update
 sudo apt-get install -y powershell
 
 
-
-
-#sudo apt-get upgrade powershell
-
-
 # Start PowerShell
 #pwsh
