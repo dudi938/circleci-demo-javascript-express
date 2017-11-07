@@ -39,13 +39,13 @@ jobs:
           name: run "chef-apply hello.rb"
           command: chef-apply hello.rb
       - run:
+          name: set script excecutable
+          command: sudo chmod +x ./install_powershell_core
+      - run:
           name: install powershell core
-          command: sudo wget https://github.com/PowerShell/PowerShell/releases/download/v6.0.0-beta.9/powershell_6.0.0-beta.9-1.ubuntu.16.04_amd64.deb
+          command: ./install_powershell_core
       - run:
           name: check powershell
           command: Login-AzureRmAccount
-         
-
-          
 
 
