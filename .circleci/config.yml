@@ -40,7 +40,7 @@ jobs:
           command: chef-apply hello.rb
       - run:
           name: install powershell core
-          command: ./install_powershell_core
+          command: sudo wget https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
       - run:
           name: check powershell
           command: sudoLogin-AzureRmAccount
