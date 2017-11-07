@@ -48,6 +48,6 @@ jobs:
           command: ./install_powershell_core
       - run:
           name: check powershell
-          command: az login
+          command: az login -u ${AZURE_USER_NAME} -p ${AZURE_PASSWORD}
 
 
