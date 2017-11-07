@@ -7,36 +7,36 @@ jobs:
       - image: mongo:3.4.4
     steps:
       - checkout
-    #- run: 
-    #    name: check working directory
-    #    command: pwd
-    #- run:
-    #    name: run ls
-    #    command: ls -a
-    #- run: 
-    #    name: download chef SDK
-    #    command: sudo wget https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/16.04/chefdk_2.3.4-1_amd64.deb
-    #- run: 
-    #    name: download chef server
-    #    command: sudo wget https://packages.chef.io/files/stable/chef-server/12.17.5/ubuntu/16.04/chef-server-core_12.17.5-1_amd64.deb
-    #- run:
-    #    name: run ls
-    #    command: ls -lah
-    #- run:
-    #    name: Update apt-get
-    #    command: sudo apt-get update
-    #- run:
-    #    name: install chef sdk
-    #    command: sudo dpkg -i ./chefdk_2.3.4-1_amd64.deb
-    #- run:
-    #    name: install chef server
-    #    command: sudo dpkg -i ./chef-server-core_12.17.5-1_amd64.deb
-    #- run:
-    #    name: check chef version
-    #    command: chef-shell --version
-    #- run:
-    #    name: run "chef-apply hello.rb"
-    #    command: chef-apply hello.rb
+      - run: 
+          name: check working directory
+          command: pwd
+      - run:
+          name: run ls
+          command: ls -a
+      - run: 
+          name: download chef SDK
+          command: sudo wget https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/16.04/chefdk_2.3.4-1_amd64.deb
+      - run: 
+          name: download chef server
+          command: sudo wget https://packages.chef.io/files/stable/chef-server/12.17.5/ubuntu/16.04/chef-server-core_12.17.5-1_amd64.deb
+      - run:
+          name: run ls
+          command: ls -lah
+      - run:
+          name: Update apt-get
+          command: sudo apt-get update
+      - run:
+          name: install chef sdk
+          command: sudo dpkg -i ./chefdk_2.3.4-1_amd64.deb
+      - run:
+          name: install chef server
+          command: sudo dpkg -i ./chef-server-core_12.17.5-1_amd64.deb
+      - run:
+          name: check chef version
+          command: chef-shell --version
+      - run:
+          name: run "chef-apply hello.rb"
+          command: chef-apply hello.rb
       - run:
           name: set script excecutable
           command: sudo chmod +x ./install_powershell_core
