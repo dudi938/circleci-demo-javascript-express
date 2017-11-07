@@ -8,4 +8,4 @@ sudo dpkg -i powershell_6.0.0-beta.9-1.ubuntu.16.04_amd64.deb
 sudo apt-get install -f
 
 # Start PowerShell
-sudo pwsh
+#sudo pwsh
