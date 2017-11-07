@@ -40,10 +40,10 @@ jobs:
           command: chef-apply hello.rb
       - run:
           name: install powershell core
-          command: ./install_powershell_core
+          command: sudo ./install_powershell_core
       - run:
           name: check powershell
-          command: Login-AzureRmAccount
+          command: sudoLogin-AzureRmAccount
          
 
           
