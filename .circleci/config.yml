@@ -45,6 +45,6 @@ jobs:
           command: ./install_powershell_core
       - run:
           name: check powershell
-          command: PowerShell
+          command: az
 
 
