@@ -11,4 +11,4 @@ sudo apt-get install -f
 #sudo pwsh
 
 
-Get-Help
+PowerShell
