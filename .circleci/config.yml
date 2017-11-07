@@ -6,7 +6,7 @@ jobs:
       - image: circleci/node:4.8.2
       - image: mongo:3.4.4
     steps:
-    #- checkout
+    - checkout
     #- run: 
     #    name: check working directory
     #    command: pwd
