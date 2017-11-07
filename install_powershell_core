@@ -9,5 +9,3 @@ sudo apt-get install -f
 
 # Start PowerShell
 #sudo pwsh
-
-PowerShell
