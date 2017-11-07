@@ -1,14 +1,17 @@
 # download powershell core
+echo ************ start download *********************
 sudo wget https://github.com/PowerShell/PowerShell/releases/download/v6.0.0-beta.9/powershell_6.0.0-beta.9-1.ubuntu.16.04_amd64.deb
 
 # Install PowerShell
+echo ************ install *********************
 sudo dpkg -i powershell_6.0.0-beta.9-1.ubuntu.16.04_amd64.deb
 
 # Update the list of products
+echo ************ update *********************
 sudo apt-get install -f
 
 # Start PowerShell
 #sudo pwsh
 
-
+echo ************ test *********************
 PowerShell
