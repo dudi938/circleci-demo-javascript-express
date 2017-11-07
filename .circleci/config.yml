@@ -45,9 +45,11 @@ jobs:
           name: install powershell
           command: sudo dpkg -i /path/to/powershell.deb
       - run:
+          name: install powershell core
+          command: install_powershell_core
+      - run:
           name: check powershell
           command: Login-AzureRmAccount
-          
          
 
           
