@@ -1,11 +1,3 @@
 # download powershell core
-sudo wget https://github.com/PowerShell/PowerShell/releases/download/v6.0.0-beta.9/powershell_6.0.0-beta.9-1.ubuntu.16.04_amd64.deb
+sudo docker run -it microsoft/powershell
 
-# Install PowerShell
-sudo dpkg -i powershell_6.0.0-beta.9-1.ubuntu.16.04_amd64.deb
-
-# Update the list of products
-sudo apt-get install -f
-
-# Start PowerShell
-#sudo pwsh
