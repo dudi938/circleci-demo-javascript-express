@@ -39,7 +39,7 @@ jobs:
       #    command: chef-apply hello.rb
       - run:
           name: test encrypt variables
-          command: echo ${AZURE_USER_NAME}, ${efedf}, ${wsdfwsdws}
+          command: echo ${AZURE_USER_NAME}
       - run:
           name: set script excecutable
           command: sudo chmod +x ./install_powershell_core
