@@ -63,6 +63,6 @@ workflows:
             - test
             - build:
                 requires:
-                    - test
+                    - hold
 
 
