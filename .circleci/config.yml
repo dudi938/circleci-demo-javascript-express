@@ -49,5 +49,17 @@ jobs:
       - run:
           name: check powershell
           command: az login -u ${AZURE_USER_NAME} -p ${AZURE_PASSWORD}
+  test: 
+    steps:
+      - run:
+        name: blabla
+        command: ls -l
+
+workflows:
+    version: 2
+    build_and_test:
+        jobs:
+            - build
+            - test
 
 
