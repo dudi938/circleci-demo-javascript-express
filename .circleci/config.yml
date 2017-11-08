@@ -68,7 +68,7 @@ workflows:
                 requires:
                     - build
             - test:
-                requires:
-                    - hold
+                # requires:
+                #     - hold
 
 
