@@ -54,9 +54,7 @@ jobs:
     - image: circleci/node:4.8.2
     steps:
       - checkout
-      - run:
-        name: blabla
-        command: ls -l
+      - run: ls -l
 
 workflows:
     version: 2
