@@ -5,5 +5,5 @@ subject=$4
 body=$5
 icon=$6
 
-good: curl -X POST --data-urlencode "payload={\"channel\": \"#general\", \"username\": \"webhookbot\", \"text\": \"$body.\", \"icon_emoji\": \":ghost:\"}" $webhookurl
+sudo curl -X POST --data-urlencode "payload={\"channel\": \"#general\", \"username\": \"webhookbot\", \"text\": \"$body.\", \"icon_emoji\": \":ghost:\"}" $webhookurl
 
