@@ -1,0 +1,17 @@
+{
+  "name": "tokenizer_tool",
+  "version": "1.0.0",
+  "description": "replace token by a pattern",
+  "main": "tokenize.js",
+  "scripts": {
+    "test": "nod tokenize.js"
+  },
+  "keywords": [
+    "run"
+  ],
+  "author": "DG",
+  "license": "ISC",
+  "dependencies": {
+    "replace-in-file": "^3.0.0"
+  }
+}

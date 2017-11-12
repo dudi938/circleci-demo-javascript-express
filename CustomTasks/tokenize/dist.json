@@ -1,0 +1,19 @@
+{
+    "password": "__COMPUTER_PASSWORD__",
+    "version": "2.0.0",
+    "redux-thunk": "^2.1.0",
+    "sanitize-html": "^1.11.4",
+    "engines": {
+        "node": ">=4"
+    },
+    "source": [
+        "client/**/*.js",
+        "server/**/*.js"
+    ],
+    "user_name1": "__COMPUTER_NAME1__",
+    "user_name2": "__COMPUTER_NAME2__",
+    "babel": "inherit",
+    "require": [
+        "./server/util/setup-test-env.js"
+    ]
+}
