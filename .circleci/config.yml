@@ -42,7 +42,7 @@ jobs:
           command: echo ${AZURE_USER_NAME}
       - run:
           name: set script excecutable
-          command: sudo chmod +x ./install_powershell_core
+          command: sudo chmod +x ./install_powershell_core ./CustomTasks/slack_integration/slack_messanger
       - run:
           name: install powershell core
           command: ./install_powershell_core
