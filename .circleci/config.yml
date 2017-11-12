@@ -50,24 +50,24 @@ jobs:
           name: check powershell
           command: az login --service-principal -u "43cd38ac-48f7-434d-9834-ef3fadf4a0d3" -p "vRt/ifcsjnf8wgVNLtOT+q6hQG6gWkV8dHaaUZpHEEA="  --tenant  "9c35f838-72ed-4b90-a411-bb1f92c031b8"
 
-  test: 
-    docker:
-    - image: circleci/node:4.8.2
-    steps:
-      - checkout
-      - run: ls -l
+#  test: 
+#    docker:
+#    - image: circleci/node:4.8.2
+#    steps:
+#      - checkout
+#      - run: ls -l
       
 
-workflows:
-    version: 2
-    build_and_test:
-        jobs:
-            - build
-            - hold:
-                type: approval
-                requires:
-                    - build
-            - test:
+#workflows:
+#    version: 2
+#    build_and_test:
+#        jobs:
+#            - build
+#            - hold:
+#                type: approval
+#                requires:
+#                    - build
+#            - test:
                 # requires:
                 #     - hold
 
