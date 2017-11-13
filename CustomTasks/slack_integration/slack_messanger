@@ -1,4 +1,4 @@
-webhookurl=https://hooks.slack.com/services/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
+webhookurl=$1
 context=$2
 header=$3
 subject=$4
