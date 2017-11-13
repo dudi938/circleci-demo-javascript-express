@@ -18,7 +18,7 @@ jobs:
           command: ./install_powershell_core
       - run:
           name: Log in to azure
-          command: ${LOGIN_COMMAND}
+          command: exit_code=${LOGIN_COMMAND}
       - run:
           name: Deploy linux VM
           command: az group deployment create --name ExampleDeployment --resource-group ${RESOURCE_GROUP} --template-file "${TEMPLATE_FILE_PATH}" --parameters "${PARAMETERS_FILE_PATH}"
