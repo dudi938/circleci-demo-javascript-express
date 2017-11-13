@@ -3,7 +3,7 @@ context=$2
 header=$3
 subject=$4
 body=$5
-icon=$6
+emoji=$6
 
-sudo curl -X POST --data-urlencode "payload={\"channel\": \"#general\", \"username\": \"webhookbot\", \"text\": \"$body.\", \"icon_emoji\": \":ghost:\"}" $webhookurl
+sudo curl -X POST --data-urlencode "payload={\"channel\": \"#general\", \"username\": \"webhookbot\", \"text\": \"$body.\", \"icon_emoji\": \":$emoji:\"}" $webhookurl
 
