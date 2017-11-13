@@ -7,36 +7,6 @@ jobs:
       - image: mongo:3.4.4
     steps:
       - checkout
-      - run: 
-          name: check working directory
-          command: pwd
-      - run:
-          name: run ls
-          command: ls -a
-      #- run: 
-      #    name: download chef SDK
-      #    command: sudo wget https://packages.chef.io/files/stable/chefdk/2.3.4/ubuntu/16.04/chefdk_2.3.4-1_amd64.deb
-      #- run: 
-      #    name: download chef server
-      #    command: sudo wget https://packages.chef.io/files/stable/chef-server/12.17.5/ubuntu/16.04/chef-server-core_12.17.5-1_amd64.deb
-      #- run:
-      #    name: run ls
-      #    command: ls -lah
-      #- run:
-      #    name: Update apt-get
-      #    command: sudo apt-get update
-      #- run:
-      #    name: install chef sdk
-      #    command: sudo dpkg -i ./chefdk_2.3.4-1_amd64.deb
-      #- run:
-      #    name: install chef server
-      #    command: sudo dpkg -i ./chef-server-core_12.17.5-1_amd64.deb
-      #- run:
-      #    name: check chef version
-      #    command: chef-shell --version
-      #- run:
-      #    name: run "chef-apply hello.rb"
-      #    command: chef-apply hello.rb
       - run:
           name: test encrypt variables
           command: echo ${AZURE_USER_NAME}
@@ -47,30 +17,13 @@ jobs:
           name: install powershell core
           command: ./install_powershell_core
       - run:
-          name: check powershell
-          command: az login --service-principal -u "43cd38ac-48f7-434d-9834-ef3fadf4a0d3" -p "vRt/ifcsjnf8wgVNLtOT+q6hQG6gWkV8dHaaUZpHEEA="  --tenant  "9c35f838-72ed-4b90-a411-bb1f92c031b8"
+          name: Log in to azure
+          command: ${LOGIN_COMMAND}
+      - run:
+          name: Deploy linux VM
+          command: 
       - run:
           name: end build notification
-          command: ./CustomTasks/slack_integration/slack_messanger ${SLACK_WEBHOOK_URI} dsd efesf efesfe "build is finished" desktop_computer
-#  test: 
-#    docker:
-#    - image: circleci/node:4.8.2
-#    steps:
-#      - checkout
-#      - run: ls -l
-      
-
-#workflows:
-#    version: 2
-#    build_and_test:
-#        jobs:
-#            - build
-#            - hold:
-#                type: approval
-#                requires:
-#                    - build
-#            - test:
-                # requires:
-                #     - hold
+          command: ./CustomTasks/slack_integration/slack_messanger ${SLACK_WEBHOOK_URI} dsd efesf efesfe "New vm was deployed" desktop_computer
 
 
