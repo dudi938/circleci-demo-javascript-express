@@ -21,9 +21,9 @@ jobs:
           command: ${LOGIN_COMMAND}
       - run:
           name: Deploy linux VM
-          command: 
+          command: az group deployment create --name ExampleDeployment --resource-group ${RESOURCE_GROUP} --template-file "${TEMPLATE_FILE_PATH}" --parameters "${PARAMETERS_FILE_PATH}"
       - run:
           name: end build notification
-          command: ./CustomTasks/slack_integration/slack_messanger ${SLACK_WEBHOOK_URI} dsd efesf efesfe "New vm was deployed" desktop_computer
+          command: ./CustomTasks/slack_integration/slack_messanger ${SLACK_WEBHOOK_URI} dsd efesf efesfe "New vm was deployed." desktop_computer
 
 
