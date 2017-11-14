@@ -12,14 +12,20 @@ var srcFileContentJson;
 var valueForToken;
 
 var regExp = new RegExp(/__+[A-Za-z0-9-_]+__/,'g'); 
+var inputArgs = process.argv.slice(2);
 
+const sourceFilePath = inputArgs[1];
+const disFilePath = inputArgs[0];
+
+console.log('sourceFilePath = ' + sourceFilePath);
+console.log('disFilePath = ' + disFilePath);
 
 //read destination to replace file 
-JSON.stringify(fs.readFile(path.join(__dirname,disFileName),{encoding: "utf8"}, function(err, content){
+JSON.stringify(fs.readFile(disFilePath,{encoding: "utf8"}, function(err, content){
     template = content;
 
         //read source file to taks the values  
-fs.readFile(path.join(__dirname,sourceFileName), {encoding: "utf8"}, function(err, content){
+fs.readFile(sourceFilePath, {encoding: "utf8"}, function(err, content){
         srcFileContentJson = JSON.parse(content);
 
         //replace all tokens
