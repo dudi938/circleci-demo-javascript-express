@@ -24,10 +24,10 @@
             "value": "Qaz123456789"
         },
         "diagnosticsStorageAccountName": {
-            "value": "testimrgdiag218"
+            "value": "testimsa"
         },
         "diagnosticsStorageAccountId": {
-            "value": "/subscriptions/1a1ab812-3076-4944-acf7-2938e3ea064c/resourceGroups/testimrg/providers/Microsoft.Storage/storageAccounts/testimrgdiag218"
+            "value": "/subscriptions/1a1ab812-3076-4944-acf7-2938e3ea064c/resourceGroups/TESTIM-RG/providers/Microsoft.Storage/storageAccounts/testimsa"
         },
         "subnetName": {
             "value": "FE"
