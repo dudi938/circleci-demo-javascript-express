@@ -1,20 +1,19 @@
 {
-    "__COMPUTER_PASSWORD__": "__COMPUTER_PASSWORD__",
-    "version": "2.0.0",
-      "redux-thunk": "^2.1.0",
-      "sanitize-html": "^1.11.4",
-    "engines": {
-      "node": ">=4"
-    },
-      "source": [
-        "client/**/*.js",
-        "server/**/*.js"
-      ],
-      "__COMPUTER_NAME__": "__COMPUTER_NAME__",
-      "babel": "inherit",
-      "require": [
-        "./server/util/setup-test-env.js"
-      ]
-    }
-  
-  
+  "__COMPUTER_PASSWORD": "__COMPUTER_PASSWORD__",
+  "version": "2.0.0",
+    "redux-thunk": "^2.1.0",
+    "sanitize-html": "^1.11.4",
+  "engines": {
+    "node": ">=4"
+  },
+    "source": [
+      "client/**/*.js",
+      "server/**/*.js"
+    ],
+    "__COMPUTER_NAME": "__COMPUTER_NAME1__",
+    "babel": "inherit",
+    "require": [
+      "./server/util/setup-test-env.js"
+    ]
+  }
+

@@ -11,7 +11,5 @@
   ],
   "author": "DG",
   "license": "ISC",
-  "dependencies": {
-    "replace-in-file": "^3.0.0"
-  }
+  "dependencies": {}
 }
