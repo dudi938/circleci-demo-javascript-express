@@ -17,7 +17,7 @@ jobs:
           name: install powershell core
           command: ./install_powershell_core
       - run:
-          name: Log in to azure
+          name: Login to azure
           command: az login --service-principal -u ${LOGIN_APP_ID} -p ${LOGIN_KEY} --tenant ${LOGIN_TENANT}
       - run:
           name: Deploy linux VM
@@ -25,5 +25,7 @@ jobs:
       - run:
           name: end build notification
           command: ./CustomTasks/slack_integration/slack_messanger ${SLACK_WEBHOOK_URI} dsd efesf efesfe "New vm was deployed." desktop_computer
-
+      - run:
+          name: Logout from azure
+          command: az logout
 
