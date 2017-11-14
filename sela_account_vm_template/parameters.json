@@ -6,7 +6,7 @@
             "value": "westeurope"
         },
         "virtualMachineName": {
-            "value": "Testim-RG-VM-01"
+            "value": "Testim-RG-VM-02"
         },
         "virtualMachineSize": {
             "value": "Standard_D2s_v3"
@@ -18,7 +18,7 @@
             "value": "Testim-Vnet"
         },
         "networkInterfaceName": {
-            "value": "Testim-RG-NINT-01"
+            "value": "Testim-RG-NINT-02"
         },
         "adminPassword": {
             "value": "Qaz123456789"
@@ -33,7 +33,7 @@
             "value": "FE"
         },
         "publicIpAddressName": {
-            "value": "Testim-RG-pip-01"
+            "value": "Testim-RG-pip-02"
         },
         "publicIpAddressType": {
             "value": "Dynamic"
