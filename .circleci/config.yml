@@ -8,6 +8,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: run npm install 
+          command: npm --prefix /CustomTasks/Deployer/package.json i
+      - run:
           name: test encrypt variables
           command: echo ${AZURE_USER_NAME}
       - run:
