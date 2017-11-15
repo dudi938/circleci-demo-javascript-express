@@ -13,12 +13,13 @@ var regExp = new RegExp(/__+[A-Za-z0-9-_]+__/,'g');
 var inputArgs = process.argv.slice(2);
 const sourceFilePath = inputArgs[1];
 const disFilePath = inputArgs[0];
-
+const disFilePathNew = inputArgs[2];
 
 //description : this function replace tokens thay are in this convention __key__
 //parm : distFilePath - this file have the key's to replace
 //parm : srcFilePath - this file have the value's to replace the key's
-module.exports = function(disFilePath, sourceFilePath){
+//parm : disFilePathNew - path to the new file with the new values
+module.exports.tokensReplacer = function(disFilePath, sourceFilePath, disFilePathNew){
     console.log('sourceFilePath = ' + sourceFilePath);
     console.log('disFilePath = ' + disFilePath);
     
@@ -36,7 +37,7 @@ module.exports = function(disFilePath, sourceFilePath){
                         Object.keys(srcFileContentJson[0]).forEach(function(value, index){
                             
                         if(value === token){
-                            console.log('**match**  ' + 'value = ' + value + '   token = ' + token + '   srcFileContentJson[0][value] = ' + srcFileContentJson[0][value]);
+                            console.log('**Replace**  ' + 'value: ' + value + ' <=>  token: ' + token + '   new value => ' + srcFileContentJson[0][value]);
                             valueForToken = srcFileContentJson[0][value];  
                             return;    
                         }
@@ -49,15 +50,31 @@ module.exports = function(disFilePath, sourceFilePath){
                 });
             console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);
     
-            fs.writeFileSync(disFilePath, targetTemplate);          
-    
-    
+            fs.writeFileSync(disFilePathNew, targetTemplate);              
             });
     
     }));
 }
 
+//description : this function replace tokens thay are in this convention __key__
+//parm : distFilePath - this file have the key's to replace
+//parm : newValue - new value to put for any token
+//parm : disFilePathNew - path to the new file with the new values
+module.exports.replacer = function(disFilePath, newValue, disFilePathNew){
 
-//replaceTokens(disFilePath, sourceFilePath);
+    console.log('sourceFilePath = ' + sourceFilePath);
+    console.log('disFilePath = ' + disFilePath);
+    console.log('newValue = ' + newValue);
 
-//module.exports.replaceToken = replaceTokens;
+    //read destination to replace file 
+    JSON.stringify(fs.readFile(disFilePath,{encoding: "utf8"}, function(err, content){
+        template = content;
+
+                //replace all tokens
+            var targetTemplate = template.replace(regExp, newValue);
+            //console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
+            fs.writeFileSync(disFilePathNew, targetTemplate);              
+    
+    }));
+}
+

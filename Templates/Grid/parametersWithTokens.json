@@ -6,7 +6,7 @@
             "value": "eastus"
         },
         "virtualMachineName": {
-            "value": "VM-Grid00"
+            "value": "VM-Grid__GRID_INDEX__"
         },
         "virtualMachineSize": {
             "value": "Standard_D4s_v3"
@@ -15,13 +15,13 @@
             "value": "yossis"
         },
         "virtualNetworkName": {
-            "value": "vnet-Grid00"
+            "value": "vnet-Grid__GRID_INDEX__"
         },
         "networkInterfaceName": {
-            "value": "NIN-Grid00"
+            "value": "NIN-Grid__GRID_INDEX__"
         },
         "networkSecurityGroupName": {
-            "value": "nsg-Grid00"
+            "value": "nsg-Grid__GRID_INDEX__"
         },
         "adminPassword": {
             "value": "Qaz123456789"
@@ -36,7 +36,7 @@
             "value": "10.0.1.0/24"
         },
         "publicIpAddressName": {
-            "value": "pip-Grid00"
+            "value": "pip-Grid__GRID_INDEX__"
         },
         "publicIpAddressType": {
             "value": "Dynamic"
