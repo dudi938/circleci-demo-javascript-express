@@ -93,7 +93,7 @@
             },            
             "copy": {
                 "name": "virtualMachineCopy",
-                "count": 3
+                "count": 1
             }
         },
         {
@@ -118,7 +118,7 @@
             },
             "copy": {
                 "name": "virtualNetworkCopy",
-                "count": 3
+                "count": 1
             }
         },
         {
@@ -152,7 +152,7 @@
             },
             "copy": {
                 "name": "networkInterfacecopy",
-                "count": 3
+                "count": 1
                 }
             },
 
@@ -169,7 +169,7 @@
             },
             "copy": {
                 "name": "publicIpAddresseCopy",
-                "count": 3
+                "count": 1
                 }
         },
         {
@@ -209,9 +209,34 @@
             },          
             "copy": {
                 "name": "networkSecurityGroupCopy",
-                "count": 3
+                "count": 1
             }
-        }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "<extension-deployment-name>",
+            "apiVersion": "<api-version>",
+            "location": "parameters('location')",
+            "dependsOn": [
+              "[concat('Microsoft.Compute/virtualMachines/', <vm-name>)]"
+            ],
+            "properties": {
+              "publisher": "Microsoft.OSTCExtensions",
+              "type": "CustomScriptForLinux",
+              "typeHandlerVersion": "1.5",
+              "autoUpgradeMinorVersion": true,
+              "settings": {
+                "fileUris": [
+                  "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
+                ],
+                "commandToExecute": "ls"
+              },
+              "protectedSettings": {
+                "storageAccountName": "<storage-account-name>",
+                "storageAccountKey": "<storage-account-key>"
+              }
+            }
+          }
     ],
     "outputs": {
         "adminUsername": {

@@ -1,0 +1,4 @@
+{
+  "fileUris": ["https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"],
+  "commandToExecute": "sh"
+}
