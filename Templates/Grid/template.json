@@ -94,7 +94,30 @@
             "copy": {
                 "name": "virtualMachineCopy",
                 "count": 1
-            }
+            },
+            "resources": [
+                {
+                    "name": "[concat('startUpScriptExtention','/', copyIndex('virtualMachineCopy'))]",
+                    "type": "Microsoft.Compute/virtualMachines/extensions",
+                    "apiVersion": "2015-06-15",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                      "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'), copyIndex())]"
+                    ],
+                    "properties": {
+                      "publisher": "Microsoft.OSTCExtensions",
+                      "type": "CustomScriptForLinux",
+                      "typeHandlerVersion": "2.0",
+                      "autoUpgradeMinorVersion": true,
+                      "settings": {
+                        "fileUris": [
+                          "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
+                        ],
+                        "commandToExecute": "ls"
+                      }
+                    }
+                  }
+            ]
         },
         {
             "name": "[concat(parameters('virtualNetworkName'),copyIndex())]",
@@ -211,35 +234,8 @@
                 "name": "networkSecurityGroupCopy",
                 "count": 1
             }
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "startUpScriptExtention",
-            "apiVersion": "<api-version>",
-            "location": "parameters('location')",
-            "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'),copyIndex())]"
-            ],
-            "properties": {
-              "publisher": "Microsoft.OSTCExtensions",
-              "type": "CustomScriptForLinux",
-              "typeHandlerVersion": "1.5",
-              "autoUpgradeMinorVersion": true,
-              "settings": {
-                "fileUris": [
-                  "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
-                ],
-                "commandToExecute": "ls"
-              },
-              "protectedSettings": {
-                "storageAccountName": "<storage-account-name>",
-                "storageAccountKey": "<storage-account-key>"
-              }
-            },"copy": {
-                "name": "startUpScriptExtentionCopy",
-                "count": 1
-            }
-          }
+        }
+
     ],
     "outputs": {
         "adminUsername": {

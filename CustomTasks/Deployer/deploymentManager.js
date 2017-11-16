@@ -56,14 +56,24 @@ function checkResourceGroupExist(name){
                 }
                 console.log(stdout);
 
-                //deploy grid vm
-                exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + templatePath + '   --parameters  ' + parameterPathNew , (err, stdout, stderr) => {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
-                    console.log(stdout);
-                    });
+                if(deployType === 'GRID_DEPLOY'){
+                        //deploy grid vm
+                        exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + templatePath + '   --parameters  ' + parameterPathNew , (err, stdout, stderr) => {
+                            if (err) {
+                                console.error(err);
+                                return;
+                            }
+                            console.log(stdout);
+                            });
+                        }else{
+
+                            //deploy grid vm
+
+                            
+
+
+
+                        }
                 });
             }
       });      
