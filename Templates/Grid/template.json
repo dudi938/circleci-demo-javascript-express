@@ -85,7 +85,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('networkInterfaceName'),copyIndex(virtualMachineCopy))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('networkInterfaceName'),copyIndex('virtualMachineCopy'))]"
                         }
                     ]
                 }
