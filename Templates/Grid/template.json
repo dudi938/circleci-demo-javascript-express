@@ -164,7 +164,11 @@
             },
             "sku": {
                 "name": "[parameters('publicIpAddressSku')]"
-            }
+            },
+            "copy": {
+                "name": "publicIpAddresseCopy",
+                "count": 3
+                }
         },
         {
             "name": "[concat(parameters('networkSecurityGroupName'),copyIndex())]",
