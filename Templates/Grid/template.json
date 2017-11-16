@@ -60,7 +60,7 @@
             ],
             "properties": {
                 "osProfile": {
-                    "computerName": "[parameters('concat(parameters('virtualMachineName'),copyIndex())')]",
+                    "computerName": "[concat(parameters('virtualMachineName'),copyIndex())]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]"
                 },
