@@ -46,7 +46,7 @@
         }
     },
     "variables": {
-        "vnetId": "[resourceId('FIRST-CLIENT','Microsoft.Network/virtualNetworks', concat(parameters('virtualNetworkName'),copyIndex()))]",
+        "vnetId": "[resourceId('FIRST-CLIENT','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
     },
     "resources": [
