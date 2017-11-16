@@ -149,9 +149,9 @@
                     "id": "[resourceId('FIRST-CLIENT', 'Microsoft.Network/networkSecurityGroups', concat(parameters('networkSecurityGroupName'),copyIndex()))]"
                 }
             },
-            "copy": {
-                "name": "networkInterfacecopy",
-                "count": 3
+        "copy": {
+            "name": "networkInterfacecopy",
+            "count": 3
             }
         },
         {
