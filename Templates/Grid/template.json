@@ -58,6 +58,10 @@
             "dependsOn": [
                 "[concat('Microsoft.Network/networkInterfaces/', concat(parameters('networkInterfaceName'),copyIndex('virtualMachineCopy')))]"
             ],
+            "copy": {
+                "name": "virtualMachineCopy",
+                "count": 3
+            },
             "properties": {
                 "osProfile": {
                     "computerName": "[parameters('concat(parameters('virtualMachineName'),copyIndex('virtualMachineCopy'))')]",
@@ -89,11 +93,7 @@
                         }
                     ]
                 }
-            },            
-            "copy": {
-                "name": "virtualMachineCopy",
-                "count": 3
-            }
+            }           
         },
         {
             "name": "[concat(parameters('virtualNetworkName'),copyIndex())]",
