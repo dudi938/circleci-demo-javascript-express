@@ -46,7 +46,7 @@
         }
     },
     "variables": {
-        "vnetId": "[resourceId('FIRST-CLIENT','Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+        "vnetId": "[resourceId('FIRST-CLIENT','Microsoft.Network/virtualNetworks', concat(parameters('virtualNetworkName'),copyIndex()))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
     },
     "resources": [
@@ -56,11 +56,11 @@
             "apiVersion": "2016-04-30-preview",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]"
+                "[concat('Microsoft.Network/networkInterfaces/', concat(parameters('networkInterfaceName'),copyIndex()))]"
             ],
             "properties": {
                 "osProfile": {
-                    "computerName": "[parameters('virtualMachineName')]",
+                    "computerName": "[parameters('concat(parameters('virtualMachineName'),copyIndex())')]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]"
                 },
@@ -85,7 +85,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaceName'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('networkInterfaceName'),copyIndex())]"
                         }
                     ]
                 }
@@ -126,9 +126,9 @@
             "apiVersion": "2016-09-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
-                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]",
-                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
+                "[concat('Microsoft.Network/virtualNetworks/', concat(parameters('virtualNetworkName'),copyIndex()))]",
+                "[concat('Microsoft.Network/publicIpAddresses/', concat(parameters('publicIpAddressName'),copyIndex()))]",
+                "[concat('Microsoft.Network/networkSecurityGroups/', concat(parameters('networkSecurityGroupName'),copyIndex()))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -140,13 +140,13 @@
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId('FIRST-CLIENT','Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
+                                "id": "[resourceId('FIRST-CLIENT','Microsoft.Network/publicIpAddresses', concat(parameters('publicIpAddressName'),copyIndex()))]"
                             }
                         }
                     }
                 ],
                 "networkSecurityGroup": {
-                    "id": "[resourceId('FIRST-CLIENT', 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]"
+                    "id": "[resourceId('FIRST-CLIENT', 'Microsoft.Network/networkSecurityGroups', concat(parameters('networkSecurityGroupName'),copyIndex()))]"
                 }
             },
             "copy": {
@@ -155,7 +155,7 @@
             }
         },
         {
-            "name": "[parameters('publicIpAddressName')]",
+            "name": "[concat(parameters('publicIpAddressName'),copyIndex())]",
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",
