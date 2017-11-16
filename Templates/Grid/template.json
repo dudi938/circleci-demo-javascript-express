@@ -149,11 +149,12 @@
                     "id": "[resourceId('FIRST-CLIENT', 'Microsoft.Network/networkSecurityGroups', concat(parameters('networkSecurityGroupName'),copyIndex('networkInterfacecopy')))]"
                 }
             },
-        "copy": {
-            "name": "networkInterfacecopy",
-            "count": 3
-            }
-        },
+            "copy": {
+                "name": "networkInterfacecopy",
+                "count": 3
+                }
+            },
+
         {
             "name": "[concat(parameters('publicIpAddressName'),copyIndex())]",
             "type": "Microsoft.Network/publicIpAddresses",
