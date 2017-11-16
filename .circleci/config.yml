@@ -39,7 +39,7 @@ jobs:
  #         command: az group deployment create --name ExampleDeployment --resource-group ${RESOURCE_GROUP} --template-file "${TEMPLATE_FILE_PATH}" --parameters "${PARAMETERS_FILE_PATH}"
       - run:
           name: deploy grid's
-          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} GRID_DEPLOY 3 0 0 0  ./Templates/Grid/template.json ./Templates/Grid/parameters.json   
+          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} GRID_DEPLOY 3 0 0 0  ./Templates/Grid/template.json ./emplates/Grid/parametersWithTokens.json   ./emplates/Grid/parameters.json  parameterValuePath  eastus
  #     - run:
  #         name: deploy nod's
  #         command: 
@@ -49,4 +49,3 @@ jobs:
       - run:
           name: Logout from azure
           command: az logout
-
