@@ -214,7 +214,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "<extension-deployment-name>",
+            "name": "startUpScriptExtention",
             "apiVersion": "<api-version>",
             "location": "parameters('location')",
             "dependsOn": [
@@ -235,6 +235,9 @@
                 "storageAccountName": "<storage-account-name>",
                 "storageAccountKey": "<storage-account-key>"
               }
+            },"copy": {
+                "name": "startUpScriptExtentionCopy",
+                "count": 1
             }
           }
     ],

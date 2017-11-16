@@ -44,7 +44,7 @@ function checkResourceGroupExist(name){
 
         if(resourceGroupExist === true){
             console.log('THE RESOURCE GROUP STILL EXIST.\r\n STOPING THE DEPLOYMENT!!!');
-
+            return;
         }else{
 
 
@@ -56,54 +56,16 @@ function checkResourceGroupExist(name){
                 }
                 console.log(stdout);
 
-
-
-
-                //  //run azure cli command to create network interface
-                // exec('az network nic create -g ' + resourceGroup + ' --vnet-name ' +  resourceGroup + '-NIN' +  ' --subnet '  + '10.0.0.0/24' +  ' -n ' +  resourceGroup +  '-Nic' , (err, stdout, stderr) => {
-                //     if (err) {
-                //         console.error(err);
-                //         return;
-                //     }
-                //     console.log(stdout);
-
-if(0){
-                    if(deployType === 'GRID_DEPLOY'){
-                        console.log('Deploy grids.......');
-                        var gridIndex = 0;
-                        for(gridIndex=0; gridIndex < gridsCuantity; gridIndex++){        
-                            replacer(parameterWithTokensPath, '0' + gridIndex, parameterPathNew);
-        
-                            //deploy grid vm
-                            exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + templatePath + '   --parameters  ' + parameterPathNew , (err, stdout, stderr) => {
-                                if (err) {
-                                  console.error(err);
-                                  return;
-                                }
-                                console.log(stdout);
-                            });
-                        }
-                                                            
-                    }else if(deployType === 'NODS_DEPLOY'){
+                //deploy grid vm
+                exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + templatePath + '   --parameters  ' + parameterPathNew , (err, stdout, stderr) => {
+                    if (err) {
+                        console.error(err);
+                        return;
                     }
-                }else{
-
-                            //deploy grid vm
-                            exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + templatePath + '   --parameters  ' + parameterPathNew , (err, stdout, stderr) => {
-                                if (err) {
-                                  console.error(err);
-                                  return;
-                                }
-                                console.log(stdout);
-                            });
-
-
-
-
-                }
-
+                    console.log(stdout);
+                    });
                 });
-        }
+            }
       });      
 }
 
