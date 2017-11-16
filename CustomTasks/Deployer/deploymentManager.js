@@ -67,7 +67,7 @@ function checkResourceGroupExist(name){
                 //     }
                 //     console.log(stdout);
 
-
+if(0){
                     if(deployType === 'GRID_DEPLOY'){
                         console.log('Deploy grids.......');
                         var gridIndex = 0;
@@ -85,9 +85,23 @@ function checkResourceGroupExist(name){
                         }
                                                             
                     }else if(deployType === 'NODS_DEPLOY'){
-        
-        
                     }
+                }else{
+
+                            //deploy grid vm
+                            exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + templatePath + '   --parameters  ' + parameterPathNew , (err, stdout, stderr) => {
+                                if (err) {
+                                  console.error(err);
+                                  return;
+                                }
+                                console.log(stdout);
+                            });
+
+
+
+
+                }
+
                 });
         }
       });      

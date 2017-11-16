@@ -51,7 +51,7 @@
     },
     "resources": [
         {
-            "name": "[parameters('virtualMachineName')]",
+            "name": "[concat(parameters('virtualMachineName'),copyIndex())]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2016-04-30-preview",
             "location": "[parameters('location')]",
@@ -89,10 +89,14 @@
                         }
                     ]
                 }
+            },            
+            "copy": {
+                "name": "virtualMachineCopy",
+                "count": 3
             }
         },
         {
-            "name": "[parameters('virtualNetworkName')]",
+            "name": "[concat(parameters('virtualNetworkName'),copyIndex())]",
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",
@@ -110,10 +114,14 @@
                         }
                     }
                 ]
+            },
+            "copy": {
+                "name": "virtualNetworkCopy",
+                "count": 3
             }
         },
         {
-            "name": "[parameters('networkInterfaceName')]",
+            "name": "[concat(parameters('networkInterfaceName'),copyIndex())]",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2016-09-01",
             "location": "[parameters('location')]",
@@ -140,6 +148,10 @@
                 "networkSecurityGroup": {
                     "id": "[resourceId('FIRST-CLIENT', 'Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroupName'))]"
                 }
+            },
+            "copy": {
+                "name": "networkInterfacecopy",
+                "count": 3
             }
         },
         {
@@ -155,7 +167,7 @@
             }
         },
         {
-            "name": "[parameters('networkSecurityGroupName')]",
+            "name": "[concat(parameters('networkSecurityGroupName'),copyIndex())]",
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2017-06-01",
             "location": "[parameters('location')]",
@@ -188,6 +200,10 @@
                         }
                     }
                 ]
+            },          
+            "copy": {
+                "name": "networkSecurityGroupCopy",
+                "count": 3
             }
         }
     ],
