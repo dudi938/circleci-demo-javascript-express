@@ -20,6 +20,7 @@ var app_id = inputArgs[11];
 var app_key = inputArgs[12];
 var tenant = inputArgs[13];
 
+
 var resourceGroupExist = false;
 
 console.log('*********************Deployment task**********************');
