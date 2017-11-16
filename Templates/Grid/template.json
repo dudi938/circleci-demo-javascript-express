@@ -126,9 +126,9 @@
             "apiVersion": "2016-09-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', concat(parameters('virtualNetworkName'),copyIndex()))]",
-                "[concat('Microsoft.Network/publicIpAddresses/', concat(parameters('publicIpAddressName'),copyIndex()))]",
-                "[concat('Microsoft.Network/networkSecurityGroups/', concat(parameters('networkSecurityGroupName'),copyIndex()))]"
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'),copyIndex())]",
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName',copyIndex())]",
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'),copyIndex())]"
             ],
             "properties": {
                 "ipConfigurations": [
