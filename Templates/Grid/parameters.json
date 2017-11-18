@@ -3,37 +3,40 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "westeurope"
+            "value": "eastus"
         },
         "virtualMachineName": {
-            "value": "Testim-RG-VM-09"
+            "value": "VM-Grid"
         },
         "virtualMachineSize": {
-            "value": "Standard_D2s_v3"
+            "value": "Standard_D4s_v3"
         },
         "adminUsername": {
             "value": "yossis"
         },
         "virtualNetworkName": {
-            "value": "Testim-Vnet"
+            "value": "vnet-Grid"
         },
         "networkInterfaceName": {
-            "value": "Testim-RG-NINT-09"
+            "value": "NIN-Grid"
+        },
+        "networkSecurityGroupName": {
+            "value": "nsg-Grid"
         },
         "adminPassword": {
             "value": "Qaz123456789"
         },
-        "diagnosticsStorageAccountName": {
-            "value": "testimsa"
-        },
-        "diagnosticsStorageAccountId": {
-            "value": "/subscriptions/1a1ab812-3076-4944-acf7-2938e3ea064c/resourceGroups/TESTIM-RG/providers/Microsoft.Storage/storageAccounts/testimsa"
+        "addressPrefix": {
+            "value": "10.0.1.0/24"
         },
         "subnetName": {
-            "value": "FE"
+            "value": "default"
+        },
+        "subnetPrefix": {
+            "value": "10.0.1.0/24"
         },
         "publicIpAddressName": {
-            "value": "Testim-RG-pip-09"
+            "value": "pip-Grid"
         },
         "publicIpAddressType": {
             "value": "Dynamic"
