@@ -15,7 +15,7 @@ const sourceFilePath = inputArgs[1];
 const disFilePath = inputArgs[0];
 const disFilePathNew = inputArgs[2];
 
-//description : this function replace tokens thay are in this convention __key__
+//description : this function replace tokens thay are in this convention __key__ to value from othe json file
 //parm : distFilePath - this file have the key's to replace
 //parm : srcFilePath - this file have the value's to replace the key's
 //parm : disFilePathNew - path to the new file with the new values
@@ -56,11 +56,11 @@ module.exports.tokensReplacer = function(disFilePath, sourceFilePath, disFilePat
     }));
 }
 
-//description : this function replace tokens thay are in this convention __key__
+//description : this function replace tokens thay are in this convention __key__ to one value
 //parm : distFilePath - this file have the key's to replace
 //parm : newValue - new value to put for any token
 //parm : disFilePathNew - path to the new file with the new values
-module.exports.replacer = function(disFilePath, newValue, disFilePathNew){
+module.exports.replaceToSpecificValue = function(disFilePath, newValue, disFilePathNew){
 
     console.log('sourceFilePath = ' + sourceFilePath);
     console.log('disFilePath = ' + disFilePath);
@@ -77,4 +77,36 @@ module.exports.replacer = function(disFilePath, newValue, disFilePathNew){
     
     }));
 }
+    
+
+
+//description : this function replace value to new value
+//parm : distFilePath - this file have the key's to replace
+//parm : newValue - new value to put for any token
+//parm : disFilePathNew - path to the new file with the new values
+module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFilePathNew){
+    
+        console.log('sourceFilePath = ' + sourceFilePath);
+        console.log('disFilePath = ' + disFilePath);
+        console.log('newValue = ' + newValue);
+    
+        //read destination to replace file 
+        JSON.stringify(fs.readFile(disFilePath,{encoding: "utf8"}, function(err, content){
+            template = content;
+
+
+            if(err){
+                console.log(err);
+                return;
+            }
+
+            //replace all tokens
+            var targetTemplate = template.replace(valueToReplace, newValue);
+            console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
+            fs.writeFileSync(disFilePathNew, targetTemplate);              
+        
+        }));
+    }
+        
+
 

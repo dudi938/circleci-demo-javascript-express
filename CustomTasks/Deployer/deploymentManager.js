@@ -1,7 +1,9 @@
 
 const { exec } = require('child_process');
 var tokenReplacer = require('../tokenize/tokenize.js').tokensReplacer;
-var replacer = require('../tokenize/tokenize.js').replacer;
+var replaceToSpecificValue = require('../tokenize/tokenize.js').replaceToSpecificValue;
+var replace = require('../tokenize/tokenize.js').replace;
+
 
 var inputArgs = process.argv.slice(2);
 //inputs
@@ -38,7 +40,24 @@ console.log('*********************Deployment task**********************');
 
 
 function deployNodsServer(browser, vmQuantity, machineType){
+    console.log('Start deploy ' + vmQuantity + '  ' + browser + 'servers, VM size : ' +  machineType);
+
+    replace(
+        '__VIRTUAL_MACHINE_SIZE__',
+        "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parametersWithTokens.json",
+        machineType,
+        "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parameters.json"
+    );
     
+
+
+    exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parameters.json" + '   --parameters  ' + "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parameters.json" , (err, stdout, stderr) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        console.log(stdout);
+        });
 }
 
 
@@ -124,3 +143,4 @@ checkResourceGroupExist(resourceGroup);
 
 
 
+//deployNodsServer('', 5 ,  'Standard_D4s_v3');

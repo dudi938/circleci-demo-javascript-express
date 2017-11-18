@@ -43,6 +43,9 @@
         },
         "publicIpAddressSku": {
             "value": "Basic"
+        },
+        "numberOfInstances":{
+            "value": 2
         }
     }
 }
