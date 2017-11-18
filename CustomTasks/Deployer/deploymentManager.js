@@ -7,10 +7,10 @@ var inputArgs = process.argv.slice(2);
 //inputs
 var resourceGroup = inputArgs[0]; 
 var deployType = inputArgs[1]; 
-var gridsCuantity = inputArgs[2]; 
-var firefoxNodsCuantity = inputArgs[3]; 
-var chromeNodsCuantity = inputArgs[4]; 
-var edgeNodsCuantity = inputArgs[5]; 
+var gridsQuantity = inputArgs[2]; 
+var firefoxNodsQuantity = inputArgs[3]; 
+var chromeNodsQuantity = inputArgs[4]; 
+var edgeNodsQuantity = inputArgs[5]; 
 var templatePath = inputArgs[6]; 
 var parameterWithTokensPath = inputArgs[7]; 
 var parameterPathNew = inputArgs[8]; 
@@ -21,9 +21,25 @@ var app_key = inputArgs[12];
 var tenant = inputArgs[13];
 
 
+var bigChromeServer;
+var smallChromeServer;
+var bigFirefoxServer;
+var smallFirefoxServer;
+
+
+const BIG_NODES_SEVER = "Standard_D4s_v3";
+const SMALL_NODES_SEVER = "Standard_F2s";
+
+
+
 var resourceGroupExist = false;
 
 console.log('*********************Deployment task**********************');
+
+
+function deployNodsServer(browser, vmQuantity, machineType){
+    
+}
 
 
 
@@ -69,8 +85,33 @@ function checkResourceGroupExist(name){
 
                             //deploy grid vm
 
-                            
 
+                                //check wich vm's need for chrome browser
+                                bigChromeServer = chromeNodsQuantity / 10;
+                                var temp = chromeNodsQuantity % 10;
+                                if(temp > 4){
+                                    bigChromeServer++;
+                                }else{
+                                    smallChromeServer = 1;
+                                }
+
+                                //check wich vm's need for firefox browser
+                                bigFirefoxServer = firefoxNodsQuantity / 10;
+                                temp = firefoxNodsQuantity % 10;
+                                if(temp > 4){
+                                    bigChromeServer++;
+                                }else{
+                                    smallChromeServer = 1;
+                                }
+
+
+                                //deploy chrome nod's server 
+                                deployNodsServer('chrome', bigChromeServer, BIG_NODES_SEVER );
+                                deployNodsServer('chrome', smallChromeServer, SMALL_NODES_SEVER );
+
+                                //deploy firefox nod's server 
+                                deployNodsServer('firefox', bigFirefoxServer, BIG_NODES_SEVER );
+                                deployNodsServer('firefox', smallFirefoxServer, SMALL_NODES_SEVER );
 
 
                         }

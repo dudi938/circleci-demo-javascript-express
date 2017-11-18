@@ -93,7 +93,7 @@
             },            
             "copy": {
                 "name": "virtualMachineCopy",
-                "count": 1
+                "count": 2
             }           
         },
         {
@@ -118,7 +118,7 @@
             },
             "copy": {
                 "name": "virtualNetworkCopy",
-                "count": 1
+                "count": 2
             }
         },
         {
@@ -152,7 +152,7 @@
             },
             "copy": {
                 "name": "networkInterfacecopy",
-                "count": 1
+                "count": 2
                 }
             },
 
@@ -169,7 +169,7 @@
             },
             "copy": {
                 "name": "publicIpAddresseCopy",
-                "count": 1
+                "count": 2
                 }
         },
         {
@@ -209,7 +209,7 @@
             },          
             "copy": {
                 "name": "networkSecurityGroupCopy",
-                "count": 1
+                "count": 2
             }
         },
         {
@@ -229,12 +229,12 @@
                 "fileUris": [
                     "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
                 ],
-                "commandToExecute": "sh /var/lib/waagent/custom-script/download/0/runScriptsGrid.sh"
+                "commandToExecute": "sudo sh /var/lib/waagent/custom-script/download/0/runScriptsGrid.sh"
               }
             },       
             "copy": {
                 "name": "startUpScriptExtentionCopy",
-                "count": 1
+                "count": 2
             }  
           }
 
