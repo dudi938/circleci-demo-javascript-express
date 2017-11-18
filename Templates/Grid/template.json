@@ -94,30 +94,7 @@
             "copy": {
                 "name": "virtualMachineCopy",
                 "count": 1
-            },
-            "resources": [
-                {
-                    "name": "[concat('startUpScriptExtention','/', copyIndex('virtualMachineCopy'))]",
-                    "type": "Microsoft.Compute/virtualMachines/extensions",
-                    "apiVersion": "2015-06-15",
-                    "location": "[parameters('location')]",
-                    "dependsOn": [
-                      "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'), copyIndex())]"
-                    ],
-                    "properties": {
-                      "publisher": "Microsoft.OSTCExtensions",
-                      "type": "CustomScriptForLinux",
-                      "typeHandlerVersion": "2.0",
-                      "autoUpgradeMinorVersion": true,
-                      "settings": {
-                        "fileUris": [
-                          "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
-                        ],
-                        "commandToExecute": "ls"
-                      }
-                    }
-                  }
-            ]
+            }           
         },
         {
             "name": "[concat(parameters('virtualNetworkName'),copyIndex())]",
@@ -234,7 +211,32 @@
                 "name": "networkSecurityGroupCopy",
                 "count": 1
             }
-        }
+        },
+        {
+            "name": "[concat(parameters('virtualMachineName'), copyIndex(),'/', copyIndex())]",
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2015-06-15",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+              "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'), copyIndex())]"
+            ],
+            "properties": {
+              "publisher": "Microsoft.Azure.Extensions",
+              "type": "CustomScript",
+              "typeHandlerVersion": "2.0",
+              "autoUpgradeMinorVersion": true,
+              "settings": {
+                "fileUris": [
+                    "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
+                ],
+                "commandToExecute": "sh /var/lib/waagent/custom-script/download/0/runScriptsGrid.sh"
+              }
+            },       
+            "copy": {
+                "name": "startUpScriptExtentionCopy",
+                "count": 1
+            }  
+          }
 
     ],
     "outputs": {
