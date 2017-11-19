@@ -45,7 +45,7 @@
             "value": "Basic"
         },
         "numberOfInstances":{
-            "value": 2
+            "value": "__QUANTITY__"
         }
     }
 }

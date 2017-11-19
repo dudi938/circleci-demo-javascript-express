@@ -13,14 +13,10 @@ var gridsQuantity = inputArgs[2];
 var firefoxNodsQuantity = inputArgs[3]; 
 var chromeNodsQuantity = inputArgs[4]; 
 var edgeNodsQuantity = inputArgs[5]; 
-var templatePath = inputArgs[6]; 
-var parameterWithTokensPath = inputArgs[7]; 
-var parameterPathNew = inputArgs[8]; 
-var parameterValuesPath = inputArgs[9]; 
-var location = inputArgs[10];
-var app_id = inputArgs[11];
-var app_key = inputArgs[12];
-var tenant = inputArgs[13];
+var location = inputArgs[6];
+var app_id = inputArgs[7];
+var app_key = inputArgs[8];
+var tenant = inputArgs[9];
 
 
 var bigChromeServer;
@@ -28,9 +24,19 @@ var smallChromeServer;
 var bigFirefoxServer;
 var smallFirefoxServer;
 
-
+//VM TYPS
 const BIG_NODES_SEVER = "Standard_D4s_v3";
 const SMALL_NODES_SEVER = "Standard_F2s";
+
+//ARM TEMPLATE FOR GRID'S
+const GRID_TEMPLATE         = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/Grid/template.json";
+const GRID_PARAMETERS_BASE  = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/Grid/parametersWithTokens.json";
+const GRID_PARAMETERS       = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/Grid/parameters.json";
+//ARM TEMPLATE FOR NOD'S
+const NODE_TEMPLATE_BASE    = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/templateWithTokens.json";
+const NODE_TEMPLATE         = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/template.json";
+const NODE_PARAMETERS_BASE  = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parametersWithTokens.json";
+const NODE_PARAMETERS       = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parameters.json";
 
 
 
@@ -42,16 +48,26 @@ console.log('*********************Deployment task**********************');
 function deployNodsServer(browser, vmQuantity, machineType){
     console.log('Start deploy ' + vmQuantity + '  ' + browser + 'servers, VM size : ' +  machineType);
 
+    //replace machine size in the parameters.json file
     replace(
         '__VIRTUAL_MACHINE_SIZE__',
-        "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parametersWithTokens.json",
+        NODE_PARAMETERS_BASE,
         machineType,
-        "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parameters.json"
+        NODE_PARAMETERS
+    );
+
+
+    //replace machine size in the template.json file
+    replace(
+        '__QUANTITY__',
+        NODE_TNODE_PARAMETERS_BASEEMPLATE_BASE,
+        vmQuantity,
+        NODE_PARAMETERS
     );
     
 
 
-    exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parameters.json" + '   --parameters  ' + "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parameters.json" , (err, stdout, stderr) => {
+    exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' +  NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
         if (err) {
             console.error(err);
             return;
@@ -82,6 +98,7 @@ function checkResourceGroupExist(name){
             return;
         }else{
 
+            console.log('THE RESOURCE GROUP STILL NOT EXIST.\r\n STARTING THE DEPLOYMENT!!!');
 
            //run azure cli command to create a resource group
             exec('az group create --name ' + name +  ' --location ' + location , (err, stdout, stderr) => {
@@ -93,7 +110,7 @@ function checkResourceGroupExist(name){
 
                 if(deployType === 'GRID_DEPLOY'){
                         //deploy grid vm
-                        exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + templatePath + '   --parameters  ' + parameterPathNew , (err, stdout, stderr) => {
+                        exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS , (err, stdout, stderr) => {
                             if (err) {
                                 console.error(err);
                                 return;
