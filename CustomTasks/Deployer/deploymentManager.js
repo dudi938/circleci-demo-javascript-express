@@ -77,7 +77,7 @@ function checkResourceGroupExist(name){
         console.log('ResourceGroup exist =  ' + resourceGroupExist );
 
 
-        if(resourceGroupExist == true){
+        if(resourceGroupExist === "true"){
             console.log('THE RESOURCE GROUP STILL EXIST.\r\n STOPING THE DEPLOYMENT!!!');
             return;
         }else{
