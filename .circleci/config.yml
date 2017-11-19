@@ -33,7 +33,7 @@ jobs:
  #         command: az group deployment create --name ExampleDeployment --resource-group ${RESOURCE_GROUP} --template-file "${TEMPLATE_FILE_PATH}" --parameters "${PARAMETERS_FILE_PATH}"
       - run:
           name: deploy grid's
-          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} GRID_DEPLOY 3 0 0  eastus
+          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} GRID_DEPLOY 3 0 0 0 eastus
  #     - run:
  #         name: deploy nod's
  #         command: 
