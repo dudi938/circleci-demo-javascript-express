@@ -29,14 +29,14 @@ const BIG_NODES_SEVER = "Standard_D4s_v3";
 const SMALL_NODES_SEVER = "Standard_F2s";
 
 //ARM TEMPLATE FOR GRID'S
-const GRID_TEMPLATE         = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/Grid/template.json";
-const GRID_PARAMETERS_BASE  = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/Grid/parametersWithTokens.json";
-const GRID_PARAMETERS       = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/Grid/parameters.json";
+const GRID_TEMPLATE         = "./Templates/Grid/template.json";
+const GRID_PARAMETERS_BASE  = "./Templates/Grid/parametersWithTokens.json";
+const GRID_PARAMETERS       = "./Templates/Grid/parameters.json";
 //ARM TEMPLATE FOR NOD'S
-const NODE_TEMPLATE_BASE    = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/templateWithTokens.json";
-const NODE_TEMPLATE         = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/template.json";
-const NODE_PARAMETERS_BASE  = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parametersWithTokens.json";
-const NODE_PARAMETERS       = "d:/projects/Automatic​_Grids_​Creation/srs/circleci-demo-javascript-express/circleci-demo-javascript-express/Templates/nods/parameters.json";
+const NODE_TEMPLATE_BASE    = "./Templates/nods/templateWithTokens.json";
+const NODE_TEMPLATE         = "./Templates/nods/template.json";
+const NODE_PARAMETERS_BASE  = "./Templates/nods/parametersWithTokens.json";
+const NODE_PARAMETERS       = "./Templates/nods/parameters.json";
 
 
 
