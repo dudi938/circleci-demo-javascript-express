@@ -72,7 +72,7 @@
                     "imageReference": {
                         "publisher": "Canonical",
                         "offer": "UbuntuServer",
-                        "sku": "16.04-LTS",
+                        "sku": "14.04-LTS",
                         "version": "latest"
                     },
                     "osDisk": {
@@ -227,9 +227,9 @@
               "autoUpgradeMinorVersion": true,
               "settings": {
                 "fileUris": [
-                    "https://testimstorage.blob.core.windows.net/controller/runScriptsGridNew1.sh"
+                    "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
                 ],
-                "commandToExecute": "sudo sh /var/lib/waagent/custom-script/download/0/runScriptsGridNew1.sh param1 param2 param3"
+                "commandToExecute": "sudo sh /var/lib/waagent/custom-script/download/0/runScriptsGrid.sh param1 param2 param3"
               }
             },       
             "copy": {

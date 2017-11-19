@@ -161,3 +161,39 @@ checkResourceGroupExist(resourceGroup);
 
 
 //deployNodsServer('', 5 ,  'Standard_D4s_v3');
+
+// var i = 0;
+// var p = Promise.resolve();
+
+// var nods = [3,2,3];
+// nods.forEach(function(item, index, arr) {
+//     p.then(new Promise(function(resolve, reject) {
+
+
+
+//         //replace tokens
+//         //replace machine size in the parameters.json file
+//         replace(
+//             '__VIRTUAL_MACHINE_SIZE__',
+//             NODE_PARAMETERS_BASE,
+//             BIG_NODES_SEVER,
+//             NODE_PARAMETERS
+//         );
+
+//         //replace index of resource's in the parameters.json file
+//         replaceToSpecificValue(
+//             NODE_PARAMETERS,
+//             index,
+//             NODE_PARAMETERS
+//         );
+
+
+        
+//         exec('az group exists -n ' +  'name', function(err, stdout, stderr) {
+//             console.log(stdout);
+//         }).on('close',function(){
+//             console.log('index = ' + index);
+//             resolve();
+//         });
+//     }));
+// });

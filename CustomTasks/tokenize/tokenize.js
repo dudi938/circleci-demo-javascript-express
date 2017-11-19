@@ -62,14 +62,14 @@ module.exports.tokensReplacer = function(disFilePath, sourceFilePath, disFilePat
 //parm : disFilePathNew - path to the new file with the new values
 module.exports.replaceToSpecificValue = function(disFilePath, newValue, disFilePathNew){
 
-    console.log('sourceFilePath = ' + sourceFilePath);
     console.log('disFilePath = ' + disFilePath);
+    console.log('disFilePathNew = ' + disFilePathNew);
     console.log('newValue = ' + newValue);
 
     //read destination to replace file 
     JSON.stringify(fs.readFile(disFilePath,{encoding: "utf8"}, function(err, content){
         template = content;
-
+        console.log('content  = ' + content);   
                 //replace all tokens
             var targetTemplate = template.replace(regExp, newValue);
             //console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
@@ -86,9 +86,10 @@ module.exports.replaceToSpecificValue = function(disFilePath, newValue, disFileP
 //parm : disFilePathNew - path to the new file with the new values
 module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFilePathNew){
     
-        console.log('sourceFilePath = ' + sourceFilePath);
+        console.log('valueToReplace = ' + valueToReplace);
         console.log('disFilePath = ' + disFilePath);
         console.log('newValue = ' + newValue);
+        console.log('disFilePathNew = ' + disFilePathNew);
     
         //read destination to replace file 
         JSON.stringify(fs.readFile(disFilePath,{encoding: "utf8"}, function(err, content){
