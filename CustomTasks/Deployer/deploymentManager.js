@@ -48,7 +48,7 @@ console.log('*********************Deployment task**********************');
 
 function deployNodsServer(browser, vmQuantity, machineType){
 
-    if(deployNodsServer === 0){
+    if(vmQuantity === 0){
         return;
     }else{
         //replace tokens
@@ -57,6 +57,7 @@ function deployNodsServer(browser, vmQuantity, machineType){
                 console.log('********************calback tryrun*************************');
                 //replace index of resource's in the parameters.json file
                 tokens2value(NODE_PARAMETERS, vmQuantity, NODE_PARAMETERS, function(){
+                    replace('__START_UP_SCRIPT_PARAMETERS__', NODE_TEMPLATE_BASE, browser + '  ' + ' 5 ' + ' 6 '  , NODE_TEMPLATE, function(){
 
                         exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
                             
@@ -66,10 +67,11 @@ function deployNodsServer(browser, vmQuantity, machineType){
             
             
                             console.log(stdout);
-                    }).on('close',function(){
+                        }).on('close',function(){
 
-                        deployNodsServer(browser, vmQuantity - 1, machineType);
-                        
+                            deployNodsServer(browser, vmQuantity - 1, machineType);
+
+                        });
                     });
 
             });

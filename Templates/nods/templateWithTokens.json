@@ -48,7 +48,8 @@
     "variables": {
         "resourceGroupName": "[resourceGroup().name]",
         "vnetId": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+        "startUpScriptParams": "__START_UP_SCRIPT_PARAMETERS__"
     },
     "resources": [
         {
@@ -229,7 +230,8 @@
                 "fileUris": [
                     "https://testimstorage.blob.core.windows.net/agent/runScriptsNodes.sh"
                 ],
-                "commandToExecute": "sudo sh /var/lib/waagent/custom-script/download/0/runScriptsNodes.sh"
+                "commandToExecute": "[concat('sudo sh /var/lib/waagent/custom-script/download/0/runScriptsNodes.sh','  ', parameters('startUpScriptParams'))]"
+               
               }
             },       
             "copy": {
