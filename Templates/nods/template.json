@@ -227,9 +227,9 @@
               "autoUpgradeMinorVersion": true,
               "settings": {
                 "fileUris": [
-                    "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
+                    "https://testimstorage.blob.core.windows.net/agent/runScriptsNodes.sh"
                 ],
-                "commandToExecute": "sudo sh /var/lib/waagent/custom-script/download/0/runScriptsGrid.sh"
+                "commandToExecute": "sudo sh /var/lib/waagent/custom-script/download/0/runScriptsNodes.sh"
               }
             },       
             "copy": {

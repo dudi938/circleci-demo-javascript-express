@@ -60,7 +60,7 @@ module.exports.tokensReplacer = function(disFilePath, sourceFilePath, disFilePat
 //parm : distFilePath - this file have the key's to replace
 //parm : newValue - new value to put for any token
 //parm : disFilePathNew - path to the new file with the new values
-module.exports.tokens2value = function(disFilePath, newValue, disFilePathNew){
+module.exports.tokens2value = function(disFilePath, newValue, disFilePathNew, callback){
 
     console.log('disFilePath = ' + disFilePath);
     console.log('disFilePathNew = ' + disFilePathNew);
@@ -73,7 +73,8 @@ module.exports.tokens2value = function(disFilePath, newValue, disFilePathNew){
                 //replace all tokens
             var targetTemplate = template.replace(regExp, newValue);
             //console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
-            fs.writeFileSync(disFilePathNew, targetTemplate);              
+            fs.writeFileSync(disFilePathNew, targetTemplate);         
+            callback();     
     
     }));
 }

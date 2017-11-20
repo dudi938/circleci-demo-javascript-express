@@ -67,24 +67,25 @@ function deployNodsServer(browser, vmQuantity, machineType){
                     tokens2value(
                         NODE_PARAMETERS,
                         index,
-                        NODE_PARAMETERS
+                        NODE_PARAMETERS,
+                        function(){
+                            exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
+                                
+                                if(err){
+                                    console.log(err);
+                                }
+                
+                
+                                console.log(stdout);
+                
+                
+                            }).on('close',function(){
+                                resolve();
+                            });
+                        }
                     );
                 }
-            );
-      
-            exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
-                
-                if(err){
-                    console.log(err);
-                }
-
-
-                console.log(stdout);
-
-
-            }).on('close',function(){
-                resolve();
-            });
+            );     
         }));
     });
 
@@ -170,9 +171,9 @@ function checkResourceGroupExist(name){
       });      
 }
 
-checkResourceGroupExist(resourceGroup);
+//checkResourceGroupExist(resourceGroup);
 
 
 
-//deployNodsServer('', 3 ,  'Standard_D4s_v3');
+deployNodsServer('', 3 ,  'Standard_D4s_v3');
 
