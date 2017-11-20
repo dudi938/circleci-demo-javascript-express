@@ -53,11 +53,19 @@ function deployNodsServer(browser, vmQuantity, machineType){
     }else{
         //replace tokens
         //replace machine size in the parameters.json file
-        replace('__VIRTUAL_MACHINE_SIZE__', NODE_PARAMETERS_BASE,  BIG_NODES_SEVER, NODE_PARAMETERS, function(){
+        replace('__VIRTUAL_MACHINE_SIZE__', NODE_PARAMETERS_BASE,  machineType, NODE_PARAMETERS, function(){
                 console.log('********************calback tryrun*************************');
                 //replace index of resource's in the parameters.json file
                 tokens2value(NODE_PARAMETERS, vmQuantity, NODE_PARAMETERS, function(){
-                    replace('__START_UP_SCRIPT_PARAMETERS__', NODE_TEMPLATE_BASE, browser + '  ' + ' 5 ' + ' 6 '  , NODE_TEMPLATE, function(){
+
+                    var memorySize;
+                    if(machineType === BIG_NODES_SEVER){
+                        memorySize = 15;
+                    }else{
+                        memorySize = 7;
+                    }
+
+                    replace('__START_UP_SCRIPT_PARAMETERS__', NODE_TEMPLATE_BASE, browser + '  ' + ' 5 ' + memorySize  , NODE_TEMPLATE, function(){
 
                         exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
                             
@@ -164,5 +172,5 @@ function checkResourceGroupExist(name){
 
 
 
-deployNodsServer('chrome', 3 ,  'Standard_D4s_v3');
+deployNodsServer('chrome', 3 ,  BIG_NODES_SEVER);
 
