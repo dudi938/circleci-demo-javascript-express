@@ -222,42 +222,31 @@ function checkResourceGroupExist(name){
 
 
 
-deployNodsServer(CHROME_BROWSER, 3 ,  BIG_NODES_SEVER);
+//deployNodsServer(CHROME_BROWSER, 3 ,  BIG_NODES_SEVER);
 
 
 
-function test(){
+function test(browser){
+    if(browser === CHROME_BROWSER){
+        console.log('browser = ' + browser)
+        if((chromeNodsQuantity - chromeNodesDeployed) > BIG_MACHINE_MAX_NODS){
+            chromeNodesDeployed += BIG_MACHINE_MAX_NODS;
+            return chromeNodesDeployed;
+        }else{
+            chromeNodesDeployed = chromeNodsQuantity - chromeNodesDeployed;
+            return chromeNodesDeployed;
+        }
 
-    //check wich vm's need for chrome browser
-    bigChromeServer = parseInt(chromeNodsQuantity / BIG_MACHINE_MAX_NODS);
-    var temp = chromeNodsQuantity % BIG_MACHINE_MAX_NODS;
-    if(temp > SMALL_MACHINE_MAX_NODS){
-        bigChromeServer++;
-
-        // var tempOby;
-        // Array.from(chromeNoedsQuantityPerEachBigServer);
-        var newa = chromeNoedsQuantityPerEachBigServer.fill(BIG_MACHINE_MAX_NODS,0,bigChromeServer);
-        console.log('newa.length = ' + newa.length  +    '  typeof(newa) = ' + typeof(newa) +    '  newa[0] = ' + newa[0] +    '  newa[1] = ' + newa[1]);   
+    }else if(browser === FIREFOX_BROWSER){
         
-        
-    }else if(temp > 0){
-        smallChromeServer = 1;
-    }
-    console.log('typeof  chromeNoedsQuantityPerEachBigServer is  ' + typeof(chromeNoedsQuantityPerEachBigServer));
-    console.log('bigChromeServer = ' + bigChromeServer);
-    console.log('smallChromeServer = ' + smallChromeServer);
-    console.log('chromeNoedsQuantityPerEachBigServer = ' + chromeNoedsQuantityPerEachBigServer);   
-
-
-    //check wich vm's need for firefox browser
-    bigFirefoxServer = firefoxNodsQuantity / BIG_MACHINE_MAX_NODS;
-    temp = firefoxNodsQuantity % BIG_MACHINE_MAX_NODS;
-    if(temp > SMALL_MACHINE_MAX_NODS){
-        bigChromeServer++;
-    }else{
-        smallChromeServer = 1;
+        if((chromeNodsQuantity - firefoxNodesDeployed) > BIG_MACHINE_MAX_NODS){
+            firefoxNodesDeployed += BIG_MACHINE_MAX_NODS;
+            return firefoxNodesDeployed;
+        }else{
+            firefoxNodesDeployed = chromeNodsQuantity - firefoxNodesDeployed;
+            return firefoxNodesDeployed;
+        }
     }
 }
 
-
-//test();
+x = test(CHROME_BROWSER);
