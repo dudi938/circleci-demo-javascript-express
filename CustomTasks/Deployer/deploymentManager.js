@@ -45,6 +45,7 @@ var resourceGroupExist = false;
 console.log('*********************Deployment task**********************');
 
 
+
 function deployNodsServer(browser, vmQuantity, machineType){
   
     var p = Promise.resolve();
