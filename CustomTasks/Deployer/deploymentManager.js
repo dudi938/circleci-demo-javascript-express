@@ -47,28 +47,17 @@ console.log('*********************Deployment task**********************');
 
 
 function deployNodsServer(browser, vmQuantity, machineType){
-  
-    var p = Promise.resolve();
-    
-    var nods = [1,2,3];
-    nods.forEach(function(item, index, arr) {
-        p.then(new Promise(function(resolve, reject) {
-
+   var quantity = 0;
+   var busy = 0;
+    while(quantity < vmQuantity){
             //replace tokens
             //replace machine size in the parameters.json file
-            replace(
-                '__VIRTUAL_MACHINE_SIZE__',
-                NODE_PARAMETERS_BASE,
-                BIG_NODES_SEVER,
-                NODE_PARAMETERS,
-                function(){
+            replace('__VIRTUAL_MACHINE_SIZE__', NODE_PARAMETERS_BASE,  BIG_NODES_SEVER, NODE_PARAMETERS, function(){
                     console.log('********************calback tryrun*************************');
                     //replace index of resource's in the parameters.json file
-                    tokens2value(
-                        NODE_PARAMETERS,
-                        index,
-                        NODE_PARAMETERS,
-                        function(){
+                    tokens2value(NODE_PARAMETERS, quantity, NODE_PARAMETERS, function(){
+
+                            busy = 1;
                             exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
                                 
                                 if(err){
@@ -77,19 +66,18 @@ function deployNodsServer(browser, vmQuantity, machineType){
                 
                 
                                 console.log(stdout);
-                
-                
-                            }).on('close',function(){
-                                resolve();
-                            });
+                                busy = 0;
+
                         }
                     );
+                    while(busy);
+                    quantity++;
                 }
             );     
-        }));
-    });
+        });
+    }
+    }
 
-}
 
 
 

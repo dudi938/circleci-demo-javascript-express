@@ -68,8 +68,7 @@ module.exports.tokens2value = function(disFilePath, newValue, disFilePathNew, ca
 
     //read destination to replace file 
     JSON.stringify(fs.readFile(disFilePath,{encoding: "utf8"}, function(err, content){
-        template = content;
-        console.log('content  = ' + content);   
+        template = content;   
                 //replace all tokens
             var targetTemplate = template.replace(regExp, newValue);
             //console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
@@ -104,7 +103,7 @@ module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFile
 
             //replace all tokens
             var targetTemplate = template.replace(valueToReplace, newValue);
-            console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
+            //console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
             fs.writeFileSync(disFilePathNew, targetTemplate);              
             callback();
         }));
