@@ -164,5 +164,5 @@ function checkResourceGroupExist(name){
 
 
 
-deployNodsServer('', 3 ,  'Standard_D4s_v3');
+deployNodsServer('chrome', 3 ,  'Standard_D4s_v3');
 
