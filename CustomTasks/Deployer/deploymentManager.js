@@ -47,36 +47,35 @@ console.log('*********************Deployment task**********************');
 
 
 function deployNodsServer(browser, vmQuantity, machineType){
-   var quantity = 0;
-   var busy = 0;
-    while(quantity < vmQuantity){
-            //replace tokens
-            //replace machine size in the parameters.json file
-            replace('__VIRTUAL_MACHINE_SIZE__', NODE_PARAMETERS_BASE,  BIG_NODES_SEVER, NODE_PARAMETERS, function(){
-                    console.log('********************calback tryrun*************************');
-                    //replace index of resource's in the parameters.json file
-                    tokens2value(NODE_PARAMETERS, quantity, NODE_PARAMETERS, function(){
 
-                            busy = 1;
-                            exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
-                                
-                                if(err){
-                                    console.log(err);
-                                }
-                
-                
-                                console.log(stdout);
-                                busy = 0;
+    if(deployNodsServer === 0){
+        return;
+    }else{
+        //replace tokens
+        //replace machine size in the parameters.json file
+        replace('__VIRTUAL_MACHINE_SIZE__', NODE_PARAMETERS_BASE,  BIG_NODES_SEVER, NODE_PARAMETERS, function(){
+                console.log('********************calback tryrun*************************');
+                //replace index of resource's in the parameters.json file
+                tokens2value(NODE_PARAMETERS, vmQuantity, NODE_PARAMETERS, function(){
 
-                        }
-                    );
-                    while(busy);
-                    quantity++;
-                }
-            );     
+                        exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
+                            
+                            if(err){
+                                console.log(err);
+                            }
+            
+            
+                            console.log(stdout);
+                    }).on('close',function(){
+
+                        deployNodsServer(browser, vmQuantity - 1, machineType);
+                        
+                    });
+
+            });
         });
     }
-    }
+}
 
 
 
