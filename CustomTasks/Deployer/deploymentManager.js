@@ -18,11 +18,16 @@ var app_id = inputArgs[7];
 var app_key = inputArgs[8];
 var tenant = inputArgs[9];
 
+//quantity of each nods server type 
+var bigChromeServer=0;
+var smallChromeServer=0;
+var bigFirefoxServer=0;
+var smallFirefoxServer=0;
 
-var bigChromeServer;
-var smallChromeServer;
-var bigFirefoxServer;
-var smallFirefoxServer;
+
+//Noeds Deployed Quantity
+var chromeNodesDeployed = 0;
+var firefoxNodesDeployed = 0;
 
 //VM TYPS
 const BIG_NODES_SEVER = "Standard_D4s_v3";
@@ -37,14 +42,40 @@ const NODE_TEMPLATE_BASE    = "./Templates/nods/templateWithTokens.json";
 const NODE_TEMPLATE         = "./Templates/nods/template.json";
 const NODE_PARAMETERS_BASE  = "./Templates/nods/parametersWithTokens.json";
 const NODE_PARAMETERS       = "./Templates/nods/parameters.json";
-
+//MACHINE_SIZE_LIMITS
+const SMALL_MACHINE_MAX_NODS = 4;
+const BIG_MACHINE_MAX_NODS = 10;
+//BROWSER_TYPES
+const CHROME_BROWSER = 'chrome';
+const FIREFOX_BROWSER = 'firefox';
 
 
 var resourceGroupExist = false;
 
 console.log('*********************Deployment task**********************');
 
+function getNextNodsQuanity(browser){
+    if(browser === CHROME_BROWSER){
 
+        if((chromeNodsQuantity - chromeNodesDeployed) > BIG_MACHINE_MAX_NODS){
+            chromeNodesDeployed += BIG_MACHINE_MAX_NODS;
+            return chromeNodesDeployed;
+        }else{
+            chromeNodesDeployed = chromeNodsQuantity - chromeNodesDeployed;
+            return chromeNodesDeployed;
+        }
+
+    }else if(browser === FIREFOX_BROWSER){
+        
+        if((chromeNodsQuantity - firefoxNodesDeployed) > BIG_MACHINE_MAX_NODS){
+            firefoxNodesDeployed += BIG_MACHINE_MAX_NODS;
+            return firefoxNodesDeployed;
+        }else{
+            firefoxNodesDeployed = chromeNodsQuantity - firefoxNodesDeployed;
+            return firefoxNodesDeployed;
+        }
+    }
+}
 
 function deployNodsServer(browser, vmQuantity, machineType){
 
@@ -58,6 +89,8 @@ function deployNodsServer(browser, vmQuantity, machineType){
                 //replace index of resource's in the parameters.json file
                 tokens2value(NODE_PARAMETERS, vmQuantity, NODE_PARAMETERS, function(){
 
+
+                    //calc memory size
                     var memorySize;
                     if(machineType === BIG_NODES_SEVER){
                         memorySize = 15;
@@ -65,7 +98,10 @@ function deployNodsServer(browser, vmQuantity, machineType){
                         memorySize = 7;
                     }
 
-                    replace('__START_UP_SCRIPT_PARAMETERS__', NODE_TEMPLATE_BASE, browser + '  ' + ' 5 ' + memorySize  , NODE_TEMPLATE, function(){
+                    var currentNodsQantity = getNextNodsQuanity(browser);
+                    console.log('***currentNodsQantity = '  + currentNodsQantity + '***');
+
+                    replace('__START_UP_SCRIPT_PARAMETERS__', NODE_TEMPLATE_BASE, browser + '  ' + currentNodsQantity + '  ' + memorySize  , NODE_TEMPLATE, function(){
 
                         exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
                             
@@ -135,18 +171,23 @@ function checkResourceGroupExist(name){
 
 
                                 //check wich vm's need for chrome browser
-                                bigChromeServer = chromeNodsQuantity / 10;
-                                var temp = chromeNodsQuantity % 10;
-                                if(temp > 4){
+                                bigChromeServer = parseInt(chromeNodsQuantity / BIG_MACHINE_MAX_NODS);
+                                var temp = chromeNodsQuantity % BIG_MACHINE_MAX_NODS;
+                                if(temp > SMALL_MACHINE_MAX_NODS){
                                     bigChromeServer++;
+
+                                    var tempOby;
+                                    chromeNoedsQuantityPerEachBigServer = Array.from(tempOby).fill(BIG_MACHINE_MAX_NODS,0,bigChromeServer);
+                                    chromeNoedsQuantityPerEachBigServer.push(temp);
+                                    
                                 }else{
                                     smallChromeServer = 1;
                                 }
 
                                 //check wich vm's need for firefox browser
-                                bigFirefoxServer = firefoxNodsQuantity / 10;
-                                temp = firefoxNodsQuantity % 10;
-                                if(temp > 4){
+                                bigFirefoxServer = parseInt(firefoxNodsQuantity / BIG_MACHINE_MAX_NODS);
+                                temp = firefoxNodsQuantity % BIG_MACHINE_MAX_NODS;
+                                if(temp > SMALL_MACHINE_MAX_NODS){
                                     bigChromeServer++;
                                 }else{
                                     smallChromeServer = 1;
@@ -154,12 +195,21 @@ function checkResourceGroupExist(name){
 
 
                                 //deploy chrome nod's server 
-                                deployNodsServer('chrome', bigChromeServer, BIG_NODES_SEVER );
-                                deployNodsServer('chrome', smallChromeServer, SMALL_NODES_SEVER );
+                                if(bigChromeServer > 0){
+                                    deployNodsServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SEVER );
+                                }
+                                if(smallChromeServer > 0){
+                                    deployNodsServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SEVER );
+                                }
+
 
                                 //deploy firefox nod's server 
-                                deployNodsServer('firefox', bigFirefoxServer, BIG_NODES_SEVER );
-                                deployNodsServer('firefox', smallFirefoxServer, SMALL_NODES_SEVER );
+                                if(bigFirefoxServer > 0){
+                                    deployNodsServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SEVER );
+                                }
+                                if(smallFirefoxServer > 0){
+                                    deployNodsServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SEVER );
+                                }
 
 
                         }
@@ -172,5 +222,42 @@ function checkResourceGroupExist(name){
 
 
 
-deployNodsServer('chrome', 3 ,  BIG_NODES_SEVER);
+deployNodsServer(CHROME_BROWSER, 3 ,  BIG_NODES_SEVER);
 
+
+
+function test(){
+
+    //check wich vm's need for chrome browser
+    bigChromeServer = parseInt(chromeNodsQuantity / BIG_MACHINE_MAX_NODS);
+    var temp = chromeNodsQuantity % BIG_MACHINE_MAX_NODS;
+    if(temp > SMALL_MACHINE_MAX_NODS){
+        bigChromeServer++;
+
+        // var tempOby;
+        // Array.from(chromeNoedsQuantityPerEachBigServer);
+        var newa = chromeNoedsQuantityPerEachBigServer.fill(BIG_MACHINE_MAX_NODS,0,bigChromeServer);
+        console.log('newa.length = ' + newa.length  +    '  typeof(newa) = ' + typeof(newa) +    '  newa[0] = ' + newa[0] +    '  newa[1] = ' + newa[1]);   
+        
+        
+    }else if(temp > 0){
+        smallChromeServer = 1;
+    }
+    console.log('typeof  chromeNoedsQuantityPerEachBigServer is  ' + typeof(chromeNoedsQuantityPerEachBigServer));
+    console.log('bigChromeServer = ' + bigChromeServer);
+    console.log('smallChromeServer = ' + smallChromeServer);
+    console.log('chromeNoedsQuantityPerEachBigServer = ' + chromeNoedsQuantityPerEachBigServer);   
+
+
+    //check wich vm's need for firefox browser
+    bigFirefoxServer = firefoxNodsQuantity / BIG_MACHINE_MAX_NODS;
+    temp = firefoxNodsQuantity % BIG_MACHINE_MAX_NODS;
+    if(temp > SMALL_MACHINE_MAX_NODS){
+        bigChromeServer++;
+    }else{
+        smallChromeServer = 1;
+    }
+}
+
+
+//test();
