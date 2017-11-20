@@ -230,7 +230,7 @@
                 "fileUris": [
                     "https://testimstorage.blob.core.windows.net/agent/runScriptsNodes.sh"
                 ],
-                "commandToExecute": "[concat('sudo sh /var/lib/waagent/custom-script/download/0/runScriptsNodes.sh','  ', parameters('startUpScriptParams'))]"
+                "commandToExecute": "[concat('sudo sh /var/lib/waagent/custom-script/download/0/runScriptsNodes.sh','  ', variables('startUpScriptParams'))]"
                
               }
             },       
