@@ -57,11 +57,11 @@
             "apiVersion": "2016-04-30-preview",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'),copyIndex())]"
+                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]"
             ],
             "properties": {
                 "osProfile": {
-                    "computerName": "[concat(parameters('virtualMachineName'),copyIndex())]",
+                    "computerName": "[concat(parameters('virtualMachineName'))]",
                     "adminUsername": "[parameters('adminUsername')]",
                     "adminPassword": "[parameters('adminPassword')]"
                 },
@@ -86,7 +86,7 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('networkInterfaceName'),copyIndex()))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('networkInterfaceName')))]"
                         }
                     ]
                 }
@@ -127,9 +127,9 @@
             "apiVersion": "2016-09-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'),copyIndex())]",
-                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'), copyIndex())]",
-                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'),copyIndex())]"
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'))]",
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]",
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -137,17 +137,17 @@
                         "name": "ipconfig1",
                         "properties": {
                             "subnet": {
-                                "id": "[concat(resourceId(variables('resourceGroupName'),'Microsoft.Network/virtualNetworks', concat(parameters('virtualNetworkName'), copyIndex())) , '/subnets/', parameters('subnetName'))]"
+                                "id": "[concat(resourceId(variables('resourceGroupName'),'Microsoft.Network/virtualNetworks', concat(parameters('virtualNetworkName'))) , '/subnets/', parameters('subnetName'))]"
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/publicIpAddresses', concat(parameters('publicIpAddressName'),copyIndex()))]"
+                                "id": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/publicIpAddresses', concat(parameters('publicIpAddressName')))]"
                             }
                         }
                     }
                 ],
                 "networkSecurityGroup": {
-                    "id": "[resourceId(variables('resourceGroupName'), 'Microsoft.Network/networkSecurityGroups', concat(parameters('networkSecurityGroupName'),copyIndex()))]"
+                    "id": "[resourceId(variables('resourceGroupName'), 'Microsoft.Network/networkSecurityGroups', concat(parameters('networkSecurityGroupName')))]"
                 }
             },
             "copy": {
@@ -218,7 +218,7 @@
             "apiVersion": "2015-06-15",
             "location": "[parameters('location')]",
             "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'), copyIndex())]"
+              "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
             ],
             "properties": {
               "publisher": "Microsoft.Azure.Extensions",

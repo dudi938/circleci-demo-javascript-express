@@ -1,7 +1,7 @@
 
 const { exec } = require('child_process');
 var tokenReplacer = require('../tokenize/tokenize.js').tokensReplacer;
-var replaceToSpecificValue = require('../tokenize/tokenize.js').replaceToSpecificValue;
+var tokens2value = require('../tokenize/tokenize.js').tokens2value;
 var replace = require('../tokenize/tokenize.js').replace;
 
 
@@ -46,34 +46,47 @@ console.log('*********************Deployment task**********************');
 
 
 function deployNodsServer(browser, vmQuantity, machineType){
-    console.log('Start deploy ' + vmQuantity + '  ' + browser + 'servers, VM size : ' +  machineType);
-
-    //replace machine size in the parameters.json file
-    replace(
-        '__VIRTUAL_MACHINE_SIZE__',
-        NODE_PARAMETERS_BASE,
-        machineType,
-        NODE_PARAMETERS
-    );
-
-
-    //replace machine size in the template.json file
-    replace(
-        '__QUANTITY__',
-        NODE_TNODE_PARAMETERS_BASEEMPLATE_BASE,
-        vmQuantity,
-        NODE_PARAMETERS
-    );
+  
+    var p = Promise.resolve();
     
+    var nods = [1,2,3];
+    nods.forEach(function(item, index, arr) {
+        p.then(new Promise(function(resolve, reject) {
+
+            //replace tokens
+            //replace machine size in the parameters.json file
+            replace(
+                '__VIRTUAL_MACHINE_SIZE__',
+                NODE_PARAMETERS_BASE,
+                BIG_NODES_SEVER,
+                NODE_PARAMETERS,
+                function(){
+                    console.log('********************calback tryrun*************************');
+                    //replace index of resource's in the parameters.json file
+                    tokens2value(
+                        NODE_PARAMETERS,
+                        index,
+                        NODE_PARAMETERS
+                    );
+                }
+            );
+      
+            exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
+                
+                if(err){
+                    console.log(err);
+                }
 
 
-    exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' +  NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        console.log(stdout);
-        });
+                console.log(stdout);
+
+
+            }).on('close',function(){
+                resolve();
+            });
+        }));
+    });
+
 }
 
 
@@ -160,40 +173,5 @@ checkResourceGroupExist(resourceGroup);
 
 
 
-//deployNodsServer('', 5 ,  'Standard_D4s_v3');
+//deployNodsServer('', 3 ,  'Standard_D4s_v3');
 
-// var i = 0;
-// var p = Promise.resolve();
-
-// var nods = [3,2,3];
-// nods.forEach(function(item, index, arr) {
-//     p.then(new Promise(function(resolve, reject) {
-
-
-
-//         //replace tokens
-//         //replace machine size in the parameters.json file
-//         replace(
-//             '__VIRTUAL_MACHINE_SIZE__',
-//             NODE_PARAMETERS_BASE,
-//             BIG_NODES_SEVER,
-//             NODE_PARAMETERS
-//         );
-
-//         //replace index of resource's in the parameters.json file
-//         replaceToSpecificValue(
-//             NODE_PARAMETERS,
-//             index,
-//             NODE_PARAMETERS
-//         );
-
-
-        
-//         exec('az group exists -n ' +  'name', function(err, stdout, stderr) {
-//             console.log(stdout);
-//         }).on('close',function(){
-//             console.log('index = ' + index);
-//             resolve();
-//         });
-//     }));
-// });

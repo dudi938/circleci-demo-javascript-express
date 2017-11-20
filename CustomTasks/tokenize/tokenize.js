@@ -60,7 +60,7 @@ module.exports.tokensReplacer = function(disFilePath, sourceFilePath, disFilePat
 //parm : distFilePath - this file have the key's to replace
 //parm : newValue - new value to put for any token
 //parm : disFilePathNew - path to the new file with the new values
-module.exports.replaceToSpecificValue = function(disFilePath, newValue, disFilePathNew){
+module.exports.tokens2value = function(disFilePath, newValue, disFilePathNew){
 
     console.log('disFilePath = ' + disFilePath);
     console.log('disFilePathNew = ' + disFilePathNew);
@@ -84,7 +84,7 @@ module.exports.replaceToSpecificValue = function(disFilePath, newValue, disFileP
 //parm : distFilePath - this file have the key's to replace
 //parm : newValue - new value to put for any token
 //parm : disFilePathNew - path to the new file with the new values
-module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFilePathNew){
+module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFilePathNew, callback){
     
         console.log('valueToReplace = ' + valueToReplace);
         console.log('disFilePath = ' + disFilePath);
@@ -105,8 +105,11 @@ module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFile
             var targetTemplate = template.replace(valueToReplace, newValue);
             console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
             fs.writeFileSync(disFilePathNew, targetTemplate);              
-        
+            callback();
         }));
+
+        
+
     }
         
 
