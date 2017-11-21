@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "CENTRALUS"
+            "value": "CANADAEAST"
         },
         "virtualMachineName": {
             "value": "VM-Grid"
