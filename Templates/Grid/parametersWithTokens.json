@@ -6,7 +6,7 @@
             "value": "__AZURE_REGION__"
         },
         "virtualMachineName": {
-            "value": "VM-Grid__GRID_INDEX__"
+            "value": "VM-Grid"
         },
         "virtualMachineSize": {
             "value": "Standard_D4s_v3"
@@ -15,13 +15,13 @@
             "value": "yossis"
         },
         "virtualNetworkName": {
-            "value": "vnet-Grid__GRID_INDEX__"
+            "value": "vnet-Grid_"
         },
         "networkInterfaceName": {
-            "value": "NIN-Grid__GRID_INDEX__"
+            "value": "NIN-Grid"
         },
         "networkSecurityGroupName": {
-            "value": "nsg-Grid__GRID_INDEX__"
+            "value": "nsg-Grid"
         },
         "adminPassword": {
             "value": "Qaz123456789"
@@ -36,7 +36,7 @@
             "value": "10.0.1.0/24"
         },
         "publicIpAddressName": {
-            "value": "pip-Grid__GRID_INDEX__"
+            "value": "pip-Grid"
         },
         "publicIpAddressType": {
             "value": "Dynamic"
