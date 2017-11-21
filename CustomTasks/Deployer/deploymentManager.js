@@ -1,4 +1,5 @@
 var fs = require('fs');
+
 const { exec } = require('child_process');
 var tokenReplacer = require('../tokenize/tokenize.js').tokensReplacer;
 var tokens2value = require('../tokenize/tokenize.js').tokens2value;
@@ -42,6 +43,7 @@ const BIG_NODES_SEVER = "Standard_D4s_v3";
 const SMALL_NODES_SEVER = "Standard_F2s";
 
 //ARM TEMPLATE FOR GRID'S
+const GRID_TEMPLATE_BASE    = "./Templates/Grid/templateWithTokens.json";
 const GRID_TEMPLATE         = "./Templates/Grid/template.json";
 const GRID_PARAMETERS_BASE  = "./Templates/Grid/parametersWithTokens.json";
 const GRID_PARAMETERS       = "./Templates/Grid/parameters.json";
@@ -224,19 +226,25 @@ function deployNodsServer(browser, vmQuantity, machineType, callback){
     }
 }
 
-
+//
 //deploy grids vm's
-function deployGridsServers(){  
+function deployGridsServers(xmlTestFile, calback){  
 
     replace('__AZURE_REGION__', GRID_PARAMETERS_BASE,  AZURE_REGION, GRID_PARAMETERS, function(){
-        //deploy grid vm
-        exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS , (err, stdout, stderr) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            console.log(stdout);
-            });  
+        replace('__START_UP_SCRIPT_PARAMETERS__', GRID_TEMPLATE_BASE,  xmlTestFile, GRID_TEMPLATE, function(){
+            //deploy grid vm
+            exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS , (err, stdout, stderr) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                console.log(stdout);
+                }).on('close', function(){
+                    if(typeof(calback) == 'function'){
+                        calback();
+                    }
+                }); 
+        }); 
     });
 }
 
@@ -295,36 +303,49 @@ function main(){
     switch(action){
 
         case ACTION_NODS_DEPLOY:       
-                    calcServersByNods(function(){
-                        //deploy chrome nod's server 
-                        deployNodsServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SEVER, function(){
-                            deployNodsServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SEVER, function(){
-                                deployNodsServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SEVER, function(){
-                                    deployNodsServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SEVER, function(){
+            calcServersByNods(function(){
+                //deploy chrome nod's server 
+                deployNodsServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SEVER, function(){
+                    deployNodsServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SEVER, function(){
+                        deployNodsServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SEVER, function(){
+                            deployNodsServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SEVER, function(){
 
-                                        console.log('Deploy nods servers DONE !!!');
+                                console.log('Deploy nods servers DONE !!!');
 
 
 
-                                        //add hosts information to the test.xml file
-                                        replace('__CHROME_HOSTS__', TEST_XML_BASE, chromeXMLNodsHostsLines, TEST_XML, function(){
-                                            replace('__FIREFOX_HOSTS__', TEST_XML, firefoxXMLNodsHostsLines, TEST_XML, function(){
-                                                var testXMLContent = fs.readFileSync(TEST_XML);
-                                                console.log('**** Finish deploy all nodes ****');
-                                                console.log('**** Servers mapping date exist in ' + TEST_XML + ' file.');
-                                                console.log('Content of test.xml file is :  ' + testXMLContent);
-                                            })
-                                        })
+                                //add hosts information to the test.xml file
+                                replace('__CHROME_HOSTS__', TEST_XML_BASE, chromeXMLNodsHostsLines, TEST_XML, function(){
+                                    replace('__FIREFOX_HOSTS__', TEST_XML, firefoxXMLNodsHostsLines, TEST_XML, function(){
+                                        var testXMLContent = fs.readFileSync(TEST_XML);
+                                        console.log('**** Finish deploy all nodes ****');
+                                        console.log('**** Servers mapping date exist in ' + TEST_XML + ' file.');
+                                        console.log('Content of test.xml file is :  ' + testXMLContent);
+                                    })
+                                })
 
-                                    });                       
-                                });   
-                            });                                                 
-                        });            
-                });
+                            });                       
+                        });   
+                    });                                                 
+                });            
+        });
         break;
 
         case ACTION_GRID_DEPLOY:
-            deployGridsServers();
+        fs.readFile(TEST_XML,{encoding: "utf8"},function(err, content){
+
+            if(err){
+                console.log(er);
+            }
+
+            var xml = JSON.stringify(content);
+
+            console.dir(xml);
+            deployGridsServers(xml, function(){
+                console.log('Deploy grids servers DONE !!!');
+            });
+        });
+
         break;
 
         case ACTION_CREATE_RESOURCE_GROUP:
@@ -347,3 +368,13 @@ function main(){
     
 // main function.
 main();
+
+
+// var p = TEST_XML;
+// fs.readFile(TEST_XML, {encoding: "utf8"}, function(err, data){
+//     var xml = data;
+//     var str = JSON.stringify(data);
+//     console.log(str);
+//     fs.writeFileSync('./tryxml2js.json', str);
+    
+// })

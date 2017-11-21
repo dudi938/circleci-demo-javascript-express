@@ -49,7 +49,7 @@
         "resourceGroupName": "[resourceGroup().name]",
         "vnetId": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-        "startUpScriptParams": " <qa:browsers xmlns:qa=\"urn:config.gridrouter.qatools.ru\">\r\n <browser name=\"firefox\" defaultVersion=\"48\">\r\n   <version number=\"48\">\r\n     <region name=\"us-west\">\r\n       <host name=\"52.235.47.53\" port=\"4444\" count=\"1\"/>\r\n     </region>\r\n   </version> \r\n </browser>\r\n <browser name=\"chrome\" defaultVersion=\"53\">\r\n   <version number=\"53\">\r\n     <region name=\"us-west\">\r\n        <host name=\"52.235.47.134\" port=\"4444\" count=\"1\"/>\r\n     </region>\r\n   </version>\r\n </browser>\r\n </qa:browsers>"
+        "startUpScriptParams": __START_UP_SCRIPT_PARAMETERS__
     },
     "resources": [
         {
