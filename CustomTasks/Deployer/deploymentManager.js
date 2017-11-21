@@ -251,21 +251,19 @@ function main(){
     switch(action){
 
         case ACTION_NODS_DEPLOY:    
-        console.log('state = ' + action);    
-                calcServersByNods(function(){
-                    //deploy chrome nod's server 
-                    deployNodsServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SEVER, function(){
-                        deployNodsServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SEVER, function(){
-                            deployNodsServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SEVER, function(){
-                                deployNodsServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SEVER, function(){
-                                    console.log('Deploy nods servers DONE !!!');
-                                 });                       
-                             });   
-                        });                                                 
-                    });            
-              });
-
-
+            console.log('state = ' + action);    
+                    calcServersByNods(function(){
+                        //deploy chrome nod's server 
+                        deployNodsServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SEVER, function(){
+                            deployNodsServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SEVER, function(){
+                                deployNodsServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SEVER, function(){
+                                    deployNodsServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SEVER, function(){
+                                        console.log('Deploy nods servers DONE !!!');
+                                    });                       
+                                });   
+                            });                                                 
+                        });            
+                });
         break;
 
         case ACTION_GRID_DEPLOY:
@@ -287,7 +285,6 @@ function main(){
                     });
                 }
             });
-
         break;
     }
 }

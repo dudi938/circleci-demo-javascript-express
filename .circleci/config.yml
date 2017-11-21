@@ -33,10 +33,10 @@ jobs:
           command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} ACTION_CREATE_RESOURCE_GROUP 3 12 17 0 eastus
       - run:
           name: Deploy nods
-          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} ACTION_NODS_DEPLOY 3 12 17 0 eastus
+          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} NODS_DEPLOY 3 12 17 0 eastus
       - run:
           name: Deploy grids
-          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} ACTION_GRID_DEPLOY 3 12 17 0 eastus
+          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} GRID_DEPLOY 3 12 17 0 eastus
       - run:
           name: send build notification
           command: ./CustomTasks/slack_integration/slack_messanger ${SLACK_WEBHOOK_URI} dsd efesf efesfe "New vm was deployed." desktop_computer
