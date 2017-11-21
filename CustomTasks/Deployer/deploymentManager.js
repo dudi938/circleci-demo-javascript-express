@@ -249,7 +249,8 @@ function calcServersByNods(calback){
 function main(){
     switch(action){
 
-        case ACTION_NODS_DEPLOY:        
+        case ACTION_NODS_DEPLOY:    
+        console.log('state = ' + action);    
                 calcServersByNods(function(){
                     //deploy chrome nod's server 
                     deployNodsServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SEVER, function(){
@@ -267,6 +268,7 @@ function main(){
         break;
 
         case ACTION_GRID_DEPLOY:
+            console.log('state = ' + action); 
             deployGridsServers();
         break;
 
