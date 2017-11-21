@@ -77,11 +77,11 @@ function getNextNodsQuanity(browser){
 
     }else if(browser === FIREFOX_BROWSER){
         
-        if((chromeNodsQuantity - firefoxNodesDeployed) > BIG_MACHINE_MAX_NODS){
+        if((firefoxNodsQuantity - firefoxNodesDeployed) > BIG_MACHINE_MAX_NODS){
             firefoxNodesDeployed += BIG_MACHINE_MAX_NODS;
             return firefoxNodesDeployed;
         }else{
-            firefoxNodesDeployed = chromeNodsQuantity - firefoxNodesDeployed;
+            firefoxNodesDeployed = firefoxNodsQuantity - firefoxNodesDeployed;
             return firefoxNodesDeployed;
         }
     }
