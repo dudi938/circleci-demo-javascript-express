@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "CANADAEAST"
+            "value": "WESTUS2"
         },
         "virtualMachineName": {
             "value": "VM-Grid__GRID_INDEX__"
