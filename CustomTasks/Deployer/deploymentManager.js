@@ -368,13 +368,3 @@ function main(){
     
 // main function.
 main();
-
-
-// var p = TEST_XML;
-// fs.readFile(TEST_XML, {encoding: "utf8"}, function(err, data){
-//     var xml = data;
-//     var str = JSON.stringify(data);
-//     console.log(str);
-//     fs.writeFileSync('./tryxml2js.json', str);
-    
-// })
