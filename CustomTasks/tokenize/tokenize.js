@@ -84,8 +84,10 @@ module.exports.tokens2value = function(disFilePath, newValue, disFilePathNew, ca
 //parm : distFilePath - this file have the key's to replace
 //parm : newValue - new value to put for any token
 //parm : disFilePathNew - path to the new file with the new values
-module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFilePathNew, callback){
+module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFilePathNew  ,  callback){
     
+
+    if(path.extname(disFilePath) == '.json'){
         console.log('valueToReplace = ' + valueToReplace);
         console.log('disFilePath = ' + disFilePath);
         console.log('newValue = ' + newValue);
@@ -93,8 +95,8 @@ module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFile
     
         //read destination to replace file 
         JSON.stringify(fs.readFile(disFilePath,{encoding: "utf8"}, function(err, content){
-            template = content;
 
+            template = content;
 
             if(err){
                 console.log(err);
@@ -107,10 +109,30 @@ module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFile
             fs.writeFileSync(disFilePathNew, targetTemplate);              
             callback();
         }));
+    }else if(path.extname(disFilePath) == '.xml'){
+        console.log('valueToReplace = ' + valueToReplace);
+        console.log('disFilePath = ' + disFilePath);
+        console.log('newValue = ' + newValue);
+        console.log('disFilePathNew = ' + disFilePathNew);
+    
+        //read destination to replace file 
+        fs.readFile(disFilePath,{encoding: "utf8"}, function(err, content){
 
-        
+            template = content;
 
+            if(err){
+                console.log(err);
+                return;
+            }
+
+            //replace all tokens
+            var targetTemplate = template.replace(valueToReplace, newValue);
+            //console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
+            fs.writeFileSync(disFilePathNew, targetTemplate);              
+            callback();
+        });
     }
+}
         
 
 

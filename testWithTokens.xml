@@ -2,14 +2,14 @@
  <browser name="firefox" defaultVersion="48">
    <version number="48">
      <region name="us-west">
-       <host name="52.235.47.53" port="4444" count="1"/>
+       __FIREFOX_HOSTS__
      </region>
    </version> 
  </browser>
  <browser name="chrome" defaultVersion="53">
    <version number="53">
      <region name="us-west">
-        <host name="52.235.47.134" port="4444" count="1"/>
+        __CHROME_HOSTS__
      </region>
    </version>
  </browser>

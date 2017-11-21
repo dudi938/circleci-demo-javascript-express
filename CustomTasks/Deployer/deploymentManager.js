@@ -1,4 +1,4 @@
-
+var fs = require('fs');
 const { exec } = require('child_process');
 var tokenReplacer = require('../tokenize/tokenize.js').tokensReplacer;
 var tokens2value = require('../tokenize/tokenize.js').tokens2value;
@@ -24,6 +24,10 @@ var smallChromeServer=0;
 var bigFirefoxServer=0;
 var smallFirefoxServer=0;
 
+//xml host lines for the grid
+var chromeXMLNodsHostsLines = '';
+var firefoxXMLNodsHostsLines = '';
+var edgeXMLNodsHostsLines = '';
 
 
 //Noeds Deployed Quantity
@@ -46,6 +50,11 @@ const NODE_TEMPLATE_BASE    = "./Templates/nods/templateWithTokens.json";
 const NODE_TEMPLATE         = "./Templates/nods/template.json";
 const NODE_PARAMETERS_BASE  = "./Templates/nods/parametersWithTokens.json";
 const NODE_PARAMETERS       = "./Templates/nods/parameters.json";
+
+//XML test  file
+const TEST_XML_BASE  = "./testWithTokens.xml";
+const TEST_XML  = "./test.xml";
+
 //MACHINE_SIZE_LIMITS
 const SMALL_MACHINE_MAX_NODS = 4;
 const BIG_MACHINE_MAX_NODS = 10;
@@ -89,6 +98,47 @@ function getNextNodsQuanity(browser){
     }
 }
 
+
+
+function getAllIPbyResourceGroup(resourceGroup, calbback){
+    var ipArr;
+    exec('az vm list-ip-addresses  -g ' + resourceGroup  , (err, stdout, stderr) => {
+        if(err){
+            console.log(err);
+            return;
+        }
+        ipArr = stdout;
+        //console.log(ipArr);
+    }).on('close', function(){
+        if(typeof(calbback) == 'function'){
+            calbback();
+        }
+    });
+}
+
+function getVmIp(rg,vmName, calback){
+    var data;
+    var myIP;
+    console.log('rg = ' + rg );
+    console.log('vmName = ' + vmName);
+
+    exec('az vm list-ip-addresses -g ' + rg  + ' -n  ' + vmName , (err, stdout, stderr) => {
+        if(err){
+            console.log(err);
+            return;
+        }
+        data = stdout;
+        console.log('data = ' + data );
+    }).on('close', function(){
+        console.log(JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0]);
+        myIP = JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0].ipAddress;
+        if(typeof(calback) == 'function'){
+            calback(myIP);
+        }
+    });
+};
+
+
 function deployNodsServer(browser, vmQuantity, machineType, callback){
 
     if(vmQuantity === 0){
@@ -111,6 +161,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback){
                     }
 
                     //replace index of resource's in the parameters.json file
+                    var currentVmName = 'VM-Node' + '-' + browser.slice(0,3) + serverIndex;
                     tokens2value(NODE_PARAMETERS, '-' + browser.slice(0,3) + serverIndex, NODE_PARAMETERS, function(){
 
 
@@ -139,13 +190,30 @@ function deployNodsServer(browser, vmQuantity, machineType, callback){
                             }).on('close',function(){       
                                 
                                 if(browser == CHROME_BROWSER){
+                                    
                                     chromeServersDeployed++;
                                 }else if(browser == FIREFOX_BROWSER){
                                     firefoxServersDeployed++;
                                 }
                                 
+                                var ip;
+                                getVmIp(resourceGroup, currentVmName, function(IP){
 
-                                deployNodsServer(browser, vmQuantity - 1, machineType, callback);
+                                    console.log('IP = ' + IP );
+
+                                    if(browser ==CHROME_BROWSER){
+
+                                        chromeXMLNodsHostsLines += '<host name="' + IP +  '" port="4444" count="' + currentNodsQantity +'"/>';
+                                        console.log('chromeXMLNodsHostsLines = '  + chromeXMLNodsHostsLines);
+                                    }else if (browser == FIREFOX_BROWSER){
+                                        firefoxXMLNodsHostsLines += '<host name="' + IP +  '" port="4444" count="' + currentNodsQantity +'"/>';
+                                        console.log('chromeXMLNodsHostsLines = '  + firefoxXMLNodsHostsLines);
+                                    }
+
+
+                                    deployNodsServer(browser, vmQuantity - 1, machineType, callback);
+                                });
+                                
 
                             });
                         });
@@ -233,7 +301,21 @@ function main(){
                             deployNodsServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SEVER, function(){
                                 deployNodsServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SEVER, function(){
                                     deployNodsServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SEVER, function(){
+
                                         console.log('Deploy nods servers DONE !!!');
+
+
+
+                                        //add hosts information to the test.xml file
+                                        replace('__CHROME_HOSTS__', TEST_XML_BASE, chromeXMLNodsHostsLines, TEST_XML, function(){
+                                            replace('__FIREFOX_HOSTS__', TEST_XML, firefoxXMLNodsHostsLines, TEST_XML, function(){
+                                                var testXMLContent = fs.readFileSync(TEST_XML);
+                                                console.log('**** Finish deploy all nodes ****');
+                                                console.log('**** Servers mapping date exist in ' + TEST_XML + ' file.');
+                                                console.log('Content of test.xml file is :  ' + testXMLContent);
+                                            })
+                                        })
+
                                     });                       
                                 });   
                             });                                                 
@@ -263,5 +345,5 @@ function main(){
     }
 }
     
-
+// main function.
 main();
