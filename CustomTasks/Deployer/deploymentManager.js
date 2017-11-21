@@ -247,6 +247,7 @@ function calcServersByNods(calback){
 //deployNodsServer(CHROME_BROWSER, 3 ,  BIG_NODES_SEVER);
 
 function main(){
+    console.log('action = ' + action);
     switch(action){
 
         case ACTION_NODS_DEPLOY:    
