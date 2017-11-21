@@ -250,8 +250,7 @@ function main(){
     console.log('action = ' + action);
     switch(action){
 
-        case ACTION_NODS_DEPLOY:    
-            console.log('state = ' + action);    
+        case ACTION_NODS_DEPLOY:       
                     calcServersByNods(function(){
                         //deploy chrome nod's server 
                         deployNodsServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SEVER, function(){
@@ -267,7 +266,6 @@ function main(){
         break;
 
         case ACTION_GRID_DEPLOY:
-            console.log('state = ' + action); 
             deployGridsServers();
         break;
 
