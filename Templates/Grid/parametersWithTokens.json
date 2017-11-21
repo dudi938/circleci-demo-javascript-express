@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "WESTUS2"
+            "value": "__AZURE_REGION__"
         },
         "virtualMachineName": {
             "value": "VM-Grid__GRID_INDEX__"

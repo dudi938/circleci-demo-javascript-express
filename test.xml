@@ -1,0 +1,18 @@
+ <qa:browsers xmlns:qa="urn:config.gridrouter.qatools.ru">
+ <browser name="firefox" defaultVersion="48">
+   <version number="48">
+     <region name="us-west">
+       <host name="IP_Address_Of_Machine1" port="4444" count="5"/>
+       <host name="IP_Address_Of_Machine2 " port="4444" count="5"/>
+     </region>
+   </version> 
+ </browser>
+ <browser name="chrome" defaultVersion="53">
+   <version number="53">
+     <region name="us-west">
+       <host name="IP_Address_Of_Machine3" port="4444" count="10"/>
+       <host name="IP_Address_Of_Machine4" port="4444" count="10"/>
+     </region>
+   </version>
+ </browser>
+ </qa:browsers>

@@ -58,6 +58,8 @@ const  ACTION_GRID_DEPLOY = 'GRID_DEPLOY';
 const  ACTION_NODS_DEPLOY = 'NODS_DEPLOY';
 const  ACTION_CREATE_RESOURCE_GROUP = 'ACTION_CREATE_RESOURCE_GROUP';
 
+//azure region
+const AZURE_REGION = 'WESTUS2';
 
 
 
@@ -97,102 +99,78 @@ function deployNodsServer(browser, vmQuantity, machineType, callback){
 
         //replace tokens
         //replace machine size in the parameters.json file
-        replace('__VIRTUAL_MACHINE_SIZE__', NODE_PARAMETERS_BASE,  machineType, NODE_PARAMETERS, function(){
 
-                var serverIndex;
-                if(browser == CHROME_BROWSER){
-                    serverIndex = chromeServersDeployed;
-                }else if(browser == FIREFOX_BROWSER){
-                    serverIndex = firefoxServersDeployed;
-                }
+        replace('__AZURE_REGION__', NODE_PARAMETERS_BASE,  AZURE_REGION, NODE_PARAMETERS, function(){
+            replace('__VIRTUAL_MACHINE_SIZE__', NODE_PARAMETERS_BASE,  machineType, NODE_PARAMETERS, function(){
 
-                //replace index of resource's in the parameters.json file
-                tokens2value(NODE_PARAMETERS, '-' + browser.slice(0,3) + serverIndex, NODE_PARAMETERS, function(){
-
-
-                    //calc memory size
-                    var memorySize;
-                    if(machineType === BIG_NODES_SEVER){
-                        memorySize = 15;
-                    }else{
-                        memorySize = 7;
+                    var serverIndex;
+                    if(browser == CHROME_BROWSER){
+                        serverIndex = chromeServersDeployed;
+                    }else if(browser == FIREFOX_BROWSER){
+                        serverIndex = firefoxServersDeployed;
                     }
 
+                    //replace index of resource's in the parameters.json file
+                    tokens2value(NODE_PARAMETERS, '-' + browser.slice(0,3) + serverIndex, NODE_PARAMETERS, function(){
 
-                    var currentNodsQantity = getNextNodsQuanity(browser);
-                    console.log('***currentNodsQantity = '  + currentNodsQantity + '***');
 
-                    replace('__START_UP_SCRIPT_PARAMETERS__', NODE_TEMPLATE_BASE, browser + '  ' + currentNodsQantity + '  ' + memorySize  , NODE_TEMPLATE, function(){
+                        //calc memory size
+                        var memorySize;
+                        if(machineType === BIG_NODES_SEVER){
+                            memorySize = 15;
+                        }else{
+                            memorySize = 7;
+                        }
 
-                        exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
-                            
-                            if(err){
-                                console.log(err);
-                            }
-            
-            
-                            console.log(stdout);
-                        }).on('close',function(){       
-                            
-                            if(browser == CHROME_BROWSER){
-                                chromeServersDeployed++;
-                            }else if(browser == FIREFOX_BROWSER){
-                                firefoxServersDeployed++;
-                            }
-                            
 
-                            deployNodsServer(browser, vmQuantity - 1, machineType, callback);
+                        var currentNodsQantity = getNextNodsQuanity(browser);
+                        console.log('***currentNodsQantity = '  + currentNodsQantity + '***');
 
+                        replace('__START_UP_SCRIPT_PARAMETERS__', NODE_TEMPLATE_BASE, browser + '  ' + currentNodsQantity + '  ' + memorySize  , NODE_TEMPLATE, function(){
+
+                            exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS , (err, stdout, stderr) => {
+                                
+                                if(err){
+                                    console.log(err);
+                                }
+                
+                
+                                console.log(stdout);
+                            }).on('close',function(){       
+                                
+                                if(browser == CHROME_BROWSER){
+                                    chromeServersDeployed++;
+                                }else if(browser == FIREFOX_BROWSER){
+                                    firefoxServersDeployed++;
+                                }
+                                
+
+                                deployNodsServer(browser, vmQuantity - 1, machineType, callback);
+
+                            });
                         });
-                    });
 
+                });
             });
-        });
+    });
     }
 }
 
 
 //deploy grids vm's
-function deployGridsServers(){ 
-        //run azure cli command to check if the resource group exist
-        // exec('az group exists -n ' +  name, (err, stdout, stderr) => {
-        //     if (err) {
-        //       console.error(err);
-        //       return;
-        //     }
-        //     console.log(stdout);
-        //     resourceGroupExist =  stdout;
-        //     console.log('ResourceGroup exist =  ' + resourceGroupExist );
-    
-    
-        //     if(resourceGroupExist === "true"){
-        //         console.log('THE RESOURCE GROUP STILL EXIST.\r\n STOPING THE DEPLOYMENT!!!');
-        //         return;
-        //     }else{
-    
-        //         console.log('THE RESOURCE GROUP STILL NOT EXIST.\r\n STARTING THE DEPLOYMENT!!!');
-    
-               //run azure cli command to create a resource group
-                // exec('az group create --name ' + name +  ' --location ' + location , (err, stdout, stderr) => {
-                //     if (err) {
-                //       console.error(err);
-                //       return;
-                //     }
-                //     console.log(stdout);
-    
-                    //deploy grid vm
-                    exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS , (err, stdout, stderr) => {
-                        if (err) {
-                            console.error(err);
-                            return;
-                        }
-                        console.log(stdout);
-                        });
+function deployGridsServers(){  
 
-               //     });
-                
-         // });      
-    }
+    replace('__AZURE_REGION__', GRID_PARAMETERS_BASE,  AZURE_REGION, GRID_PARAMETERS, function(){
+        //deploy grid vm
+        exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS , (err, stdout, stderr) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            console.log(stdout);
+            });  
+    });
+}
 
 //check if the resource group still exist
 function checkResourceGroupExist(name, calback){
@@ -244,8 +222,6 @@ function calcServersByNods(calback){
     calback();
 }
 
-//deployNodsServer(CHROME_BROWSER, 3 ,  BIG_NODES_SEVER);
-
 function main(){
     console.log('action = ' + action);
     switch(action){
@@ -288,57 +264,4 @@ function main(){
 }
     
 
-
-// // //test(CHROME_BROWSER);
-// checkResourceGroupExist(resourceGroup, function(){
-//     // if(action === ACTION_GRID_DEPLOY){
-
-//     // }else if(action === ACTION_NODS_DEPLOY){
-//     //     deployNodsServer()
-//     // }
-
-// });
-
-
 main();
-
-
-
-
-// <qa:browsers xmlns:qa="urn:config.gridrouter.qatools.ru">
-// <browser name="firefox" defaultVersion="48">
-//   <version number="48">
-//     <region name="us-west">
-//       <host name="IP_Address_Of_Machine1" port="4444" count="5"/>
-//       <host name="IP_Address_Of_Machine2 " port="4444" count="5"/>
-//     </region>
-//   </version> 
-// </browser>
-// <browser name="chrome" defaultVersion="53">
-//   <version number="53">
-//     <region name="us-west">
-//       <host name="IP_Address_Of_Machine3" port="4444" count="10"/>
-//       <host name="IP_Address_Of_Machine4" port="4444" count="10"/>
-//     </region>
-//   </version>
-// </browser>
-// </qa:browsers>
-
-// var serversMapping = new object();
-// serversMapping[0].browser.name = 'firefox';
-// serversMapping[0].browser.defaultVersion = '48';
-// serversMapping[0].browser.version.number = '48';
-// serversMapping[0].browser.version.region.name = 'us-west';
-// serversMapping[0].browser.version.region.host.name = 'IP_Address_Of_Machine1';
-// serversMapping[0].browser.version.region.host.port = 'port';
-// serversMapping[0].browser.version.region.host.count = '5';
-
-
-// serversMapping[1].browser.name = 'chrome';
-// serversMapping[1].browser.defaultVersion = '53';
-// serversMapping[1].browser.version.number = '53';
-// serversMapping[1].browser.version.region.name = 'us-west';
-// serversMapping[1].browser.version.region.host.name = 'IP_Address_Of_Machine1';
-// serversMapping[1].browser.version.region.host.port = 'port';
-// serversMapping[1].browser.version.region.host.count = '2';
-
