@@ -79,17 +79,19 @@ const AZURE_REGION = 'WESTUS2';
 var resourceGroupExist = new String("NULL");;
 
 function uploadFileToBlob(file, container, connectionString, callback){
-    console.log('***Start upload test.xml file.......***');
+    console.log('***Start upload test.xml file.......');
     var fileName = path.basename(file);
-
+var debug;
     exec('az storage blob upload -f ' + file + ' -c ' + container + ' -n ' + fileName  + ' --connection-string '  + connectionString, (err, stdout, stderr) => {
         if(err){
             console.log(err);
         }
-        console.log(stdout);
+debug = stdout;
+        console.log(debug);
 
     }).on('close', function(){
         if(typeof(callback) == 'function'){
+            console.log('debug = ' + debug);
             callback()
         }
     });
