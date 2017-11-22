@@ -244,10 +244,9 @@ function deployNodsServer(browser, vmQuantity, machineType, callback){
 
 //
 //deploy grids vm's
-function deployGridsServers(xmlTestFile, calback){  
+function deployGridsServers(calback){  
 
     replace('__AZURE_REGION__', GRID_PARAMETERS_BASE,  AZURE_REGION, GRID_PARAMETERS, function(){
-        replace('__START_UP_SCRIPT_PARAMETERS__', GRID_TEMPLATE_BASE,  xmlTestFile, GRID_TEMPLATE, function(){
             //deploy grid vm
             exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS , (err, stdout, stderr) => {
                 if (err) {
@@ -260,7 +259,6 @@ function deployGridsServers(xmlTestFile, calback){
                         calback();
                     }
                 }); 
-        }); 
     });
 }
 
@@ -353,7 +351,7 @@ function main(){
         break;
 
         case ACTION_GRID_DEPLOY:
-            deployGridsServers(xml, function(){
+            deployGridsServers(function(){
                 console.log('Deploy grids servers DONE !!!');
             });
         break;
