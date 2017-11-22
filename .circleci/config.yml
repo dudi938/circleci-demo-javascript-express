@@ -15,10 +15,13 @@ jobs:
           command: sudo npm install -g n
       - run:
           name: run npm install 
-          command:  sudo n stable
+          command: sudo npm install -g n
       - run:
           name: run npm install 
-          command: node -v
+          command:  sudo n stable
+      - run:
+          name: generate ssh key 
+          command: ssh-keygen -t rsa -b 4096
       - run:
           name: set script excecutable
           command: sudo chmod +x ./install_powershell_core ./CustomTasks/slack_integration/slack_messanger
