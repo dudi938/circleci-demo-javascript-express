@@ -79,6 +79,7 @@ const AZURE_REGION = 'WESTUS2';
 var resourceGroupExist = new String("NULL");;
 
 function uploadFileToBlob(file, container, connectionString, callback){
+    console.log('***Start upload test.xml file.......***');
     var fileName = path.basename(file);
 
     exec('storage blob upload -f ' + file + ' -c ' + container + ' -n ' + fileName  + ' --connection-string '  + connectionString, (err, stdout, stderr) => {
@@ -332,6 +333,7 @@ function main(){
                                 replace('__CHROME_HOSTS__', TEST_XML_BASE, chromeXMLNodsHostsLines, TEST_XML, function(){
                                     replace('__FIREFOX_HOSTS__', TEST_XML, firefoxXMLNodsHostsLines, TEST_XML, function(){
                                             
+                                            console.log('/***/*/*/*/*/*/*/**/*/*/*/*/* !!!');
                                             //publish test.xml file
                                             uploadFileToBlob(TEST_XML, 'controller',controllerBlobsContainerCS, function(){
                                                 var testXMLContent = fs.readFileSync(TEST_XML);
