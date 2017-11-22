@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require('path');
 
 const { exec } = require('child_process');
 var tokenReplacer = require('../tokenize/tokenize.js').tokensReplacer;
@@ -15,9 +16,10 @@ var firefoxNodsQuantity = inputArgs[3];
 var chromeNodsQuantity = inputArgs[4]; 
 var edgeNodsQuantity = inputArgs[5]; 
 var location = inputArgs[6];
-var app_id = inputArgs[7];
-var app_key = inputArgs[8];
-var tenant = inputArgs[9];
+var controllerBlobsContainerCS = inputArgs[7];
+var app_id = inputArgs[8];
+var app_key = inputArgs[9];
+var tenant = inputArgs[10];
 
 //quantity of each nods server type 
 var bigChromeServer=0;
@@ -74,8 +76,24 @@ const AZURE_REGION = 'WESTUS2';
 
 
 
-
 var resourceGroupExist = new String("NULL");;
+
+function uploadFIleToBlob(file, container, connectionString, callback){
+    var fileName = path.basename(file);
+
+    exec('storage blob upload -f ' + file + ' -c ' + container + ' -n ' + fileName  + ' --connection-string '  + connectionString, (err, stdout, stderr) => {
+        if(err){
+            console.log(err);
+        }
+        console.log(stdout);
+
+    }).on('close', function(){
+        if(typeof(callback) == 'function'){
+            callback()
+        }
+    });
+}
+
 
 function getNextNodsQuanity(browser){
     if(browser === CHROME_BROWSER){
@@ -99,8 +117,6 @@ function getNextNodsQuanity(browser){
         }
     }
 }
-
-
 
 function getAllIPbyResourceGroup(resourceGroup, calbback){
     var ipArr;
@@ -317,10 +333,15 @@ function main(){
                                 //add hosts information to the test.xml file
                                 replace('__CHROME_HOSTS__', TEST_XML_BASE, chromeXMLNodsHostsLines, TEST_XML, function(){
                                     replace('__FIREFOX_HOSTS__', TEST_XML, firefoxXMLNodsHostsLines, TEST_XML, function(){
-                                        var testXMLContent = fs.readFileSync(TEST_XML);
-                                        console.log('**** Finish deploy all nodes ****');
-                                        console.log('**** Servers mapping date exist in ' + TEST_XML + ' file.');
-                                        console.log('Content of test.xml file is :  ' + testXMLContent);
+                                            
+                                            //publish test.xml file
+                                            uploadFIleToBlob(TEST_XML, 'controller',controllerBlobsContainerCS, function(){
+                                                var testXMLContent = fs.readFileSync(TEST_XML);
+                                                console.log('**** Finish deploy all nodes ****');
+                                                console.log('**** Servers mapping date exist in ' + TEST_XML + ' file.');
+                                                console.log('Content of test.xml file is :  ' + testXMLContent);
+
+                                            });
                                     })
                                 })
 
@@ -332,20 +353,9 @@ function main(){
         break;
 
         case ACTION_GRID_DEPLOY:
-        fs.readFile(TEST_XML,{encoding: "utf8"},function(err, content){
-
-            if(err){
-                console.log(er);
-            }
-
-            var xml = JSON.stringify(content);
-
-            console.dir(xml);
             deployGridsServers(xml, function(){
                 console.log('Deploy grids servers DONE !!!');
             });
-        });
-
         break;
 
         case ACTION_CREATE_RESOURCE_GROUP:

@@ -30,13 +30,13 @@ jobs:
           command: az login --service-principal -u ${LOGIN_APP_ID} -p ${LOGIN_KEY} --tenant ${LOGIN_TENANT}
       - run:
           name: Create resource group
-          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} ACTION_CREATE_RESOURCE_GROUP 3 ${FIREFOX_NODS} ${CHROME_NODS} ${EDGE_NODS} ${AZURE_REGION}
+          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} ACTION_CREATE_RESOURCE_GROUP 3 ${FIREFOX_NODS} ${CHROME_NODS} ${EDGE_NODS} ${AZURE_REGION} ${CONTROLLER_BLOBS_CONTAINER_CS}
       - run:
           name: Deploy nods
-          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} NODS_DEPLOY 3 ${FIREFOX_NODS} ${CHROME_NODS} ${EDGE_NODS} ${AZURE_REGION}
+          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} NODS_DEPLOY 3 ${FIREFOX_NODS} ${CHROME_NODS} ${EDGE_NODS} ${AZURE_REGION}  ${CHROME_NODS} ${EDGE_NODS} ${AZURE_REGION} ${CONTROLLER_BLOBS_CONTAINER_CS}
       - run:
           name: Deploy grids
-          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} GRID_DEPLOY 3 ${FIREFOX_NODS} ${CHROME_NODS} ${EDGE_NODS} ${AZURE_REGION}
+          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} GRID_DEPLOY 3 ${FIREFOX_NODS} ${CHROME_NODS} ${EDGE_NODS} ${AZURE_REGION}  ${CHROME_NODS} ${EDGE_NODS} ${AZURE_REGION} ${CONTROLLER_BLOBS_CONTAINER_CS}
       - run:
           name: send build notification
           command: ./CustomTasks/slack_integration/slack_messanger ${SLACK_WEBHOOK_URI} dsd efesf efesfe "New vm was deployed." desktop_computer
