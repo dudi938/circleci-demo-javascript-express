@@ -78,7 +78,7 @@ const AZURE_REGION = 'WESTUS2';
 
 var resourceGroupExist = new String("NULL");;
 
-function uploadFIleToBlob(file, container, connectionString, callback){
+function uploadFileToBlob(file, container, connectionString, callback){
     var fileName = path.basename(file);
 
     exec('storage blob upload -f ' + file + ' -c ' + container + ' -n ' + fileName  + ' --connection-string '  + connectionString, (err, stdout, stderr) => {
@@ -333,15 +333,15 @@ function main(){
                                     replace('__FIREFOX_HOSTS__', TEST_XML, firefoxXMLNodsHostsLines, TEST_XML, function(){
                                             
                                             //publish test.xml file
-                                            uploadFIleToBlob(TEST_XML, 'controller',controllerBlobsContainerCS, function(){
+                                            uploadFileToBlob(TEST_XML, 'controller',controllerBlobsContainerCS, function(){
                                                 var testXMLContent = fs.readFileSync(TEST_XML);
                                                 console.log('**** Finish deploy all nodes ****');
                                                 console.log('**** Servers mapping date exist in ' + TEST_XML + ' file.');
                                                 console.log('Content of test.xml file is :  ' + testXMLContent);
 
                                             });
-                                    })
-                                })
+                                    });
+                                });
 
                             });                       
                         });   
