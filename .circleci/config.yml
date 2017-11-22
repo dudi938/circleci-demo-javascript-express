@@ -13,7 +13,7 @@ jobs:
       - run:
           name: generate ssh key 
           command: ssh-keygen -b 2048 -t rsa -f /sshkey1 -q -N ""
-       - run:
+      - run:
           name: check if exist ssh key
           command: ls -la
       - run:
