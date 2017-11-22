@@ -11,6 +11,9 @@ jobs:
           name: run npm install 
           command: sudo npm cache clean -f
       - run:
+          name: generate ssh key 
+          command: ssh-keygen -b 2048 -t rsa -f /tmp/sshkey -q -N ""
+      - run:
           name: run npm install 
           command: sudo npm install -g n
       - run:
@@ -19,9 +22,6 @@ jobs:
       - run:
           name: run npm install 
           command:  sudo n stable
-      - run:
-          name: generate ssh key 
-          command: ssh-keygen -t rsa -b 4096
       - run:
           name: set script excecutable
           command: sudo chmod +x ./install_powershell_core ./CustomTasks/slack_integration/slack_messanger
