@@ -12,10 +12,10 @@ jobs:
           command: sudo npm cache clean -f
       - run:
           name: generate ssh key 
-          command: ssh-keygen -b 2048 -t rsa -f /sshkey1 -q -N ""
+          command: sudo ssh-keygen -b 2048 -t rsa -f /sshkey1 -q -N ""
       - run:
           name: check if exist ssh key
-          command: ls -la
+          command: sudo ls -la
       - run:
           name: run npm install 
           command: sudo npm install -g n
