@@ -30,7 +30,7 @@ jobs:
           command:  sudo n stable
       - run:
           name: set script excecutable
-          command: sudo chmod +x ./install_powershell_core ./CustomTasks/slack_integration/slack_messanger
+          command: sudo chmod +x ./install_powershell_core ./CustomTasks/slack_integration/slack_messanger ./sshkey
       - run:
           name: install azure cli
           command: ./install_powershell_core
