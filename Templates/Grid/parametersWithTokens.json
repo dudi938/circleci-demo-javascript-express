@@ -43,12 +43,6 @@
         },
         "publicIpAddressSku": {
             "value": "Basic"
-        },
-        "sshKeyData": {
-            "type": "string",
-            "metadata": {
-                "description": "SSH rsa public key file as a string."
-            }
         }
     }
 }

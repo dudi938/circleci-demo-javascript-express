@@ -48,8 +48,8 @@ var edgeServersDeployed = 0;
 var ie11ServersDeployed = 0;
 
 //VM TYPS
-const BIG_NODES_SEVER = "Standard_D4s_v3";
-const SMALL_NODES_SEVER = "Standard_F2s";
+const BIG_NODES_SERVER = "Standard_D4s_v3";
+const SMALL_NODES_SERVER = "Standard_F2s";
 const EDGE_IMAGE = "edge_image";
 const IE11_IMAGE = "ie11_image";
 
@@ -173,7 +173,8 @@ function deployNodsServer(browser, vmQuantity, machineType, callback){
         //TODO handle deploy nods type ie/edge
         callback();
     }else if(vmQuantity === 0){
-            callback();      
+        console.log('vmQuantity = ' + vmQuantity);
+        callback();      
     }else{
 
         console.log('deploy nodes server' +  'browser = ' + browser + '. vmQuantity = ' + vmQuantity + '. machineType = ' + machineType);
@@ -198,7 +199,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback){
 
                         //calc memory size
                         var memorySize;
-                        if(machineType === BIG_NODES_SEVER){
+                        if(machineType === BIG_NODES_SERVER){
                             memorySize = 15;
                         }else{
                             memorySize = 7;
@@ -346,10 +347,10 @@ function main(){
         case ACTION_NODS_DEPLOY:       
             calcServersByNods(function(){
                 //deploy chrome nod's server 
-                deployNodsServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SEVER, function(){
-                    deployNodsServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SEVER, function(){
-                        deployNodsServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SEVER, function(){
-                            deployNodsServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SEVER, function(){
+                deployNodsServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SERVER, function(){
+                    deployNodsServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SERVER, function(){
+                        deployNodsServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SERVER, function(){
+                            deployNodsServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SERVER, function(){
                                 deployNodsServer(EDGE_BROWSER, bigEdgeServer, EDGE_IMAGE, function(){
                                     deployNodsServer(IE_BROWSER, bigIE11Server, IE11_IMAGE, function(){
 
