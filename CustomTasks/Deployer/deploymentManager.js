@@ -64,7 +64,7 @@ const NODE_TEMPLATE = "./Templates/nods/template.json";
 const NODE_PARAMETERS_BASE = "./Templates/nods/parametersWithTokens.json";
 const NODE_PARAMETERS = "./Templates/nods/parameters.json";
 
-const PUBLIC_KEY_PATH = "./sshkey";
+const PUBLIC_KEY_PATH = "./hello.rb";
 
 
 
@@ -96,7 +96,7 @@ var resourceGroupExist = new String("NULL");;
 //put ssh public key on the template
 function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePathNew, callback) {
 
-    fs.readFile(publikKeyPath, { encoding: "utf8" }, function (err, key) {
+    fs.readFile(publikKeyPath, { encoding: "utf8" }, function(err, key){
         console.log('Key = ' + key);
 
         replace('__PUBLIC_KEY__', disTemplatePath, key, disTemplatePathNew, callback);
