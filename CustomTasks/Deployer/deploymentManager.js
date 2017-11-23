@@ -102,7 +102,7 @@ function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePa
         if(err){
             console.log(err);
         }
-        replace('__PUBLIC_KEY__', disTemplatePath, '"' +  key + '"', disTemplatePathNew, callback);
+        replace('__PUBLIC_KEY__', disTemplatePath, key, disTemplatePathNew, callback);
     });
 }
 
@@ -408,9 +408,10 @@ function main() {
 
             addSSHPublicKeyToTemplate(PUBLIC_KEY_PATH, GRID_TEMPLATE_BASE, GRID_TEMPLATE, function () {
                 var template_file = fs.readFileSync(GRID_TEMPLATE);
-                console.log('*/*/*/*/*/*/*/*/*TEMPLATE = ' + template_file);
+                console.log('TEMPLATE = ' + template_file);
                 deployGridsServers(function () {
                     console.log('Deploy grids servers DONE !!!');
+                    //getVmIp()
                 });
             });
 
