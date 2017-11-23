@@ -105,7 +105,7 @@ function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePa
             //delete " " + "\r\n" from the string...
             //var keyArry = data.split("/r/n");
             //var key = keyArry[0] + keyArry[1] + keyArry[2]; 
-            var key = data.slice(-3);
+            var key = data.slice(0, key.length-3);
             console.log('New key: ' + key);
         replace('__PUBLIC_KEY__', disTemplatePath, key , disTemplatePathNew, callback);
     });
