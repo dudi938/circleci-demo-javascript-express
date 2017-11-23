@@ -106,7 +106,7 @@ function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePa
             key = key.substring(0, str.length - 2);
         }
 
-        replace('__PUBLIC_KEY__', disTemplatePath, key, disTemplatePathNew, callback);
+        replace('__PUBLIC_KEY__', disTemplatePath, '"' + key + '"', disTemplatePathNew, callback);
     });
 }
 
