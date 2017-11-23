@@ -15,34 +15,43 @@ var gridsQuantity = inputArgs[2];
 var firefoxNodsQuantity = inputArgs[3]; 
 var chromeNodsQuantity = inputArgs[4]; 
 var edgeNodsQuantity = inputArgs[5]; 
-var location = inputArgs[6];
-var controllerBlobsContainerCS = inputArgs[7];
-var app_id = inputArgs[8];
-var app_key = inputArgs[9];
-var tenant = inputArgs[10];
+var ie11NodsQuantity = inputArgs[6]; 
+var location = inputArgs[7];
+var controllerBlobsContainerCS = inputArgs[8];
+var app_id = inputArgs[9];
+var app_key = inputArgs[10];
+var tenant = inputArgs[11];
 
 //quantity of each nods server type 
 var bigChromeServer=0;
 var smallChromeServer=0;
 var bigFirefoxServer=0;
 var smallFirefoxServer=0;
+var bigEdgeServer=0;
+var bigIE11Server=0;
 
 //xml host lines for the grid
 var chromeXMLNodsHostsLines = '';
 var firefoxXMLNodsHostsLines = '';
 var edgeXMLNodsHostsLines = '';
-
+var ie11XMLNodsHostsLines = '';
 
 //Noeds Deployed Quantity
 var chromeNodesDeployed = 0;
 var firefoxNodesDeployed = 0;
+var edgeNodesDeployed = 0;
+var ie11NodesDeployed = 0;
 //Servers Deployed Quantity
 var chromeServersDeployed = 0;
 var firefoxServersDeployed = 0;
+var edgeServersDeployed = 0;
+var ie11ServersDeployed = 0;
 
 //VM TYPS
 const BIG_NODES_SEVER = "Standard_D4s_v3";
 const SMALL_NODES_SEVER = "Standard_F2s";
+const EDGE_IMAGE = "edge_image";
+const IE11_IMAGE = "ie11_image";
 
 //ARM TEMPLATE FOR GRID'S
 const GRID_TEMPLATE_BASE    = "./Templates/Grid/templateWithTokens.json";
@@ -65,6 +74,8 @@ const BIG_MACHINE_MAX_NODS = 10;
 //BROWSER_TYPES
 const CHROME_BROWSER = 'chrome';
 const FIREFOX_BROWSER = 'firefox';
+const EDGE_BROWSER = 'edge';
+const IE_BROWSER = 'ie11';
 
 //action typs
 const  ACTION_GRID_DEPLOY = 'GRID_DEPLOY';
@@ -158,7 +169,10 @@ function getVmIp(rg,vmName, calback){
 
 function deployNodsServer(browser, vmQuantity, machineType, callback){
 
-    if(vmQuantity === 0){
+    if(browser == EDGE_BROWSER || browser == IE_BROWSER){
+        //TODO handle deploy nods type ie/edge
+        callback();
+    }else if(vmQuantity === 0){
             callback();      
     }else{
 
@@ -211,6 +225,12 @@ function deployNodsServer(browser, vmQuantity, machineType, callback){
                                     chromeServersDeployed++;
                                 }else if(browser == FIREFOX_BROWSER){
                                     firefoxServersDeployed++;
+
+                                }else if(browser == EDGE_BROWSER){
+                                    edgeServersDeployed++;
+
+                                }else if(browser == FIREFOX_BROWSER){
+                                    ie11ServersDeployed++;
                                 }
                                 
                                 var ip;
@@ -225,6 +245,10 @@ function deployNodsServer(browser, vmQuantity, machineType, callback){
                                     }else if (browser == FIREFOX_BROWSER){
                                         firefoxXMLNodsHostsLines += '<host name="' + IP +  '" port="4444" count="' + currentNodsQantity +'"/>';
                                         console.log('chromeXMLNodsHostsLines = '  + firefoxXMLNodsHostsLines);
+                                    }else if(browser == IE_BROWSER){
+                                        ie11XMLNodsHostsLines += '<host name="' + IP +  '" port="4444" count="' + currentNodsQantity +'"/>';
+                                    }else if(browser == EDGE_BROWSER){
+                                        edgeXMLNodsHostsLines += '<host name="' + IP +  '" port="4444" count="' + currentNodsQantity +'"/>';
                                     }
 
 
@@ -305,6 +329,10 @@ function calcServersByNods(calback){
     }else{
         smallFirefoxServer = 1;
     }
+
+    bigEdgeServer = edgeNodsQuantity;
+    bigIE11Server = ie11NodsQuantity;
+
     console.log('bigChromeServer = ' + bigChromeServer);
     console.log('bigFirefoxServer = ' + bigFirefoxServer);
 
@@ -322,25 +350,31 @@ function main(){
                     deployNodsServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SEVER, function(){
                         deployNodsServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SEVER, function(){
                             deployNodsServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SEVER, function(){
+                                deployNodsServer(EDGE_BROWSER, bigEdgeServer, EDGE_IMAGE, function(){
+                                    deployNodsServer(IE_BROWSER, bigIE11Server, IE11_IMAGE, function(){
 
-                                console.log('Deploy nods servers DONE !!!');
+                                          console.log('Deploy nods servers DONE !!!');
 
-
-
-                                //add hosts information to the test.xml file
-                                replace('__CHROME_HOSTS__', TEST_XML_BASE, chromeXMLNodsHostsLines, TEST_XML, function(){
-                                    replace('__FIREFOX_HOSTS__', TEST_XML, firefoxXMLNodsHostsLines, TEST_XML, function(){
+                                            //add hosts information to the test.xml file
+                                            replace('__CHROME_HOSTS__', TEST_XML_BASE, chromeXMLNodsHostsLines, TEST_XML, function(){
+                                                replace('__FIREFOX_HOSTS__', TEST_XML, firefoxXMLNodsHostsLines, TEST_XML, function(){
+                                                replace('__EDGE_HOSTS__', TEST_XML, edgeXMLNodsHostsLines, TEST_XML, function(){      
+                                                    replace('__IE_HOSTS__', TEST_XML, ie11XMLNodsHostsLines, TEST_XML, function(){ 
                                             
-                                            //publish test.xml file
-                                            uploadFileToBlob(TEST_XML, 'controller', controllerBlobsContainerCS, function(){
-                                                var testXMLContent = fs.readFileSync(TEST_XML);
-                                                console.log('**** Finish deploy all nodes ****');
-                                                console.log('**** Servers mapping date exist in ' + TEST_XML + ' file.');
-                                                console.log('Content of test.xml file is :  ' + testXMLContent);
+                                                            //publish test.xml file
+                                                            uploadFileToBlob(TEST_XML, 'controller', controllerBlobsContainerCS, function(){
+                                                                var testXMLContent = fs.readFileSync(TEST_XML);
+                                                                console.log('**** Finish deploy all nodes ****');
+                                                                console.log('**** Servers mapping date exist in ' + TEST_XML + ' file.');
+                                                                console.log('Content of test.xml file is :  ' + testXMLContent);
 
-                                            });
+                                                });
+                                      });
+                                    });
                                     });
                                 });
+                            });
+                            });
 
                             });                       
                         });   

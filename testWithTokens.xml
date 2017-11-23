@@ -1,16 +1,30 @@
- <qa:browsers xmlns:qa="urn:config.gridrouter.qatools.ru">
- <browser name="firefox" defaultVersion="48">
-   <version number="48">
-     <region name="us-west">
-       __FIREFOX_HOSTS__
-     </region>
-   </version> 
- </browser>
- <browser name="chrome" defaultVersion="53">
-   <version number="53">
-     <region name="us-west">
-        __CHROME_HOSTS__
-     </region>
+<qa:browsers xmlns:qa="urn:config.gridrouter.qatools.ru">
+  <browser name="firefox" defaultVersion="48">
+    <version number="48">
+      <region name="us-west">
+        __FIREFOX_HOSTS__
+      </region>
+    </version> 
+  </browser>
+  <browser name="chrome" defaultVersion="53">
+    <version number="53">
+      <region name="us-west">
+          __CHROME_HOSTS__
+      </region>
+    </version>
+  </browser>
+  <browser name="edge" defaultVersion="14">
+    <version number="14">
+      <region name="us-west">
+        __EDGE_HOSTS__
+      </region>
+    </version> 
+  </browser>
+  <browser name="internetExplorer" defaultVersion="11">
+    <version number="11">
+      <region name="us-west">
+        __IE_HOSTS__
+      </region>
    </version>
- </browser>
- </qa:browsers>
+  </browser>
+</qa:browsers>
