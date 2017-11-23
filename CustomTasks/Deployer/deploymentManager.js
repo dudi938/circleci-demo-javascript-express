@@ -407,6 +407,8 @@ function main() {
         case ACTION_GRID_DEPLOY:
 
             addSSHPublicKeyToTemplate(PUBLIC_KEY_PATH, GRID_TEMPLATE_BASE, GRID_TEMPLATE, function () {
+                var template_file = fs.readdirSync(GRID_TEMPLATE);
+                console.log('*/*/*/*/*/*/*/*/*TEMPLATE = ' + template_file);
                 deployGridsServers(function () {
                     console.log('Deploy grids servers DONE !!!');
                 });
