@@ -48,8 +48,7 @@
     "variables": {
         "resourceGroupName": "[resourceGroup().name]",
         "vnetId": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-        "startUpScriptParams": __START_UP_SCRIPT_PARAMETERS__
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
     },
     "resources": [
         {
@@ -230,7 +229,7 @@
                 "fileUris": [
                     "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
                 ],
-                "commandToExecute": "[concat('sudo sh /var/lib/waagent/custom-script/download/0/runScriptsGrid.sh','  ', variables('startUpScriptParams'))]"             
+                "commandToExecute": "['sudo sh /var/lib/waagent/custom-script/download/0/runScriptsGrid.sh']"             
               }
             },       
             "copy": {

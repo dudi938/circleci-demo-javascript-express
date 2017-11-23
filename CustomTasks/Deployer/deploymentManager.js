@@ -75,7 +75,6 @@ const  ACTION_CREATE_RESOURCE_GROUP = 'ACTION_CREATE_RESOURCE_GROUP';
 const AZURE_REGION = 'WESTUS2';
 
 
-
 var resourceGroupExist = new String("NULL");;
 
 function uploadFileToBlob(file, container, connectionString, callback){
