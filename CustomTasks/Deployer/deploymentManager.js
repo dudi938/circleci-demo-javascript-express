@@ -64,7 +64,7 @@ const NODE_TEMPLATE = "./Templates/nods/template.json";
 const NODE_PARAMETERS_BASE = "./Templates/nods/parametersWithTokens.json";
 const NODE_PARAMETERS = "./Templates/nods/parameters.json";
 
-const PUBLIC_KEY_PATH = 'sshkey';
+const PUBLIC_KEY_PATH = './sshkey';
 
 
 
