@@ -102,8 +102,8 @@ function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePa
         if(err){
             console.log(err);
         }
-        if(key.slice(-2) == '\r\n'){
-            key = key.substring(0, str.length - 2);
+        if(key.slice(-2) == '\r\n '){
+            key = key.substring(0, str.length - 3);
             console.log('New key: ' + key);
         }
 
