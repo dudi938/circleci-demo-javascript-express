@@ -17,7 +17,7 @@ jobs:
           name: check if exist ssh key
           command: sudo ls -la
       - store_artifacts:
-          path: ./sshkey
+          path: ./sshkey ./sshkey.pub
           destination: artifacts
       - run:
           name: run npm install 
