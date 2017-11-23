@@ -102,7 +102,7 @@ function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePa
         if(err){
             console.log(err);
         }
-        replace('__PUBLIC_KEY__', disTemplatePath, key, disTemplatePathNew, callback);
+        replace('__PUBLIC_KEY__', disTemplatePath, key.toString(), disTemplatePathNew, callback);
     });
 }
 
