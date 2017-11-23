@@ -21,8 +21,10 @@ jobs:
           destination: artifacts
       - run:
           name: run npm install 
-          command: sudo npm install -g n |
-                   sudo n stable      
+          command: sudo npm install -g n
+      - run:
+          name: run npm install 
+          command:  sudo n stable
       - run:
           name: set script excecutable
           command: sudo chmod +x ./install_powershell_core ./CustomTasks/slack_integration/slack_messanger  | 
