@@ -48,7 +48,8 @@
     "variables": {
         "resourceGroupName": "[resourceGroup().name]",
         "vnetId": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
-        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]"
+        "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
+        "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
     },
     "resources": [
         {
@@ -63,7 +64,17 @@
                 "osProfile": {
                     "computerName": "[concat(parameters('virtualMachineName'),copyIndex())]",
                     "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]"
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "[variables('sshKeyPath')]",
+                                    "keyData": "__PUBLIC_KEY__"
+                                }
+                            ]
+                        }
+                    }
                 },
                 "hardwareProfile": {
                     "vmSize": "[parameters('virtualMachineSize')]"
@@ -90,11 +101,11 @@
                         }
                     ]
                 }
-            },            
+            },
             "copy": {
                 "name": "virtualMachineCopy",
                 "count": 2
-            }           
+            }
         },
         {
             "name": "[concat(parameters('virtualNetworkName'),copyIndex())]",
@@ -153,9 +164,8 @@
             "copy": {
                 "name": "networkInterfacecopy",
                 "count": 2
-                }
-            },
-
+            }
+        },
         {
             "name": "[concat(parameters('publicIpAddressName'),copyIndex())]",
             "type": "Microsoft.Network/publicIpAddresses",
@@ -170,7 +180,7 @@
             "copy": {
                 "name": "publicIpAddresseCopy",
                 "count": 2
-                }
+            }
         },
         {
             "name": "[concat(parameters('networkSecurityGroupName'),copyIndex())]",
@@ -206,7 +216,7 @@
                         }
                     }
                 ]
-            },          
+            },
             "copy": {
                 "name": "networkSecurityGroupCopy",
                 "count": 2
@@ -218,26 +228,25 @@
             "apiVersion": "2015-06-15",
             "location": "[parameters('location')]",
             "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'), copyIndex())]"
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'), copyIndex())]"
             ],
             "properties": {
-              "publisher": "Microsoft.Azure.Extensions",
-              "type": "CustomScript",
-              "typeHandlerVersion": "2.0",
-              "autoUpgradeMinorVersion": true,
-              "settings": {
-                "fileUris": [
-                    "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
-                ],
-                "commandToExecute": "['sudo sh /var/lib/waagent/custom-script/download/0/runScriptsGrid.sh']"             
-              }
-            },       
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "https://testimstorage.blob.core.windows.net/controller/runScriptsGrid.sh"
+                    ],
+                    "commandToExecute": "['sudo sh /var/lib/waagent/custom-script/download/0/runScriptsGrid.sh']"
+                }
+            },
             "copy": {
                 "name": "startUpScriptExtentionCopy",
                 "count": 2
-            }  
-          }
-
+            }
+        }
     ],
     "outputs": {
         "adminUsername": {

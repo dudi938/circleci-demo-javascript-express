@@ -106,8 +106,12 @@ module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFile
             //replace all tokens
             var targetTemplate = template.replace(valueToReplace, newValue);
             //console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
-            fs.writeFileSync(disFilePathNew, targetTemplate);              
-            callback();
+            fs.writeFileSync(disFilePathNew, targetTemplate);    
+
+            if(typeof(callback) == 'function'){
+                callback();
+            }          
+            
         }));
     }else if(path.extname(disFilePath) == '.xml'){
         console.log('valueToReplace = ' + valueToReplace);
@@ -128,8 +132,11 @@ module.exports.replace = function(valueToReplace ,disFilePath, newValue, disFile
             //replace all tokens
             var targetTemplate = template.replace(valueToReplace, newValue);
             //console.log('************************\r\n\r\n targetTemplate new  = ' + targetTemplate);   
-            fs.writeFileSync(disFilePathNew, targetTemplate);              
-            callback();
+            fs.writeFileSync(disFilePathNew, targetTemplate);          
+                
+            if(typeof(callback) == 'function'){
+                callback();
+            }   
         });
     }
 }

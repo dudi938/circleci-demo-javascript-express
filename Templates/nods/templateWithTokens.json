@@ -49,7 +49,8 @@
         "resourceGroupName": "[resourceGroup().name]",
         "vnetId": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-        "startUpScriptParams": "__START_UP_SCRIPT_PARAMETERS__"
+        "startUpScriptParams": "__START_UP_SCRIPT_PARAMETERS__",
+        "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]"
     },
     "resources": [
         {
@@ -64,7 +65,17 @@
                 "osProfile": {
                     "computerName": "[concat(parameters('virtualMachineName'))]",
                     "adminUsername": "[parameters('adminUsername')]",
-                    "adminPassword": "[parameters('adminPassword')]"
+                    "linuxConfiguration": {
+                        "disablePasswordAuthentication": true,
+                        "ssh": {
+                            "publicKeys": [
+                                {
+                                    "path": "[variables('sshKeyPath')]",
+                                    "keyData": "__PUBLIC_KEY__"
+                                }
+                            ]
+                        }
+                    }
                 },
                 "hardwareProfile": {
                     "vmSize": "[parameters('virtualMachineSize')]"
@@ -91,11 +102,11 @@
                         }
                     ]
                 }
-            },            
+            },
             "copy": {
                 "name": "virtualMachineCopy",
                 "count": 1
-            }           
+            }
         },
         {
             "name": "[concat(parameters('virtualNetworkName'))]",
@@ -154,9 +165,8 @@
             "copy": {
                 "name": "networkInterfacecopy",
                 "count": 1
-                }
-            },
-
+            }
+        },
         {
             "name": "[concat(parameters('publicIpAddressName'))]",
             "type": "Microsoft.Network/publicIpAddresses",
@@ -171,7 +181,7 @@
             "copy": {
                 "name": "publicIpAddresseCopy",
                 "count": 1
-                }
+            }
         },
         {
             "name": "[concat(parameters('networkSecurityGroupName'))]",
@@ -207,7 +217,7 @@
                         }
                     }
                 ]
-            },          
+            },
             "copy": {
                 "name": "networkSecurityGroupCopy",
                 "count": 1
@@ -219,27 +229,25 @@
             "apiVersion": "2015-06-15",
             "location": "[parameters('location')]",
             "dependsOn": [
-              "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
             ],
             "properties": {
-              "publisher": "Microsoft.Azure.Extensions",
-              "type": "CustomScript",
-              "typeHandlerVersion": "2.0",
-              "autoUpgradeMinorVersion": true,
-              "settings": {
-                "fileUris": [
-                    "https://testimstorage.blob.core.windows.net/agent/runScriptsNodes.sh"
-                ],
-                "commandToExecute": "[concat('sudo sh /var/lib/waagent/custom-script/download/0/runScriptsNodes.sh','  ', variables('startUpScriptParams'))]"
-               
-              }
-            },       
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "https://testimstorage.blob.core.windows.net/agent/runScriptsNodes.sh"
+                    ],
+                    "commandToExecute": "[concat('sudo sh /var/lib/waagent/custom-script/download/0/runScriptsNodes.sh','  ', variables('startUpScriptParams'))]"
+                }
+            },
             "copy": {
                 "name": "startUpScriptExtentionCopy",
                 "count": 1
-            }  
-          }
-
+            }
+        }
     ],
     "outputs": {
         "adminUsername": {
