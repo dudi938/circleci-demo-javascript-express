@@ -95,7 +95,9 @@ var resourceGroupExist = new String("NULL");;
 
 //put ssh public key on the template
 function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePathNew, callback) {
-
+    console.log('publikKeyPath = ' + publikKeyPath);
+    console.log('disTemplatePath = ' + disTemplatePath);
+    console.log('disTemplatePathNew = ' + disTemplatePathNew);
     fs.readFile(publikKeyPath, { encoding: "utf8" }, function(err, key){
         console.log('Key = ' + key);
 
