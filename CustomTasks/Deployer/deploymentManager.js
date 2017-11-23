@@ -98,15 +98,15 @@ function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePa
     console.log('publikKeyPath = ' + publikKeyPath);
     console.log('disTemplatePath = ' + disTemplatePath);
     console.log('disTemplatePathNew = ' + disTemplatePathNew);
-    fs.readFile(publikKeyPath, { encoding: "utf8" }, function(err, key){
+    fs.readFile(publikKeyPath, { encoding: "utf8" }, function(err, data){
         if(err){
             console.log(err);
         }
-        if(key.slice(-2) == '\r\n '){
-            key = key.substring(0, str.length - 3);
+            //delete " " + "\r\n" from the string...
+            var keyArry = data.split(' ');
+            var key = keyArry[0] + keyArry[1] + keyArry[2]; 
+            
             console.log('New key: ' + key);
-        }
-
         replace('__PUBLIC_KEY__', disTemplatePath, '"' + key + '"', disTemplatePathNew, callback);
     });
 }

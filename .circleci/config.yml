@@ -44,6 +44,9 @@ jobs:
       - run:
           name: Deploy grids
           command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} GRID_DEPLOY 3 ${FIREFOX_NODS} ${CHROME_NODS} ${EDGE_NODS} ${IE11_NODS} ${AZURE_REGION}  ${CONTROLLER_BLOBS_CONTAINER_CS}
+    #   - run:
+    #       name: Run Replication set script
+    #       command: ssh -i ./sshkey root@
       - run:
           name: send build notification
           command: ./CustomTasks/slack_integration/slack_messanger ${SLACK_WEBHOOK_URI} dsd efesf efesfe "New vm was deployed." desktop_computer
