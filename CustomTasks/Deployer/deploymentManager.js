@@ -100,7 +100,9 @@ function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePa
     console.log('disTemplatePathNew = ' + disTemplatePathNew);
     fs.readFile(publikKeyPath, { encoding: "utf8" }, function(err, key){
         console.log('Key = ' + key);
-
+        if(err){
+            console.log(err);
+        }
         replace('__PUBLIC_KEY__', disTemplatePath, key, disTemplatePathNew, callback);
     });
 }
