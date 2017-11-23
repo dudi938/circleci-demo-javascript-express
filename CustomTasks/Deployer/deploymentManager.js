@@ -103,9 +103,9 @@ function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePa
             console.log(err);
         }
             //delete " " + "\r\n" from the string...
-            var keyArry = data.split(" ");
-            var key = keyArry[0] + keyArry[1] + keyArry[2]; 
-
+            //var keyArry = data.split("/r/n");
+            //var key = keyArry[0] + keyArry[1] + keyArry[2]; 
+            var key = data.slice(-3);
             console.log('New key: ' + key);
         replace('__PUBLIC_KEY__', disTemplatePath, key , disTemplatePathNew, callback);
     });
