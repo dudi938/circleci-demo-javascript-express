@@ -19,9 +19,6 @@ jobs:
       - store_artifacts:
           path: ./sshkey 
           destination: artifacts
-      - store_artifacts:
-          path: ./sshkey.pub
-          destination: artifacts.pub
       - run:
           name: run npm install 
           command: sudo npm install -g n
