@@ -104,7 +104,7 @@
             },
             "copy": {
                 "name": "virtualMachineCopy",
-                "count": 2
+                "count": 3
             }
         },
         {
@@ -129,7 +129,7 @@
             },
             "copy": {
                 "name": "virtualNetworkCopy",
-                "count": 2
+                "count": 3
             }
         },
         {
@@ -163,7 +163,7 @@
             },
             "copy": {
                 "name": "networkInterfacecopy",
-                "count": 2
+                "count": 3
             }
         },
         {
@@ -179,7 +179,7 @@
             },
             "copy": {
                 "name": "publicIpAddresseCopy",
-                "count": 2
+                "count": 3
             }
         },
         {
@@ -219,7 +219,7 @@
             },
             "copy": {
                 "name": "networkSecurityGroupCopy",
-                "count": 2
+                "count": 3
             }
         },
         {
@@ -244,7 +244,7 @@
             },
             "copy": {
                 "name": "startUpScriptExtentionCopy",
-                "count": 2
+                "count": 3
             }
         }
     ],

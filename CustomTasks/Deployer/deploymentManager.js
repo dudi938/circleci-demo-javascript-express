@@ -63,9 +63,9 @@ const NODE_TEMPLATE_BASE = "./Templates/nods/templateWithTokens.json";
 const NODE_TEMPLATE = "./Templates/nods/template.json";
 const NODE_PARAMETERS_BASE = "./Templates/nods/parametersWithTokens.json";
 const NODE_PARAMETERS = "./Templates/nods/parameters.json";
-
+const GRID_IP = './grid_ip';
 const PUBLIC_KEY_PATH = './sshkey.pub';
-
+const PRIVATE_KEY_PATH = './sshkey';
 
 
 //XML test  file
@@ -85,6 +85,7 @@ const IE_BROWSER = 'ie11';
 const ACTION_GRID_DEPLOY = 'GRID_DEPLOY';
 const ACTION_NODS_DEPLOY = 'NODS_DEPLOY';
 const ACTION_CREATE_RESOURCE_GROUP = 'ACTION_CREATE_RESOURCE_GROUP';
+const RUN_REPLICATION_SET = 'RUN_REPLICATION_SET';
 
 //azure region
 const AZURE_REGION = 'WESTUS2';
@@ -98,16 +99,16 @@ function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePa
     console.log('publikKeyPath = ' + publikKeyPath);
     console.log('disTemplatePath = ' + disTemplatePath);
     console.log('disTemplatePathNew = ' + disTemplatePathNew);
-    fs.readFile(publikKeyPath, { encoding: "utf8" }, function(err, data){
-        if(err){
+    fs.readFile(publikKeyPath, { encoding: "utf8" }, function (err, data) {
+        if (err) {
             console.log(err);
         }
-            //delete " " + "\r\n" from the string...
-            //var keyArry = data.split("/r/n");
-            //var key = keyArry[0] + keyArry[1] + keyArry[2]; 
-            var key = data.slice(0, data.length-3);
-            console.log('New key: ' + key);
-        replace('__PUBLIC_KEY__', disTemplatePath, key , disTemplatePathNew, callback);
+        //delete " " + "\r\n" from the string...
+        //var keyArry = data.split("/r/n");
+        //var key = keyArry[0] + keyArry[1] + keyArry[2]; 
+        var key = data.slice(0, data.length - 3);
+        console.log('New key: ' + key);
+        replace('__PUBLIC_KEY__', disTemplatePath, key, disTemplatePathNew, callback);
     });
 }
 
@@ -307,6 +308,18 @@ function deployGridsServers(calback) {
             if (typeof (calback) == 'function') {
                 calback();
             }
+
+                //write grid's ip address to file
+            getVmIp(resourceGroup, 'VM-Grid0', function (ip) {
+                fs.appendFileSync('\grid_ip.sh', ip +  '\r\n');
+                getVmIp(resourceGroup, 'VM-Grid1', function (ip) {
+                    fs.appendFileSync('\grid_ip.sh', ip +  '\r\n');
+                    getVmIp(resourceGroup, 'VM-Grid2', function (ip) {
+                        fs.appendFileSync('\grid_ip.sh', ip +  '\r\n');
+                    });
+                });
+            });
+
         });
     });
 }
@@ -416,7 +429,6 @@ function main() {
                 console.log('TEMPLATE = ' + template_file);
                 deployGridsServers(function () {
                     console.log('Deploy grids servers DONE !!!');
-                    //getVmIp()
                 });
             });
 
@@ -435,6 +447,17 @@ function main() {
                         console.log(stdout);
                     });
                 }
+            });
+            break;
+        case RUN_REPLICATION_SET:
+
+            var gridsIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
+            exec('ssh -i ' + PRIVATE_KEY_PATH + '  root@' + ' ls -la  ' + gridsIP[0] + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], (err, stdout, stderr) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                console.log(stdout);
             });
             break;
     }
