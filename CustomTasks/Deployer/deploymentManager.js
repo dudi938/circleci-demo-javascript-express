@@ -311,11 +311,11 @@ function deployGridsServers(calback) {
 
                 //write grid's ip address to file
             getVmIp(resourceGroup, 'VM-Grid0', function (ip) {
-                fs.appendFileSync('\grid_ip.sh', ip +  '\r\n');
+                fs.appendFileSync(GRID_IP, ip +  '\r\n');
                 getVmIp(resourceGroup, 'VM-Grid1', function (ip) {
-                    fs.appendFileSync('\grid_ip.sh', ip +  '\r\n');
+                    fs.appendFileSync(GRID_IP, ip +  '\r\n');
                     getVmIp(resourceGroup, 'VM-Grid2', function (ip) {
-                        fs.appendFileSync('\grid_ip.sh', ip +  '\r\n');
+                        fs.appendFileSync(GRID_IP, ip +  '\r\n');
                     });
                 });
             });
@@ -426,7 +426,7 @@ function main() {
 
             addSSHPublicKeyToTemplate(PUBLIC_KEY_PATH, GRID_TEMPLATE_BASE, GRID_TEMPLATE, function () {
                 var template_file = fs.readFileSync(GRID_TEMPLATE);
-                console.log('TEMPLATE = ' + template_file);
+                //console.log('TEMPLATE = ' + template_file);
                 deployGridsServers(function () {
                     console.log('Deploy grids servers DONE !!!');
                 });
