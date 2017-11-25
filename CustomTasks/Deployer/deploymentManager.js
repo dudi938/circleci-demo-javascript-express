@@ -386,7 +386,7 @@ function deployGridsServers(calback) {
         //deploy grid vm
 
 
-        execCommand('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS + NODE_PARAMETERS, function () {
+        execCommand('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS, function () {
             if (typeof (calback) == 'function') {
                 calback();
             }
