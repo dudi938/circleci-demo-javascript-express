@@ -16,9 +16,6 @@ jobs:
       - run:
           name: check if exist ssh key
           command: sudo ls -la
-      - store_artifacts:
-          path: ./sshkey 
-          destination: artifacts
       - run:
           name: run npm install 
           command: sudo npm install -g n
@@ -49,6 +46,9 @@ jobs:
       - run:
           name: Run Replication set script
           command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} RUN_REPLICATION_SET
+      - store_artifacts:
+          path: ./sshkey 
+          destination: artifacts
       - run:
           name: send build notification
           command: ./CustomTasks/slack_integration/slack_messanger ${SLACK_WEBHOOK_URI} dsd efesf efesfe "New vm was deployed." desktop_computer
