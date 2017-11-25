@@ -94,6 +94,24 @@ const AZURE_REGION = 'WESTUS2';
 var resourceGroupExist = new String("NULL");;
 
 
+function execCommand(command, callback) {
+    console.log('RUN COMMAND - ' + command);
+    var output;
+    exec(command, (err, stdout, stderr) => {
+        if (err) {
+            console.log(err);
+            process.exit(1);
+        }
+        console.log(stdout);
+        output = stdout;
+    }).on('close', function () {
+        if (typeof (callback) == 'function') {
+            callback(output)
+        }
+    });
+}
+
+
 //put ssh public key on the template
 function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePathNew, callback) {
     console.log('publikKeyPath = ' + publikKeyPath);
@@ -117,17 +135,24 @@ function addSSHPublicKeyToTemplate(publikKeyPath, disTemplatePath, disTemplatePa
 function uploadFileToBlob(file, container, connectionString, callback) {
     console.log('***Start upload test.xml file.......');
     var fileName = path.basename(file);
-    exec('az storage blob upload -f ' + file + ' -c ' + container + ' -n ' + fileName + ' --connection-string ' + '"' + connectionString + '"', (err, stdout, stderr) => {
-        if (err) {
-            console.log(err);
-        }
-        console.log(stdout);
 
-    }).on('close', function () {
+    execCommand('az storage blob upload -f ' + file + ' -c ' + container + ' -n ' + fileName + ' --connection-string ' + '"' + connectionString + '"', function () {
         if (typeof (callback) == 'function') {
             callback()
         }
     });
+
+    //     exec('az storage blob upload -f ' + file + ' -c ' + container + ' -n ' + fileName + ' --connection-string ' + '"' + connectionString + '"', (err, stdout, stderr) => {
+    //         if (err) {
+    //             console.log(err);
+    //         }
+    //         console.log(stdout);
+
+    //     }).on('close', function () {
+    //         if (typeof (callback) == 'function') {
+    //             callback()
+    //         }
+    //     });
 }
 
 
@@ -156,18 +181,25 @@ function getNextNodsQuanity(browser) {
 
 function getAllIPbyResourceGroup(resourceGroup, calbback) {
     var ipArr;
-    exec('az vm list-ip-addresses  -g ' + resourceGroup, (err, stdout, stderr) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        ipArr = stdout;
-        //console.log(ipArr);
-    }).on('close', function () {
-        if (typeof (calbback) == 'function') {
-            calbback();
+
+    execCommand('az vm list-ip-addresses  -g ' + resourceGroup, function () {
+        if (typeof (callback) == 'function') {
+            callback()
         }
     });
+
+    // exec('az vm list-ip-addresses  -g ' + resourceGroup, (err, stdout, stderr) => {
+    //     if (err) {
+    //         console.log(err);
+    //         return;
+    //     }
+    //     ipArr = stdout;
+    //     //console.log(ipArr);
+    // }).on('close', function () {
+    //     if (typeof (calbback) == 'function') {
+    //         calbback();
+    //     }
+    // });
 }
 
 function getVmIp(rg, vmName, calback) {
@@ -176,20 +208,30 @@ function getVmIp(rg, vmName, calback) {
     console.log('rg = ' + rg);
     console.log('vmName = ' + vmName);
 
-    exec('az vm list-ip-addresses -g ' + rg + ' -n  ' + vmName, (err, stdout, stderr) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        data = stdout;
-        console.log('data = ' + data);
-    }).on('close', function () {
+
+    execCommand('az vm list-ip-addresses -g ' + rg + ' -n  ' + vmName, function (data) {
         console.log(JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0]);
         myIP = JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0].ipAddress;
         if (typeof (calback) == 'function') {
             calback(myIP);
         }
     });
+
+
+    // exec('az vm list-ip-addresses -g ' + rg + ' -n  ' + vmName, (err, stdout, stderr) => {
+    //     if (err) {
+    //         console.log(err);
+    //         return;
+    //     }
+    //     data = stdout;
+    //     console.log('data = ' + data);
+    // }).on('close', function () {
+    //     console.log(JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0]);
+    //     myIP = JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0].ipAddress;
+    //     if (typeof (calback) == 'function') {
+    //         calback(myIP);
+    //     }
+    // });
 };
 
 
@@ -236,15 +278,11 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
 
                     replace('__START_UP_SCRIPT_PARAMETERS__', NODE_TEMPLATE_BASE, browser + '  ' + currentNodsQantity + '  ' + memorySize, NODE_TEMPLATE, function () {
                         addSSHPublicKeyToTemplate(PUBLIC_KEY_PATH, NODE_TEMPLATE, NODE_TEMPLATE, function () {
-                            exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS, (err, stdout, stderr) => {
-
-                                if (err) {
-                                    console.log(err);
-                                }
 
 
-                                console.log(stdout);
-                            }).on('close', function () {
+
+                            execCommand('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS, function () {
+
 
                                 if (browser == CHROME_BROWSER) {
 
@@ -280,9 +318,57 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
 
                                     deployNodsServer(browser, vmQuantity - 1, machineType, callback);
                                 });
-
-
                             });
+
+
+
+                            // exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS, (err, stdout, stderr) => {
+
+                            //     if (err) {
+                            //         console.log(err);
+                            //     }
+
+
+                            //     console.log(stdout);
+                            // }).on('close', function () {
+
+                            //     if (browser == CHROME_BROWSER) {
+
+                            //         chromeServersDeployed++;
+                            //     } else if (browser == FIREFOX_BROWSER) {
+                            //         firefoxServersDeployed++;
+
+                            //     } else if (browser == EDGE_BROWSER) {
+                            //         edgeServersDeployed++;
+
+                            //     } else if (browser == FIREFOX_BROWSER) {
+                            //         ie11ServersDeployed++;
+                            //     }
+
+                            //     var ip;
+                            //     getVmIp(resourceGroup, currentVmName, function (IP) {
+
+                            //         console.log('IP = ' + IP);
+
+                            //         if (browser == CHROME_BROWSER) {
+
+                            //             chromeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                            //             console.log('chromeXMLNodsHostsLines = ' + chromeXMLNodsHostsLines);
+                            //         } else if (browser == FIREFOX_BROWSER) {
+                            //             firefoxXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                            //             console.log('chromeXMLNodsHostsLines = ' + firefoxXMLNodsHostsLines);
+                            //         } else if (browser == IE_BROWSER) {
+                            //             ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                            //         } else if (browser == EDGE_BROWSER) {
+                            //             edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                            //         }
+
+
+                            //         deployNodsServer(browser, vmQuantity - 1, machineType, callback);
+                            //     });
+
+
+                            // });
                         });
                     });
 
@@ -298,13 +384,9 @@ function deployGridsServers(calback) {
 
     replace('__AZURE_REGION__', GRID_PARAMETERS_BASE, AZURE_REGION, GRID_PARAMETERS, function () {
         //deploy grid vm
-        exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS, (err, stdout, stderr) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            console.log(stdout);
-        }).on('close', function () {
+
+
+        execCommand('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS + NODE_PARAMETERS, function () {
             if (typeof (calback) == 'function') {
                 calback();
             }
@@ -319,25 +401,41 @@ function deployGridsServers(calback) {
                     });
                 });
             });
-
         });
+
+
+
+        // exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS, (err, stdout, stderr) => {
+        //     if (err) {
+        //         console.error(err);
+        //         return;
+        //     }
+        //     console.log(stdout);
+        // }).on('close', function () {
+        //     if (typeof (calback) == 'function') {
+        //         calback();
+        //     }
+
+        //     //write grid's ip address to file
+        //     getVmIp(resourceGroup, 'VM-Grid0', function (ip) {
+        //         fs.appendFileSync(GRID_IP, ip + '\r\n');
+        //         getVmIp(resourceGroup, 'VM-Grid1', function (ip) {
+        //             fs.appendFileSync(GRID_IP, ip + '\r\n');
+        //             getVmIp(resourceGroup, 'VM-Grid2', function (ip) {
+        //                 fs.appendFileSync(GRID_IP, ip + '\r\n');
+        //             });
+        //         });
+        //     });
+
+        // });
     });
 }
 
 //check if the resource group still exist
 function checkResourceGroupExist(name, calback) {
+    execCommand('az group exists -n ' + name, function (exist) {
 
-
-    //run azure cli command to check if the resource group exist
-    exec('az group exists -n ' + name, (err, stdout, stderr) => {
-        if (err) {
-            console.error(err);
-        }
-        //console.log(stdout);
-        resourceGroupExist = stdout.toString();
-
-    }).on('close', function () {
-        if (resourceGroupExist.trim() == 'true') {
+        if (exist.toString().trim() == 'true') {
             console.log('THE RESOURCE GROUP IS EXIST. STOPING THE DEPLOYMENT!!!');
         } else {
             console.log('THE RESOURCE GROUP STILL NOT EXIST.');
@@ -346,6 +444,25 @@ function checkResourceGroupExist(name, calback) {
             calback();
         }
     });
+
+    // //run azure cli command to check if the resource group exist
+    // exec('az group exists -n ' + name, (err, stdout, stderr) => {
+    //     if (err) {
+    //         console.error(err);
+    //     }
+    //     //console.log(stdout);
+    //     resourceGroupExist = stdout.toString();
+
+    // }).on('close', function () {
+    //     if (resourceGroupExist.trim() == 'true') {
+    //         console.log('THE RESOURCE GROUP IS EXIST. STOPING THE DEPLOYMENT!!!');
+    //     } else {
+    //         console.log('THE RESOURCE GROUP STILL NOT EXIST.');
+    //     }
+    //     if (typeof (calback) == 'function') {
+    //         calback();
+    //     }
+    // });
 }
 
 //checkResourceGroupExist(resourceGroup);
@@ -443,26 +560,37 @@ function main() {
             checkResourceGroupExist(resourceGroup, function () {
                 if (resourceGroupExist.trim() != 'true') {
                     //run azure cli command to create a resource group
-                    exec('az group create --name ' + resourceGroup + ' --location ' + location, (err, stdout, stderr) => {
-                        if (err) {
-                            console.error(err);
-                            return;
-                        }
-                        console.log(stdout);
+
+
+                    execCommand('az group create --name ' + resourceGroup + ' --location ' + location, function () {
                     });
+
+
+                    // exec('az group create --name ' + resourceGroup + ' --location ' + location, (err, stdout, stderr) => {
+                    //     if (err) {
+                    //         console.error(err);
+                    //         return;
+                    //     }
+                    //     console.log(stdout);
+                    // });
                 }
             });
             break;
         case RUN_REPLICATION_SET:
 
             var gridsIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
-            exec('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  '  + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], (err, stdout, stderr) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                console.log(stdout);
+
+
+            execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  ' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], function () {
             });
+
+            // exec('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  ' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], (err, stdout, stderr) => {
+            //     if (err) {
+            //         console.log(err);
+            //         return;
+            //     }
+            //     console.log(stdout);
+            // });
             break;
     }
 }
