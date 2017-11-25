@@ -456,7 +456,7 @@ function main() {
         case RUN_REPLICATION_SET:
 
             var gridsIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
-            exec('ssh -i ' + PRIVATE_KEY_PATH + '  root@' + ' ls -la  ' + gridsIP[0] + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], (err, stdout, stderr) => {
+            exec('ssh -i ' + PRIVATE_KEY_PATH + '  root@' + gridsIP[0] + '  ./configureReplicaset.sh  '  + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], (err, stdout, stderr) => {
                 if (err) {
                     console.log(err);
                     return;
