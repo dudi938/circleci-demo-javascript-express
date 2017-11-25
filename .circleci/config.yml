@@ -41,9 +41,11 @@ jobs:
       - run:
           name: Deploy nods
           command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} NODS_DEPLOY 3 ${FIREFOX_NODS} ${CHROME_NODS} ${EDGE_NODS} ${IE11_NODS} ${AZURE_REGION}  ${CONTROLLER_BLOBS_CONTAINER_CS}
+          no_output_timeout: "25m"
       - run:
           name: Deploy grids
           command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} GRID_DEPLOY 3 ${FIREFOX_NODS} ${CHROME_NODS} ${EDGE_NODS} ${IE11_NODS} ${AZURE_REGION}  ${CONTROLLER_BLOBS_CONTAINER_CS}
+          no_output_timeout: "25m"
       - run:
           name: Run Replication set script
           command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} RUN_REPLICATION_SET

@@ -309,13 +309,13 @@ function deployGridsServers(calback) {
                 calback();
             }
 
-                //write grid's ip address to file
+            //write grid's ip address to file
             getVmIp(resourceGroup, 'VM-Grid0', function (ip) {
-                fs.appendFileSync(GRID_IP, ip +  '\r\n');
+                fs.appendFileSync(GRID_IP, ip + '\r\n');
                 getVmIp(resourceGroup, 'VM-Grid1', function (ip) {
-                    fs.appendFileSync(GRID_IP, ip +  '\r\n');
+                    fs.appendFileSync(GRID_IP, ip + '\r\n');
                     getVmIp(resourceGroup, 'VM-Grid2', function (ip) {
-                        fs.appendFileSync(GRID_IP, ip +  '\r\n');
+                        fs.appendFileSync(GRID_IP, ip + '\r\n');
                     });
                 });
             });
@@ -357,7 +357,9 @@ function calcServersByNods(calback) {
     if (temp > SMALL_MACHINE_MAX_NODS) {
         bigChromeServer++;
     } else {
-        smallChromeServer = 1;
+        if (temp > 0) {
+            smallChromeServer = 1;
+        }
     }
 
     //check wich vm's need for firefox browser
@@ -366,7 +368,9 @@ function calcServersByNods(calback) {
     if (temp > SMALL_MACHINE_MAX_NODS) {
         bigFirefoxServer++;
     } else {
-        smallFirefoxServer = 1;
+        if (temp > 0) {
+            smallFirefoxServer = 1;
+        }
     }
 
     bigEdgeServer = edgeNodsQuantity;
