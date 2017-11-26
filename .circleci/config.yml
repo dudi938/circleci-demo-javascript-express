@@ -26,7 +26,7 @@ jobs:
           name: set script excecutable
           command: sudo chmod +x ./install_powershell_core ./CustomTasks/slack_integration/slack_messanger  | 
                    sudo chmod +r ./sshkey.pub |
-                   sudo chmod 444 ./sshkey
+                   sudo chmod 400 ./sshkey
       - run:
           name: check key permissions mode
           command: sudo ls -la
