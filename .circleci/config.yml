@@ -50,6 +50,9 @@ jobs:
       - run:
           name: Run Replication set script
           command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} RUN_REPLICATION_SET
+      - run:
+          name: set script excecutable
+          command: sudo chmod 444 ./sshkey                  
       - store_artifacts:
           path: ./sshkey 
           destination: artifacts
