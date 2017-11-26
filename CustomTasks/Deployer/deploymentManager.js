@@ -50,6 +50,9 @@ var ie11ServersDeployed = 0;
 //VM TYPS
 const BIG_NODES_SERVER = "Standard_D4s_v3";
 const SMALL_NODES_SERVER = "Standard_F2s";
+const BIG_GRID_SERVER  = "Standard_DS3_v2";
+
+
 const EDGE_IMAGE = "edge_image";
 const IE11_IMAGE = "ie11_image";
 
