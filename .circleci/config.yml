@@ -25,8 +25,11 @@ jobs:
       - run:
           name: set script excecutable
           command: sudo chmod +x ./install_powershell_core ./CustomTasks/slack_integration/slack_messanger  | 
-                   sudo chmod +r ./sshkey ./sshkey.pub |
+                   sudo chmod +r ./sshkey.pub |
                    sudo chmod 444 ./sshkey
+      - run:
+          name: check key permissions mode
+          command: sudo ls -la
       - run:
           name: install azure cli
           command: ./install_powershell_core
