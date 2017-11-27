@@ -50,7 +50,7 @@ var ie11ServersDeployed = 0;
 //VM TYPS
 const BIG_NODES_SERVER = "Standard_D4s_v3";
 const SMALL_NODES_SERVER = "Standard_F2s";
-const BIG_GRID_SERVER  = "Standard_DS3_v2";
+const BIG_GRID_SERVER = "Standard_DS3_v2";
 
 
 const EDGE_IMAGE = "edge_image";
@@ -61,11 +61,18 @@ const GRID_TEMPLATE_BASE = "./Templates/Grid/templateWithTokens.json";
 const GRID_TEMPLATE = "./Templates/Grid/template.json";
 const GRID_PARAMETERS_BASE = "./Templates/Grid/parametersWithTokens.json";
 const GRID_PARAMETERS = "./Templates/Grid/parameters.json";
-//ARM TEMPLATE FOR NOD'S
-const NODE_TEMPLATE_BASE = "./Templates/nods/templateWithTokens.json";
-const NODE_TEMPLATE = "./Templates/nods/template.json";
-const NODE_PARAMETERS_BASE = "./Templates/nods/parametersWithTokens.json";
-const NODE_PARAMETERS = "./Templates/nods/parameters.json";
+//ARM TEMPLATE FOR CHROME | FIRFOX NOD'S
+const CHFIR_NODE_PARAMETERS = "./Templates/nods/templateWithTokens.json";
+const CHFIR_NODE_TEMPLATE = "./Templates/nods/template.json";
+const CHFIR_NODE_PARAMETERS_BASE = "./Templates/nods/parametersWithTokens.json";
+const CHFIR_NODE_PARAMETERS = "./Templates/nods/parameters.json";
+//ARM TEMPLATE FOR IE11 | EDGE NOD'S
+const IE11_NODE_TEMPLATE_BASE = "./Templates/nods/win10/templateWithTokens.json";
+const IE11_NODE_TEMPLATE = "./Templates/nods/win10/template.json";
+const IE11_NODE_PARAMETERS = "./Templates/nods/win10/parameters.json";
+
+
+
 const GRID_IP = './grid_ip';
 const PUBLIC_KEY_PATH = './sshkey.pub';
 const PRIVATE_KEY_PATH = './sshkey';
@@ -240,21 +247,22 @@ function getVmIp(rg, vmName, calback) {
 
 function deployNodsServer(browser, vmQuantity, machineType, callback) {
 
-    if (browser == EDGE_BROWSER || browser == IE_BROWSER) {
-        //TODO handle deploy nods type ie/edge
-        callback();
-    } else if (vmQuantity === 0) {
+
+    console.log('deploy nodes server' + 'browser = ' + browser + '. vmQuantity = ' + vmQuantity + '. machineType = ' + machineType);
+
+
+    if (vmQuantity === 0) {
         console.log('vmQuantity = ' + vmQuantity);
         callback();
-    } else {
+    } else if (browser == CHROME_BROWSER || browser == FIREFOX_BROWSER) {
 
-        console.log('deploy nodes server' + 'browser = ' + browser + '. vmQuantity = ' + vmQuantity + '. machineType = ' + machineType);
+
 
         //replace tokens
         //replace machine size in the parameters.json file
 
-        replace('__AZURE_REGION__', NODE_PARAMETERS_BASE, AZURE_REGION, NODE_PARAMETERS, function () {
-            replace('__VIRTUAL_MACHINE_SIZE__', NODE_PARAMETERS_BASE, machineType, NODE_PARAMETERS, function () {
+        replace('__AZURE_REGION__', CHFIR_NODE_PARAMETERS_BASE, AZURE_REGION, CHFIR_NODE_PARAMETERS, function () {
+            replace('__VIRTUAL_MACHINE_SIZE__', CHFIR_NODE_PARAMETERS_BASE, machineType, CHFIR_NODE_PARAMETERS, function () {
                 var serverIndex;
                 if (browser == CHROME_BROWSER) {
                     serverIndex = chromeServersDeployed;
@@ -264,7 +272,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
 
                 //replace index of resource's in the parameters.json file
                 var currentVmName = 'VM-Node' + '-' + browser.slice(0, 3) + serverIndex;
-                tokens2value(NODE_PARAMETERS, '-' + browser.slice(0, 3) + serverIndex, NODE_PARAMETERS, function () {
+                tokens2value(CHFIR_NODE_PARAMETERS, '-' + browser.slice(0, 3) + serverIndex, CHFIR_NODE_PARAMETERS, function () {
 
 
                     //calc memory size
@@ -279,45 +287,36 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                     var currentNodsQantity = getNextNodsQuanity(browser);
                     console.log('***currentNodsQantity = ' + currentNodsQantity + '***');
 
-                    replace('__START_UP_SCRIPT_PARAMETERS__', NODE_TEMPLATE_BASE, browser + '  ' + currentNodsQantity + '  ' + memorySize, NODE_TEMPLATE, function () {
-                        addSSHPublicKeyToTemplate(PUBLIC_KEY_PATH, NODE_TEMPLATE, NODE_TEMPLATE, function () {
+                    replace('__START_UP_SCRIPT_PARAMETERS__', CHFIR_NODE_PARAMETERS, browser + '  ' + currentNodsQantity + '  ' + memorySize, CHFIR_NODE_TEMPLATE, function () {
+                        addSSHPublicKeyToTemplate(PUBLIC_KEY_PATH, CHFIR_NODE_TEMPLATE, CHFIR_NODE_TEMPLATE, function () {
 
 
 
-                            execCommand('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS, function () {
+                            execCommand('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + CHFIR_NODE_TEMPLATE + '   --parameters  ' + CHFIR_NODE_PARAMETERS, function () {
 
 
                                 if (browser == CHROME_BROWSER) {
 
                                     chromeServersDeployed++;
+
                                 } else if (browser == FIREFOX_BROWSER) {
+
                                     firefoxServersDeployed++;
 
-                                } else if (browser == EDGE_BROWSER) {
-                                    edgeServersDeployed++;
-
-                                } else if (browser == FIREFOX_BROWSER) {
-                                    ie11ServersDeployed++;
                                 }
 
-                                var ip;
+
                                 getVmIp(resourceGroup, currentVmName, function (IP) {
 
                                     console.log('IP = ' + IP);
 
                                     if (browser == CHROME_BROWSER) {
-
                                         chromeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
                                         console.log('chromeXMLNodsHostsLines = ' + chromeXMLNodsHostsLines);
                                     } else if (browser == FIREFOX_BROWSER) {
                                         firefoxXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
                                         console.log('chromeXMLNodsHostsLines = ' + firefoxXMLNodsHostsLines);
-                                    } else if (browser == IE_BROWSER) {
-                                        ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
-                                    } else if (browser == EDGE_BROWSER) {
-                                        edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
-                                    }
-
+                                    } 
 
                                     deployNodsServer(browser, vmQuantity - 1, machineType, callback);
                                 });
@@ -325,7 +324,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
 
 
 
-                            // exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + NODE_TEMPLATE + '   --parameters  ' + NODE_PARAMETERS, (err, stdout, stderr) => {
+                            // exec('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + CHFIR_NODE_TEMPLATE + '   --parameters  ' + CHFIR_NODE_PARAMETERS, (err, stdout, stderr) => {
 
                             //     if (err) {
                             //         console.log(err);
@@ -378,6 +377,27 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                 });
             });
         });
+    } else if (browser == EDGE_BROWSER || browser == IE_BROWSER) {
+
+        replace('__QUANTITY__', IE11_NODE_TEMPLATE_BASE, vmQuantity, IE11_NODE_TEMPLATE, function () {
+            replace('__CUSTOM_SCRIPT_PARAMETERS__', IE11_NODE_TEMPLATE, browser, IE11_NODE_TEMPLATE, function () {
+
+                execCommand('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + CHFIR_NODE_TEMPLATE + '   --parameters  ' + CHFIR_NODE_PARAMETERS, function () {
+
+                    getVmIp(resourceGroup, currentVmName, function (IP) {
+
+                        console.log('IP = ' + IP);
+
+                        if (browser == IE_BROWSER) {
+                            ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                        } else if (browser == EDGE_BROWSER) {
+                            edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                        }
+                    });
+                });
+            });
+        });
+
     }
 }
 
@@ -389,7 +409,7 @@ function deployGridsServers(calback) {
         //deploy grid vm
 
 
-        execCommand('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS , function () {
+        execCommand('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS, function () {
             if (typeof (calback) == 'function') {
                 calback();
             }
@@ -408,7 +428,7 @@ function deployGridsServers(calback) {
 
 
 
-        // exec('az group deployment create --name ExampleDeployment --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS, (err, stdout, stderr) => {
+        // exec('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS, (err, stdout, stderr) => {
         //     if (err) {
         //         console.error(err);
         //         return;
@@ -584,7 +604,7 @@ function main() {
             var gridsIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
 
 
-            execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2] , function () {
+            execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], function () {
             });
 
             // execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  ' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], function () {
