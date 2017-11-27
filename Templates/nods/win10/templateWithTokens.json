@@ -160,7 +160,7 @@
             }
         },
         {
-            "name": "[concat(parameters('networkSecurityGroupName'),copyIndex()]",
+            "name": "[concat(parameters('networkSecurityGroupName'),copyIndex())]",
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2017-06-01",
             "location": "[parameters('location')]",
