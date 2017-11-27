@@ -382,7 +382,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
         replace('__QUANTITY__', IE11_NODE_TEMPLATE_BASE, vmQuantity, IE11_NODE_TEMPLATE, function () {
             replace('__CUSTOM_SCRIPT_PARAMETERS__', IE11_NODE_TEMPLATE, browser, IE11_NODE_TEMPLATE, function () {
 
-                execCommand('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + CHFIR_NODE_TEMPLATE + '   --parameters  ' + CHFIR_NODE_PARAMETERS, function () {
+                execCommand('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + IE11_NODE_TEMPLATE + '   --parameters  ' + IE11_NODE_PARAMETERS , function () {
 
                     getVmIp(resourceGroup, currentVmName, function (IP) {
 
