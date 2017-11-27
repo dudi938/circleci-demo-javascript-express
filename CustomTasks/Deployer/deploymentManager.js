@@ -433,7 +433,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                     //     memorySize = 3;
                     // }
 
-                    replace('__START_UP_SCRIPT_PARAMETERS__', IE11_NODE_PARAMETERS, browser , IE11_NODE_PARAMETERS, function () {
+                    replace('__START_UP_SCRIPT_PARAMETERS__', IE11_NODE_TEMPLATE_BASE, browser , IE11_NODE_TEMPLATE, function () {
 
                             execCommand('az group deployment create --name ' + resourceGroup + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + IE11_NODE_TEMPLATE + '   --parameters  ' + IE11_NODE_PARAMETERS, function () {
 
