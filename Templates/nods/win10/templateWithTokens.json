@@ -59,7 +59,7 @@
     },
     "resources": [
         {
-            "name": "[concat(parameters('virtualNetworkName'))]",
+            "name": "[concat(parameters('virtualMachineName'))]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2016-04-30-preview",
             "location": "[parameters('location')]",
