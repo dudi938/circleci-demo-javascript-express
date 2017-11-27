@@ -205,7 +205,7 @@
                     {
                         "name": "Port_27017_in",
                         "properties": {
-                            "priority": 100,
+                            "priority": 200,
                             "protocol": "*",
                             "access": "Allow",
                             "direction": "Inbound",
