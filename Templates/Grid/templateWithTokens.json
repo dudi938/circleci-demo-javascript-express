@@ -218,7 +218,7 @@
                     {
                         "name": "Port_27017_out",
                         "properties": {
-                            "priority": 80,
+                            "priority": 150,
                             "protocol": "*",
                             "access": "Allow",
                             "direction": "Outbound",
