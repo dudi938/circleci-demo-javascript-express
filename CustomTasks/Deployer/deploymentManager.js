@@ -62,7 +62,7 @@ const GRID_TEMPLATE = "./Templates/Grid/template.json";
 const GRID_PARAMETERS_BASE = "./Templates/Grid/parametersWithTokens.json";
 const GRID_PARAMETERS = "./Templates/Grid/parameters.json";
 //ARM TEMPLATE FOR CHROME | FIRFOX NOD'S
-const CHFIR_NODE_PARAMETERS = "./Templates/nods/templateWithTokens.json";
+const CHFIR_NODE_TEMPLATE_BASE = "./Templates/nods/templateWithTokens.json";
 const CHFIR_NODE_TEMPLATE = "./Templates/nods/template.json";
 const CHFIR_NODE_PARAMETERS_BASE = "./Templates/nods/parametersWithTokens.json";
 const CHFIR_NODE_PARAMETERS = "./Templates/nods/parameters.json";
