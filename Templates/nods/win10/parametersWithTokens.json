@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "value": "____AZURE_REGION____"
+            "value": "__AZURE_REGION__"
         },
         "virtualMachineName": {
             "value": "111win102"
