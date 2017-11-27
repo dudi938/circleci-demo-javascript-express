@@ -247,6 +247,34 @@ function getVmIp(rg, vmName, calback) {
 };
 
 
+function getNVmIps(rg, vmNames, calback) {
+    var data;
+    var ips = [];
+    console.log('rg = ' + rg);
+    console.log('vmNames = ' + vmNames);
+
+
+    execCommand('az vm list-ip-addresses -g ' + rg + ' -n  ' + vmNames, function (data) {
+
+        // console.log(JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0]);
+        // ips = JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0].ipAddress;
+        var vmArr = JSON.parse(data);
+        console.log('data = ' + data);
+
+        vmArr.array.forEach(function (element, index) {
+            ips.push(element.virtualMachine.network.publicIpAddresses[0].ipAddress);
+        });
+        console.log(ips[0]);
+        console.log(ips[1]);
+
+        if (typeof (calback) == 'function') {
+            calback(myIP);
+        }
+    });
+};
+
+
+
 function deployNodsServer(browser, vmQuantity, machineType, callback) {
 
 
@@ -380,26 +408,66 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                 });
             });
         });
-    } else if (browser == EDGE_BROWSER || browser == IE_BROWSER) {
+    } else if (browser == EDGE_BROWSER || browser == IE_BROWSER) { //replace tokens
+        //replace machine size in the parameters.json file
+
         replace('__AZURE_REGION__', IE11_NODE_PARAMETERS_BASE, AZURE_REGION, IE11_NODE_PARAMETERS, function () {
-            replace('__QUANTITY__', IE11_NODE_TEMPLATE_BASE, vmQuantity, IE11_NODE_TEMPLATE, function () {
-                replace('__CUSTOM_SCRIPT_PARAMETERS__', IE11_NODE_TEMPLATE, browser, IE11_NODE_TEMPLATE, function () {
+            
+                var serverIndex;
+                if (browser == EDGE_BROWSER) {
+                    serverIndex = edgeServersDeployed;
+                } else if (browser == IE_BROWSER) {
+                    serverIndex = ie11ServersDeployed;
+                }
 
-                    execCommand('az group deployment create --name ' + resourceGroup + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + IE11_NODE_TEMPLATE + '   --parameters  ' + IE11_NODE_PARAMETERS, function () {
+                //replace index of resource's in the parameters.json file
+                var currentVmName = 'VM-Node' + '-' + browser.slice(0, 3) + serverIndex;
+                tokens2value(IE11_NODE_PARAMETERS, '-' + browser.slice(0, 3) + serverIndex, IE11_NODE_PARAMETERS, function () {
 
-                        getVmIp(resourceGroup, currentVmName, function (IP) {
 
-                            console.log('IP = ' + IP);
+                    // //calc memory size
+                    // var memorySize;
+                    // if (machineType === BIG_NODES_SERVER) {
+                    //     memorySize = 15;
+                    // } else {
+                    //     memorySize = 3;
+                    // }
 
-                            if (browser == IE_BROWSER) {
-                                ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
-                            } else if (browser == EDGE_BROWSER) {
-                                edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
-                            }
-                        });
+                    replace('__START_UP_SCRIPT_PARAMETERS__', IE11_NODE_PARAMETERS, browser , IE11_NODE_PARAMETERS, function () {
+
+                            execCommand('az group deployment create --name ' + resourceGroup + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + IE11_NODE_TEMPLATE + '   --parameters  ' + IE11_NODE_PARAMETERS, function () {
+
+
+                                if (browser == EDGE_BROWSER) {
+
+                                    edgeServersDeployed++;
+
+                                } else if (browser == IE_BROWSER) {
+
+                                    ie11ServersDeployed++;
+
+                                }
+
+
+                                getVmIp(resourceGroup, currentVmName, function (IP) {
+
+                                    console.log('IP = ' + IP);
+
+                                    if (browser == EDGE_BROWSER) {
+                                        edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                                        console.log('edgeXMLNodsHostsLines = ' + edgeXMLNodsHostsLines);
+                                    } else if (browser == IE_BROWSER) {
+                                        ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                                        console.log('ie11XMLNodsHostsLines = ' + ie11XMLNodsHostsLines);
+                                    }
+
+                                    deployNodsServer(browser, vmQuantity - 1, machineType, callback);
+                                });
+                            });
+
                     });
+
                 });
-            });
         });
 
     }
@@ -628,3 +696,5 @@ function main() {
 
 // main function.
 main();
+
+

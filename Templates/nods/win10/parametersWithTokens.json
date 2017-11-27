@@ -6,7 +6,7 @@
             "value": "__AZURE_REGION__"
         },
         "virtualMachineName": {
-            "value": "111win102"
+            "value": "VM-Node__NODE_INDEX__"
         },
         "virtualMachineSize": {
             "value": "Standard_D2s_v3"
@@ -15,16 +15,16 @@
             "value": "yossis"
         },
         "virtualNetworkName": {
-            "value": "win10image-RG-vnet"
+            "value": "vnet-Node__NODE_INDEX__"
         },
         "networkInterfaceName": {
-            "value": "111win102483"
+            "value": "nin-Node__NODE_INDEX__"
         },
         "addressPrefix": {
             "value": "10.0.1.0/24"
         },
         "networkSecurityGroupName": {
-            "value": "111win102-nsg"
+            "value": "nsg-Node__NODE_INDEX__"
         },
         "adminPassword": {
             "value": "Qaz123456789"
@@ -42,7 +42,7 @@
             "value": "10.0.1.0/24"
         },
         "publicIpAddressName": {
-            "value": "111win102-ip"
+            "value": "pip-Node_NODE__INDEX__"
         },
         "publicIpAddressType": {
             "value": "Dynamic"
