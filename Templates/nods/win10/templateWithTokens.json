@@ -129,7 +129,7 @@
                             },
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
-                                "id": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'), copyIndex())]"
+                                "id": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/publicIpAddresses', concat(parameters('publicIpAddressName'), copyIndex()))]"
                             }
                         }
                     }
