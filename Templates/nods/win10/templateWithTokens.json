@@ -144,7 +144,7 @@
             }
         },
         {
-            "name": "[concat(parameters('publicIpAddressName'),copyIndex()]",
+            "name": "[concat(parameters('publicIpAddressName'),copyIndex())]",
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",
