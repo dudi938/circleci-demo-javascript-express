@@ -55,7 +55,7 @@
         "resourceGroupName": "[resourceGroup().name]",
         "vnetId": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-        "resourcesQuntity":" __QUANTITY__",
+        "resourcesQuntity":__QUANTITY__,
         "startUpScriptParams":"__CUSTOM_SCRIPT_PARAMETERS__"
     },
     "resources": [
