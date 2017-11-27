@@ -1,0 +1,14 @@
+{
+  "port": 4444,
+  "servlets": [
+    "com.groupon.seleniumgridextras.grid.servlets.ProxyStatusJsonServlet"
+  ],
+  "capabilityMatcher": "org.openqa.grid.internal.utils.DefaultCapabilityMatcher",
+  "throwOnCapabilityNotPresent": true,
+  "nodePolling": 5000,
+  "cleanUpCycle": 5000,
+  "browserTimeout": 0,
+  "timeout": 30,
+  "maxSession": 1,
+  "newSessionWaitTimeout": 59000
+}

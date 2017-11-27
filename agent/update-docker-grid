@@ -1,0 +1,9 @@
+/var/log/update-@ShortBrowser@-docker-grid.log {
+    rotate @NumOfNodes@
+    daily
+    missingok
+    notifempty
+    sharedscripts
+    copytruncate
+    compress
+}

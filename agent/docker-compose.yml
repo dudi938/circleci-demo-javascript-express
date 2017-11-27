@@ -1,0 +1,18 @@
+hub:
+  image: selenium/hub:2.53.1-beryllium
+  restart: always
+  environment:
+    - GRID_NEW_SESSION_WAIT_TIMEOUT:59000
+    - GRID_MAX_SESSION=@NumOfNodes@
+    - JAVA_OPTS=-server -Xms@MemorySize@g -Xmx@MemorySize@g -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:CMSInitiatingOccupancyFraction=60 -XX:+UseCMSInitiatingOccupancyOnly -XX:+ExplicitGCInvokesConcurrent
+  ports:
+    - "4444:4444"
+@Browser@:
+  image: testim/node-@Browser@
+  environment:
+    - JAVA_OPTS=-server -Xms500m -Xmx1g -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -XX:CMSInitiatingOccupancyFraction=60 -XX:+UseCMSInitiatingOccupancyOnly -XX:+ExplicitGCInvokesConcurrent
+  volumes:
+    - /dev/shm:/dev/shm
+  restart: always
+  links:
+    - hub

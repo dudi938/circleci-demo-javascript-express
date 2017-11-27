@@ -1,0 +1,22 @@
+{
+  "capabilities": [
+    {
+      "seleniumProtocol": "WebDriver",
+      "browserName": "internet explorer",
+      "maxInstances": 1,
+      "version": "11",
+      "platform": "WINDOWS"
+    }
+  ],
+  "loadedFromFile": "node_5555.json",
+  "proxy": "com.groupon.seleniumgridextras.grid.proxies.SetupTeardownProxy",
+  "maxSession": 1,
+  "port": 5555,
+  "register": true,
+  "unregisterIfStillDownAfter": 60000,
+  "hubPort": 4444,
+  "hubHost": "127.0.0.1",
+  "registerCycle": 5000,
+  "nodeStatusCheckTimeout": 5000,
+  "downPollingLimit": 2
+}
