@@ -200,7 +200,7 @@
             }
         },
         {
-            "name": "[concat(parameters('virtualNetworkName'),copyIndex)]",
+            "name": "[concat(parameters('virtualNetworkName'),copyIndex())]",
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",
