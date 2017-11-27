@@ -203,6 +203,32 @@
                         }
                     },
                     {
+                        "name": "Port_27017_in",
+                        "properties": {
+                            "priority": 100,
+                            "protocol": "*",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "27017"
+                        }
+                    },
+                    {
+                        "name": "Port_27017_out",
+                        "properties": {
+                            "priority": 100,
+                            "protocol": "*",
+                            "access": "Allow",
+                            "direction": "Outbound",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "27017"
+                        }
+                    },
+                    {
                         "name": "default-allow-ssh",
                         "properties": {
                             "priority": 1000,
