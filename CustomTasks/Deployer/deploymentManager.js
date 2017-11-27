@@ -454,10 +454,10 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                                     console.log('IP = ' + IP);
 
                                     if (browser == EDGE_BROWSER) {
-                                        edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                                        edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + 1 + '"/>';
                                         console.log('edgeXMLNodsHostsLines = ' + edgeXMLNodsHostsLines);
                                     } else if (browser == IE_BROWSER) {
-                                        ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                                        ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + 1 + '"/>';
                                         console.log('ie11XMLNodsHostsLines = ' + ie11XMLNodsHostsLines);
                                     }
 
