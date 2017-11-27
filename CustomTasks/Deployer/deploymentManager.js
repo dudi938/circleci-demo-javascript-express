@@ -69,6 +69,7 @@ const CHFIR_NODE_PARAMETERS = "./Templates/nods/parameters.json";
 //ARM TEMPLATE FOR IE11 | EDGE NOD'S
 const IE11_NODE_TEMPLATE_BASE = "./Templates/nods/win10/templateWithTokens.json";
 const IE11_NODE_TEMPLATE = "./Templates/nods/win10/template.json";
+const IE11_NODE_PARAMETERS_BASE = "./Templates/nods/win10/parametersWithTokens.json";
 const IE11_NODE_PARAMETERS = "./Templates/nods/win10/parameters.json";
 
 
@@ -262,7 +263,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
         //replace machine size in the parameters.json file
 
         replace('__AZURE_REGION__', CHFIR_NODE_PARAMETERS_BASE, AZURE_REGION, CHFIR_NODE_PARAMETERS, function () {
-            replace('__VIRTUAL_MACHINE_SIZE__', CHFIR_NODE_PARAMETERS_BASE, machineType, CHFIR_NODE_PARAMETERS, function () {
+            replace('__VIRTUAL_MACHINE_SIZE__', CHFIR_NODE_PARAMETERS, machineType, CHFIR_NODE_PARAMETERS, function () {
                 var serverIndex;
                 if (browser == CHROME_BROWSER) {
                     serverIndex = chromeServersDeployed;
@@ -292,7 +293,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
 
 
 
-                            execCommand('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + CHFIR_NODE_TEMPLATE + '   --parameters  ' + CHFIR_NODE_PARAMETERS, function () {
+                            execCommand('az group deployment create --name ' + resourceGroup + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + CHFIR_NODE_TEMPLATE + '   --parameters  ' + CHFIR_NODE_PARAMETERS, function () {
 
 
                                 if (browser == CHROME_BROWSER) {
@@ -316,7 +317,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                                     } else if (browser == FIREFOX_BROWSER) {
                                         firefoxXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
                                         console.log('chromeXMLNodsHostsLines = ' + firefoxXMLNodsHostsLines);
-                                    } 
+                                    }
 
                                     deployNodsServer(browser, vmQuantity - 1, machineType, callback);
                                 });
@@ -372,27 +373,29 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
 
                             // });
                         });
+
                     });
 
                 });
             });
         });
     } else if (browser == EDGE_BROWSER || browser == IE_BROWSER) {
+        replace('__AZURE_REGION__', IE11_NODE_PARAMETERS_BASE, AZURE_REGION, IE11_NODE_PARAMETERS, function () {
+            replace('__QUANTITY__', IE11_NODE_TEMPLATE_BASE, vmQuantity, IE11_NODE_TEMPLATE, function () {
+                replace('__CUSTOM_SCRIPT_PARAMETERS__', IE11_NODE_TEMPLATE, browser, IE11_NODE_TEMPLATE, function () {
 
-        replace('__QUANTITY__', IE11_NODE_TEMPLATE_BASE, vmQuantity, IE11_NODE_TEMPLATE, function () {
-            replace('__CUSTOM_SCRIPT_PARAMETERS__', IE11_NODE_TEMPLATE, browser, IE11_NODE_TEMPLATE, function () {
+                    execCommand('az group deployment create --name ' + resourceGroup + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + IE11_NODE_TEMPLATE + '   --parameters  ' + IE11_NODE_PARAMETERS, function () {
 
-                execCommand('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + IE11_NODE_TEMPLATE + '   --parameters  ' + IE11_NODE_PARAMETERS , function () {
+                        getVmIp(resourceGroup, currentVmName, function (IP) {
 
-                    getVmIp(resourceGroup, currentVmName, function (IP) {
+                            console.log('IP = ' + IP);
 
-                        console.log('IP = ' + IP);
-
-                        if (browser == IE_BROWSER) {
-                            ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
-                        } else if (browser == EDGE_BROWSER) {
-                            edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
-                        }
+                            if (browser == IE_BROWSER) {
+                                ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                            } else if (browser == EDGE_BROWSER) {
+                                edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                            }
+                        });
                     });
                 });
             });
@@ -409,7 +412,7 @@ function deployGridsServers(calback) {
         //deploy grid vm
 
 
-        execCommand('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS, function () {
+        execCommand('az group deployment create --name ' + resourceGroup + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS, function () {
             if (typeof (calback) == 'function') {
                 calback();
             }
