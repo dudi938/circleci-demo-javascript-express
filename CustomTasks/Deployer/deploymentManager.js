@@ -48,9 +48,10 @@ var edgeServersDeployed = 0;
 var ie11ServersDeployed = 0;
 
 //VM TYPS
-const BIG_NODES_SERVER = "Standard_D4s_v3";
-const SMALL_NODES_SERVER = "Standard_F2s";
-const BIG_GRID_SERVER = "Standard_DS3_v2";
+const BIG_NODES_SERVER = "Standard_D4s_v3";//16 GB
+const SMALL_NODES_SERVER = "Standard_F2s";//4 GB
+const BIG_GRID_SERVER = "Standard_DS3_v2";//14 GB
+const IE11_EDGE_NODES_SERVER = "Standard_D2s_v3" //8GB
 
 
 const EDGE_IMAGE = "edge_image";
@@ -281,7 +282,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                     if (machineType === BIG_NODES_SERVER) {
                         memorySize = 15;
                     } else {
-                        memorySize = 7;
+                        memorySize = 3;
                     }
 
 

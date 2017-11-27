@@ -135,7 +135,7 @@
                     }
                 ],
                 "networkSecurityGroup": {
-                    "id": "[resourceId(variables('resourceGroupName'), 'Microsoft.Network/networkSecurityGroups',concat(parameters('networkSecurityGroupName'), copyIndex())]"
+                    "id": "[resourceId(variables('resourceGroupName'), 'Microsoft.Network/networkSecurityGroups',concat(parameters('networkSecurityGroupName'), copyIndex()))]"
                 }
             },
             "copy": {
