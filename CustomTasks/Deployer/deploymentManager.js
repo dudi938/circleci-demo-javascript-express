@@ -99,8 +99,7 @@ const ACTION_NODS_DEPLOY = 'NODS_DEPLOY';
 const ACTION_CREATE_RESOURCE_GROUP = 'ACTION_CREATE_RESOURCE_GROUP';
 const RUN_REPLICATION_SET = 'RUN_REPLICATION_SET';
 
-//azure region
-const AZURE_REGION = 'WESTUS2';
+
 
 
 var resourceGroupExist = new String("NULL");;
@@ -291,7 +290,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
         //replace tokens
         //replace machine size in the parameters.json file
 
-        replace('__AZURE_REGION__', CHFIR_NODE_PARAMETERS_BASE, AZURE_REGION, CHFIR_NODE_PARAMETERS, function () {
+        replace('__AZURE_REGION__', CHFIR_NODE_PARAMETERS_BASE, location, CHFIR_NODE_PARAMETERS, function () {
             replace('__VIRTUAL_MACHINE_SIZE__', CHFIR_NODE_PARAMETERS, machineType, CHFIR_NODE_PARAMETERS, function () {
                 var serverIndex;
                 if (browser == CHROME_BROWSER) {
@@ -411,7 +410,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
     } else if (browser == EDGE_BROWSER || browser == IE_BROWSER) { //replace tokens
         //replace machine size in the parameters.json file
 
-        replace('__AZURE_REGION__', IE11_NODE_PARAMETERS_BASE, AZURE_REGION, IE11_NODE_PARAMETERS, function () {
+        replace('__AZURE_REGION__', IE11_NODE_PARAMETERS_BASE, location, IE11_NODE_PARAMETERS, function () {
             
                 var serverIndex;
                 if (browser == EDGE_BROWSER) {
@@ -477,7 +476,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
 //deploy grids vm's
 function deployGridsServers(calback) {
 
-    replace('__AZURE_REGION__', GRID_PARAMETERS_BASE, AZURE_REGION, GRID_PARAMETERS, function () {
+    replace('__AZURE_REGION__', GRID_PARAMETERS_BASE, location, GRID_PARAMETERS, function () {
         //deploy grid vm
 
 

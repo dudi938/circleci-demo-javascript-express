@@ -42,7 +42,7 @@
             "value": "10.0.1.0/24"
         },
         "publicIpAddressName": {
-            "value": "pip-Node_NODE__INDEX__"
+            "value": "pip-Node__INDEX__"
         },
         "publicIpAddressType": {
             "value": "Dynamic"
