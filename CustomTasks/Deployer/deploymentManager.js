@@ -12,17 +12,17 @@ var inputArgs = process.argv.slice(2);
 var resourceGroup = inputArgs[0];
 var action = inputArgs[1];
 var gridsQuantity = inputArgs[2];
-var firefoxNodsQuantity = inputArgs[3];
-var chromeNodsQuantity = inputArgs[4];
-var edgeNodsQuantity = inputArgs[5];
-var ie11NodsQuantity = inputArgs[6];
+var firefoxNodesQuantity = inputArgs[3];
+var chromeNodesQuantity = inputArgs[4];
+var edgeNodesQuantity = inputArgs[5];
+var ie11NodesQuantity = inputArgs[6];
 var location = inputArgs[7];
 var controllerBlobsContainerCS = inputArgs[8];
 var app_id = inputArgs[9];
 var app_key = inputArgs[10];
 var tenant = inputArgs[11];
 
-//quantity of each nods server type 
+//quantity of each Nodes server type 
 var bigChromeServer = 0;
 var smallChromeServer = 0;
 var bigFirefoxServer = 0;
@@ -31,10 +31,10 @@ var bigEdgeServer = 0;
 var bigIE11Server = 0;
 
 //xml host lines for the grid
-var chromeXMLNodsHostsLines = '';
-var firefoxXMLNodsHostsLines = '';
-var edgeXMLNodsHostsLines = '';
-var ie11XMLNodsHostsLines = '';
+var chromeXMLNodesHostsLines = '';
+var firefoxXMLNodesHostsLines = '';
+var edgeXMLNodesHostsLines = '';
+var ie11XMLNodesHostsLines = '';
 
 //Noeds Deployed Quantity
 var chromeNodesDeployed = 0;
@@ -63,15 +63,15 @@ const GRID_TEMPLATE = "./Templates/Grid/template.json";
 const GRID_PARAMETERS_BASE = "./Templates/Grid/parametersWithTokens.json";
 const GRID_PARAMETERS = "./Templates/Grid/parameters.json";
 //ARM TEMPLATE FOR CHROME | FIRFOX NOD'S
-const CHFIR_NODE_TEMPLATE_BASE = "./Templates/nods/templateWithTokens.json";
-const CHFIR_NODE_TEMPLATE = "./Templates/nods/template.json";
-const CHFIR_NODE_PARAMETERS_BASE = "./Templates/nods/parametersWithTokens.json";
-const CHFIR_NODE_PARAMETERS = "./Templates/nods/parameters.json";
+const CHFIR_NODE_TEMPLATE_BASE = "./Templates/ndes/templateWithTokens.json";
+const CHFIR_NODE_TEMPLATE = "./Templates/ndes/template.json";
+const CHFIR_NODE_PARAMETERS_BASE = "./Templates/ndes/parametersWithTokens.json";
+const CHFIR_NODE_PARAMETERS = "./Templates/ndes/parameters.json";
 //ARM TEMPLATE FOR IE11 | EDGE NOD'S
-const IE11_NODE_TEMPLATE_BASE = "./Templates/nods/win10/templateWithTokens.json";
-const IE11_NODE_TEMPLATE = "./Templates/nods/win10/template.json";
-const IE11_NODE_PARAMETERS_BASE = "./Templates/nods/win10/parametersWithTokens.json";
-const IE11_NODE_PARAMETERS = "./Templates/nods/win10/parameters.json";
+const IE11_NODE_TEMPLATE_BASE = "./Templates/ndes/win10/templateWithTokens.json";
+const IE11_NODE_TEMPLATE = "./Templates/ndes/win10/template.json";
+const IE11_NODE_PARAMETERS_BASE = "./Templates/ndes/win10/parametersWithTokens.json";
+const IE11_NODE_PARAMETERS = "./Templates/ndes/win10/parameters.json";
 
 
 
@@ -85,8 +85,8 @@ const TEST_XML_BASE = "./testWithTokens.xml";
 const TEST_XML = "./test.xml";
 
 //MACHINE_SIZE_LIMITS
-const SMALL_MACHINE_MAX_NODS = 4;
-const BIG_MACHINE_MAX_NODS = 10;
+const SMALL_MACHINE_MAX_Nodes = 4;
+const BIG_MACHINE_MAX_Nodes = 10;
 //BROWSER_TYPES
 const CHROME_BROWSER = 'chrome';
 const FIREFOX_BROWSER = 'firefox';
@@ -95,7 +95,7 @@ const IE_BROWSER = 'ie11';
 
 //action typs
 const ACTION_GRID_DEPLOY = 'GRID_DEPLOY';
-const ACTION_NODS_DEPLOY = 'NODS_DEPLOY';
+const ACTION_Nodes_DEPLOY = 'Nodes_DEPLOY';
 const ACTION_CREATE_RESOURCE_GROUP = 'ACTION_CREATE_RESOURCE_GROUP';
 const RUN_REPLICATION_SET = 'RUN_REPLICATION_SET';
 
@@ -167,30 +167,30 @@ function uploadFileToBlob(file, container, connectionString, callback) {
 }
 
 
-function getNextNodsQuanity(browser) {
+function getNextNodesQuanity(browser) {
     if (browser === CHROME_BROWSER) {
 
-        if ((chromeNodsQuantity - chromeNodesDeployed) > BIG_MACHINE_MAX_NODS) {
-            chromeNodesDeployed += BIG_MACHINE_MAX_NODS;
+        if ((chromeNodesQuantity - chromeNodesDeployed) > BIG_MACHINE_MAX_Nodes) {
+            chromeNodesDeployed += BIG_MACHINE_MAX_Nodes;
             return chromeNodesDeployed;
         } else {
-            chromeNodesDeployed = chromeNodsQuantity - chromeNodesDeployed;
+            chromeNodesDeployed = chromeNodesQuantity - chromeNodesDeployed;
             return chromeNodesDeployed;
         }
 
     } else if (browser === FIREFOX_BROWSER) {
 
-        if ((firefoxNodsQuantity - firefoxNodesDeployed) > BIG_MACHINE_MAX_NODS) {
-            firefoxNodesDeployed += BIG_MACHINE_MAX_NODS;
+        if ((firefoxNodesQuantity - firefoxNodesDeployed) > BIG_MACHINE_MAX_Nodes) {
+            firefoxNodesDeployed += BIG_MACHINE_MAX_Nodes;
             return firefoxNodesDeployed;
         } else {
-            firefoxNodesDeployed = firefoxNodsQuantity - firefoxNodesDeployed;
+            firefoxNodesDeployed = firefoxNodesQuantity - firefoxNodesDeployed;
             return firefoxNodesDeployed;
         }
     }
 }
 
-function getAllIPbyResourceGroup(resourceGroup, calbback) {
+function getAllIPbyResourceGroup(resourceGroup, callback) {
     var ipArr;
 
     execCommand('az vm list-ip-addresses  -g ' + resourceGroup, function () {
@@ -207,13 +207,13 @@ function getAllIPbyResourceGroup(resourceGroup, calbback) {
     //     ipArr = stdout;
     //     //console.log(ipArr);
     // }).on('close', function () {
-    //     if (typeof (calbback) == 'function') {
-    //         calbback();
+    //     if (typeof (callback) == 'function') {
+    //         callback();
     //     }
     // });
 }
 
-function getVmIp(rg, vmName, calback) {
+function getVmIp(rg, vmName, callback) {
     var data;
     var myIP;
     console.log('rg = ' + rg);
@@ -223,8 +223,8 @@ function getVmIp(rg, vmName, calback) {
     execCommand('az vm list-ip-addresses -g ' + rg + ' -n  ' + vmName, function (data) {
         console.log(JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0]);
         myIP = JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0].ipAddress;
-        if (typeof (calback) == 'function') {
-            calback(myIP);
+        if (typeof (callback) == 'function') {
+            callback(myIP);
         }
     });
 
@@ -274,7 +274,7 @@ function getNVmIps(rg, vmNames, calback) {
 
 
 
-function deployNodsServer(browser, vmQuantity, machineType, callback) {
+function deployNodesServer(browser, vmQuantity, machineType, callback) {
 
 
     console.log('deploy nodes server' + 'browser = ' + browser + '. vmQuantity = ' + vmQuantity + '. machineType = ' + machineType);
@@ -313,10 +313,10 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                     }
 
 
-                    var currentNodsQantity = getNextNodsQuanity(browser);
-                    console.log('***currentNodsQantity = ' + currentNodsQantity + '***');
+                    var currentNodesQantity = getNextNodesQuanity(browser);
+                    console.log('***currentNodesQantity = ' + currentNodesQantity + '***');
 
-                    replace('__START_UP_SCRIPT_PARAMETERS__', CHFIR_NODE_TEMPLATE_BASE, browser + '  ' + currentNodsQantity + '  ' + memorySize, CHFIR_NODE_TEMPLATE, function () {
+                    replace('__START_UP_SCRIPT_PARAMETERS__', CHFIR_NODE_TEMPLATE_BASE, browser + '  ' + currentNodesQantity + '  ' + memorySize, CHFIR_NODE_TEMPLATE, function () {
                         addSSHPublicKeyToTemplate(PUBLIC_KEY_PATH, CHFIR_NODE_TEMPLATE, CHFIR_NODE_TEMPLATE, function () {
 
 
@@ -340,14 +340,14 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                                     console.log('IP = ' + IP);
 
                                     if (browser == CHROME_BROWSER) {
-                                        chromeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
-                                        console.log('chromeXMLNodsHostsLines = ' + chromeXMLNodsHostsLines);
+                                        chromeXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodesQantity + '"/>';
+                                        console.log('chromeXMLNodesHostsLines = ' + chromeXMLNodesHostsLines);
                                     } else if (browser == FIREFOX_BROWSER) {
-                                        firefoxXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
-                                        console.log('chromeXMLNodsHostsLines = ' + firefoxXMLNodsHostsLines);
+                                        firefoxXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodesQantity + '"/>';
+                                        console.log('chromeXMLNodesHostsLines = ' + firefoxXMLNodesHostsLines);
                                     }
 
-                                    deployNodsServer(browser, vmQuantity - 1, machineType, callback);
+                                    deployNodesServer(browser, vmQuantity - 1, machineType, callback);
                                 });
                             });
 
@@ -383,19 +383,19 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
 
                             //         if (browser == CHROME_BROWSER) {
 
-                            //             chromeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
-                            //             console.log('chromeXMLNodsHostsLines = ' + chromeXMLNodsHostsLines);
+                            //             chromeXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodesQantity + '"/>';
+                            //             console.log('chromeXMLNodesHostsLines = ' + chromeXMLNodesHostsLines);
                             //         } else if (browser == FIREFOX_BROWSER) {
-                            //             firefoxXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
-                            //             console.log('chromeXMLNodsHostsLines = ' + firefoxXMLNodsHostsLines);
+                            //             firefoxXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodesQantity + '"/>';
+                            //             console.log('chromeXMLNodesHostsLines = ' + firefoxXMLNodesHostsLines);
                             //         } else if (browser == IE_BROWSER) {
-                            //             ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                            //             ie11XMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodesQantity + '"/>';
                             //         } else if (browser == EDGE_BROWSER) {
-                            //             edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodsQantity + '"/>';
+                            //             edgeXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodesQantity + '"/>';
                             //         }
 
 
-                            //         deployNodsServer(browser, vmQuantity - 1, machineType, callback);
+                            //         deployNodesServer(browser, vmQuantity - 1, machineType, callback);
                             //     });
 
 
@@ -453,14 +453,14 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                                     console.log('IP = ' + IP);
 
                                     if (browser == EDGE_BROWSER) {
-                                        edgeXMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + 1 + '"/>';
-                                        console.log('edgeXMLNodsHostsLines = ' + edgeXMLNodsHostsLines);
+                                        edgeXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + 1 + '"/>';
+                                        console.log('edgeXMLNodesHostsLines = ' + edgeXMLNodesHostsLines);
                                     } else if (browser == IE_BROWSER) {
-                                        ie11XMLNodsHostsLines += '<host name="' + IP + '" port="4444" count="' + 1 + '"/>';
-                                        console.log('ie11XMLNodsHostsLines = ' + ie11XMLNodsHostsLines);
+                                        ie11XMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + 1 + '"/>';
+                                        console.log('ie11XMLNodesHostsLines = ' + ie11XMLNodesHostsLines);
                                     }
 
-                                    deployNodsServer(browser, vmQuantity - 1, machineType, callback);
+                                    deployNodesServer(browser, vmQuantity - 1, machineType, callback);
                                 });
                             });
 
@@ -561,11 +561,11 @@ function checkResourceGroupExist(name, calback) {
 
 //checkResourceGroupExist(resourceGroup);
 
-function calcServersByNods(calback) {
+function calcServersByNodes(calback) {
     //check wich vm's need for chrome browser
-    bigChromeServer = parseInt(chromeNodsQuantity / BIG_MACHINE_MAX_NODS);
-    var temp = chromeNodsQuantity % BIG_MACHINE_MAX_NODS;
-    if (temp > SMALL_MACHINE_MAX_NODS) {
+    bigChromeServer = parseInt(chromeNodesQuantity / BIG_MACHINE_MAX_Nodes);
+    var temp = chromeNodesQuantity % BIG_MACHINE_MAX_Nodes;
+    if (temp > SMALL_MACHINE_MAX_Nodes) {
         bigChromeServer++;
     } else {
         if (temp > 0) {
@@ -574,9 +574,9 @@ function calcServersByNods(calback) {
     }
 
     //check wich vm's need for firefox browser
-    bigFirefoxServer = parseInt(firefoxNodsQuantity / BIG_MACHINE_MAX_NODS);
-    temp = firefoxNodsQuantity % BIG_MACHINE_MAX_NODS;
-    if (temp > SMALL_MACHINE_MAX_NODS) {
+    bigFirefoxServer = parseInt(firefoxNodesQuantity / BIG_MACHINE_MAX_Nodes);
+    temp = firefoxNodesQuantity % BIG_MACHINE_MAX_Nodes;
+    if (temp > SMALL_MACHINE_MAX_Nodes) {
         bigFirefoxServer++;
     } else {
         if (temp > 0) {
@@ -584,8 +584,8 @@ function calcServersByNods(calback) {
         }
     }
 
-    bigEdgeServer = edgeNodsQuantity;
-    bigIE11Server = ie11NodsQuantity;
+    bigEdgeServer = edgeNodesQuantity;
+    bigIE11Server = ie11NodesQuantity;
 
     console.log('bigChromeServer = ' + bigChromeServer);
     console.log('bigFirefoxServer = ' + bigFirefoxServer);
@@ -597,23 +597,23 @@ function main() {
     console.log('action = ' + action);
     switch (action) {
 
-        case ACTION_NODS_DEPLOY:
-            calcServersByNods(function () {
+        case ACTION_Nodes_DEPLOY:
+            calcServersByNodes(function () {
                 //deploy chrome nod's server 
-                deployNodsServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SERVER, function () {
-                    deployNodsServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SERVER, function () {
-                        deployNodsServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SERVER, function () {
-                            deployNodsServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SERVER, function () {
-                                deployNodsServer(EDGE_BROWSER, bigEdgeServer, EDGE_IMAGE, function () {
-                                    deployNodsServer(IE_BROWSER, bigIE11Server, IE11_IMAGE, function () {
+                deployNodesServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SERVER, function () {
+                    deployNodesServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SERVER, function () {
+                        deployNodesServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SERVER, function () {
+                            deployNodesServer(FIREFOX_BROWSER, smallFirefoxServer, SMALL_NODES_SERVER, function () {
+                                deployNodesServer(EDGE_BROWSER, bigEdgeServer, EDGE_IMAGE, function () {
+                                    deployNodesServer(IE_BROWSER, bigIE11Server, IE11_IMAGE, function () {
 
-                                        console.log('Deploy nods servers DONE !!!');
+                                        console.log('Deploy Nodes servers DONE !!!');
 
                                         //add hosts information to the test.xml file
-                                        replace('__CHROME_HOSTS__', TEST_XML_BASE, chromeXMLNodsHostsLines, TEST_XML, function () {
-                                            replace('__FIREFOX_HOSTS__', TEST_XML, firefoxXMLNodsHostsLines, TEST_XML, function () {
-                                                replace('__EDGE_HOSTS__', TEST_XML, edgeXMLNodsHostsLines, TEST_XML, function () {
-                                                    replace('__IE_HOSTS__', TEST_XML, ie11XMLNodsHostsLines, TEST_XML, function () {
+                                        replace('__CHROME_HOSTS__', TEST_XML_BASE, chromeXMLNodesHostsLines, TEST_XML, function () {
+                                            replace('__FIREFOX_HOSTS__', TEST_XML, firefoxXMLNodesHostsLines, TEST_XML, function () {
+                                                replace('__EDGE_HOSTS__', TEST_XML, edgeXMLNodesHostsLines, TEST_XML, function () {
+                                                    replace('__IE_HOSTS__', TEST_XML, ie11XMLNodesHostsLines, TEST_XML, function () {
 
                                                         //publish test.xml file
                                                         uploadFileToBlob(TEST_XML, 'controller', controllerBlobsContainerCS, function () {
