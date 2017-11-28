@@ -95,7 +95,7 @@ const IE_BROWSER = 'ie11';
 
 //action typs
 const ACTION_GRID_DEPLOY = 'GRID_DEPLOY';
-const ACTION_Nodes_DEPLOY = 'Nodes_DEPLOY';
+const ACTION_Nodes_DEPLOY = 'NODES_DEPLOY';
 const ACTION_CREATE_RESOURCE_GROUP = 'ACTION_CREATE_RESOURCE_GROUP';
 const RUN_REPLICATION_SET = 'RUN_REPLICATION_SET';
 
@@ -107,6 +107,7 @@ var resourceGroupExist = new String("NULL");
 
 function printAllInputs(){
 
+    console.log('********************Script Inputs***************');
     console.log('action =' +  inputArgs[1]);
     console.log('gridsQuantity =' +  inputArgs[2]);
     console.log('firefoxNodesQuantity =' +  inputArgs[3]);
@@ -118,6 +119,7 @@ function printAllInputs(){
     console.log('app_id =' +  inputArgs[9]);
     console.log('app_key =' +  inputArgs[10]);
     console.log('tenant =' +  inputArgs[11]);
+    console.log('********************Script Inputs***************');
 }
 
 
@@ -624,7 +626,7 @@ function main() {
 
         case ACTION_Nodes_DEPLOY:
             calcServersByNodes(function () {
-                //deploy chrome nod's server 
+
                 deployNodesServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SERVER, function () {
                     deployNodesServer(CHROME_BROWSER, smallChromeServer, SMALL_NODES_SERVER, function () {
                         deployNodesServer(FIREFOX_BROWSER, bigFirefoxServer, BIG_NODES_SERVER, function () {
@@ -654,7 +656,6 @@ function main() {
                                         });
                                     });
                                 });
-
                             });
                         });
                     });
