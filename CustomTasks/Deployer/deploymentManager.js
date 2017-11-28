@@ -213,7 +213,7 @@ function getAllIPbyResourceGroup(resourceGroup, callback) {
     // });
 }
 
-function getVmIp(rg, vmName, callback) {
+function getVmIp(rg, vmName, ipType, callback) {
     var data;
     var myIP;
     console.log('rg = ' + rg);
@@ -221,8 +221,14 @@ function getVmIp(rg, vmName, callback) {
 
 
     execCommand('az vm list-ip-addresses -g ' + rg + ' -n  ' + vmName, function (data) {
-        console.log(JSON.parse(data)[0].virtualMachine.network.privateIpAddresses[0]);
-        myIP = JSON.parse(data)[0].virtualMachine.network.privateIpAddresses[0];
+
+        if(ipType == 'privateIp'){
+            console.log(JSON.parse(data)[0].virtualMachine.network.privateIpAddresses[0]);
+            myIP = JSON.parse(data)[0].virtualMachine.network.privateIpAddresses[0];
+        }else if(ipType == 'publicIp'){
+            console.log(JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0]);
+            myIP = JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0].ipAddress;
+        }
         if (typeof (callback) == 'function') {
             callback(myIP);
         }
@@ -335,7 +341,7 @@ function deployNodesServer(browser, vmQuantity, machineType, callback) {
                                 }
 
 
-                                getVmIp(resourceGroup, currentVmName, function (IP) {
+                                getVmIp(resourceGroup, currentVmName,'privateIp', function (IP) {
 
                                     console.log('IP = ' + IP);
 
@@ -448,7 +454,7 @@ function deployNodesServer(browser, vmQuantity, machineType, callback) {
                                 }
 
 
-                                getVmIp(resourceGroup, currentVmName, function (IP) {
+                                getVmIp(resourceGroup, currentVmName,'privateIp', function (IP) {
 
                                     console.log('IP = ' + IP);
 
@@ -486,11 +492,11 @@ function deployGridsServers(calback) {
             }
 
             //write grid's ip address to file
-            getVmIp(resourceGroup, 'VM-Grid0', function (ip) {
+            getVmIp(resourceGroup, 'VM-Grid0','privateIp', function (ip) {
                 fs.appendFileSync(GRID_IP, ip + '\r\n');
-                getVmIp(resourceGroup, 'VM-Grid1', function (ip) {
+                getVmIp(resourceGroup, 'VM-Grid1','privateIp', function (ip) {
                     fs.appendFileSync(GRID_IP, ip + '\r\n');
-                    getVmIp(resourceGroup, 'VM-Grid2', function (ip) {
+                    getVmIp(resourceGroup, 'VM-Grid2','privateIp', function (ip) {
                         fs.appendFileSync(GRID_IP, ip + '\r\n');
                     });
                 });
