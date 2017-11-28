@@ -301,10 +301,10 @@ function getNVmIps(rg, vmNames, calback) {
 function deployNodesServer(browser, vmQuantity, machineType, callback) {
 
 
-    console.log('deploy nodes server' + 'browser = ' + browser + '. vmQuantity = ' + vmQuantity + '. machineType = ' + machineType);
+    console.log('Deploy nodes server. browser = ' + browser + '. vmQuantity = ' + vmQuantity + '. machineType = ' + machineType);
 
 
-    if (vmQuantity === 0) {
+    if (vmQuantity == 0) {
         console.log('vmQuantity = ' + vmQuantity);
         callback();
     } else if (browser == CHROME_BROWSER || browser == FIREFOX_BROWSER) {
@@ -392,15 +392,6 @@ function deployNodesServer(browser, vmQuantity, machineType, callback) {
             //replace index of resource's in the parameters.json file
             var currentVmName = 'VM-Node' + '-' + browser.slice(0, 3) + serverIndex;
             tokens2value(IE11_NODE_PARAMETERS, '-' + browser.slice(0, 3) + serverIndex, IE11_NODE_PARAMETERS, function () {
-
-
-                // //calc memory size
-                // var memorySize;
-                // if (machineType === BIG_NODES_SERVER) {
-                //     memorySize = 15;
-                // } else {
-                //     memorySize = 3;
-                // }
 
                 replace('__START_UP_SCRIPT_PARAMETERS__', IE11_NODE_TEMPLATE_BASE, browser, IE11_NODE_TEMPLATE, function () {
 
