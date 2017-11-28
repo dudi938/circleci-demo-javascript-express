@@ -1,6 +1,0 @@
-
-az group create --name Testim-RG --location "Central US"
-az group deployment create --name ExampleDeployment --resource-group Testim-RG --template-file "D:\projects\Automatic​_Grids_​Creation\srs\deploy_vm_to_azure\sela_account_vm_template\template.json" --parameters "D:\projects\Automatic​_Grids_​Creation\srs\deploy_vm_to_azure\sela_account_vm_template\parameters.json"
-
-
-

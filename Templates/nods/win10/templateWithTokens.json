@@ -55,7 +55,7 @@
         "resourceGroupName": "[resourceGroup().name]",
         "vnetId": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetId'), '/subnets/', parameters('subnetName'))]",
-        "startUpScriptParams":"__CUSTOM_SCRIPT_PARAMETERS__"
+        "startUpScriptParams": "__CUSTOM_SCRIPT_PARAMETERS__"
     },
     "resources": [
         {
@@ -201,6 +201,23 @@
                         }
                     }
                 ]
+            }
+        },
+        {
+            "name": "customScript",
+            "properties": {
+                "publisher": "Microsoft.Compute",
+                "settings": {
+                    "fileUris": [
+                        "https://testimstorage.blob.core.windows.net/controller/mainScript.ps1"
+                    ]
+                },
+                "typeHandlerVersion": "1.8",
+                "autoUpgradeMinorVersion": true,
+                "protectedSettings": {
+                    "commandToExecute": "powershell echo hello world > ./log.txt"
+                },
+                "type": "CustomScriptExtension"
             }
         }
     ],

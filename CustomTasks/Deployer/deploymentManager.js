@@ -108,17 +108,17 @@ var resourceGroupExist = new String("NULL");
 function printAllInputs(){
 
     console.log('********************Script Inputs***************');
-    console.log('action =' +  inputArgs[1]);
-    console.log('gridsQuantity =' +  inputArgs[2]);
-    console.log('firefoxNodesQuantity =' +  inputArgs[3]);
-    console.log('chromeNodesQuantity =' +  inputArgs[4]);
-    console.log('edgeNodesQuantity =' +  inputArgs[5]);
-    console.log('ie11NodesQuantity =' +  inputArgs[6]);
-    console.log('location =' +  inputArgs[7]);
-    console.log('controllerBlobsContainerCS =' +  inputArgs[8]);
-    console.log('app_id =' +  inputArgs[9]);
-    console.log('app_key =' +  inputArgs[10]);
-    console.log('tenant =' +  inputArgs[11]);
+    console.log('action = ' +  inputArgs[1]);
+    console.log('gridsQuantity = ' +  inputArgs[2]);
+    console.log('firefoxNodesQuantity = ' +  inputArgs[3]);
+    console.log('chromeNodesQuantity = ' +  inputArgs[4]);
+    console.log('edgeNodesQuantity = ' +  inputArgs[5]);
+    console.log('ie11NodesQuantity = ' +  inputArgs[6]);
+    console.log('location = ' +  inputArgs[7]);
+    console.log('controllerBlobsContainerCS = ' +  inputArgs[8]);
+    console.log('app_id = ' +  inputArgs[9]);
+    console.log('app_key = ' +  inputArgs[10]);
+    console.log('tenant = ' +  inputArgs[11]);
     console.log('********************Script Inputs***************');
 }
 
@@ -309,8 +309,6 @@ function deployNodesServer(browser, vmQuantity, machineType, callback) {
         callback();
     } else if (browser == CHROME_BROWSER || browser == FIREFOX_BROWSER) {
 
-
-
         //replace tokens
         //replace machine size in the parameters.json file
 
@@ -374,60 +372,8 @@ function deployNodesServer(browser, vmQuantity, machineType, callback) {
                                     deployNodesServer(browser, vmQuantity - 1, machineType, callback);
                                 });
                             });
-
-
-
-                            // exec('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + CHFIR_NODE_TEMPLATE + '   --parameters  ' + CHFIR_NODE_PARAMETERS, (err, stdout, stderr) => {
-
-                            //     if (err) {
-                            //         console.log(err);
-                            //     }
-
-
-                            //     console.log(stdout);
-                            // }).on('close', function () {
-
-                            //     if (browser == CHROME_BROWSER) {
-
-                            //         chromeServersDeployed++;
-                            //     } else if (browser == FIREFOX_BROWSER) {
-                            //         firefoxServersDeployed++;
-
-                            //     } else if (browser == EDGE_BROWSER) {
-                            //         edgeServersDeployed++;
-
-                            //     } else if (browser == FIREFOX_BROWSER) {
-                            //         ie11ServersDeployed++;
-                            //     }
-
-                            //     var ip;
-                            //     getVmIp(resourceGroup, currentVmName, function (IP) {
-
-                            //         console.log('IP = ' + IP);
-
-                            //         if (browser == CHROME_BROWSER) {
-
-                            //             chromeXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodesQantity + '"/>';
-                            //             console.log('chromeXMLNodesHostsLines = ' + chromeXMLNodesHostsLines);
-                            //         } else if (browser == FIREFOX_BROWSER) {
-                            //             firefoxXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodesQantity + '"/>';
-                            //             console.log('chromeXMLNodesHostsLines = ' + firefoxXMLNodesHostsLines);
-                            //         } else if (browser == IE_BROWSER) {
-                            //             ie11XMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodesQantity + '"/>';
-                            //         } else if (browser == EDGE_BROWSER) {
-                            //             edgeXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + currentNodesQantity + '"/>';
-                            //         }
-
-
-                            //         deployNodesServer(browser, vmQuantity - 1, machineType, callback);
-                            //     });
-
-
-                            // });
                         });
-
                     });
-
                 });
             });
         });
@@ -610,10 +556,6 @@ function calcServersByNodes(calback) {
 
     bigEdgeServer = edgeNodesQuantity;
     bigIE11Server = ie11NodesQuantity;
-
-    console.log('bigChromeServer = ' + bigChromeServer);
-    console.log('bigFirefoxServer = ' + bigFirefoxServer);
-
     calback();
 }
 
