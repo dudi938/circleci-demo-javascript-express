@@ -678,11 +678,13 @@ function main() {
             break;
         case RUN_REPLICATION_SET:
 
-            var gridsIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
+            var gridsPublicIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
 
-
-            execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], function () {
+            getVmIp(resourceGroup, 'VM-Grid0', 'publicIp', function (grid0PublicIp) {
+                execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + grid0PublicIp + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsPublicIP[0] + ' ' + gridsPublicIP[1] + ' ' + gridsPublicIP[2], function () {
+                });
             });
+
 
             // execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  ' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], function () {
             // });
