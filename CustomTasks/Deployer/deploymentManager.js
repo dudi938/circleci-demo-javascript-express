@@ -341,7 +341,7 @@ function deployNodesServer(browser, vmQuantity, machineType, callback) {
                                 }
 
 
-                                getVmIp(resourceGroup, currentVmName, 'privateIp', function (IP) {
+                                getVmIp(resourceGroup, currentVmName, 'publicIp', function (IP) {
 
                                     console.log('IP = ' + IP);
 
@@ -454,7 +454,7 @@ function deployNodesServer(browser, vmQuantity, machineType, callback) {
                         }
 
 
-                        getVmIp(resourceGroup, currentVmName, 'privateIp', function (IP) {
+                        getVmIp(resourceGroup, currentVmName, 'publicIp', function (IP) {
 
                             console.log('IP = ' + IP);
 
@@ -492,11 +492,11 @@ function deployGridsServers(calback) {
             }
 
             //write grid's ip address to file
-            getVmIp(resourceGroup, 'VM-Grid0', 'privateIp', function (ip) {
+            getVmIp(resourceGroup, 'VM-Grid0', 'publicIp', function (ip) {
                 fs.appendFileSync(GRID_IP, ip + '\r\n');
-                getVmIp(resourceGroup, 'VM-Grid1', 'privateIp', function (ip) {
+                getVmIp(resourceGroup, 'VM-Grid1', 'publicIp', function (ip) {
                     fs.appendFileSync(GRID_IP, ip + '\r\n');
-                    getVmIp(resourceGroup, 'VM-Grid2', 'privateIp', function (ip) {
+                    getVmIp(resourceGroup, 'VM-Grid2', 'publicIp', function (ip) {
                         fs.appendFileSync(GRID_IP, ip + '\r\n');
                     });
                 });
@@ -680,9 +680,7 @@ function main() {
 
             var gridsPublicIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
 
-            getVmIp(resourceGroup, 'VM-Grid0', 'publicIp', function (grid0PublicIp) {
-                execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + grid0PublicIp + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsPublicIP[0] + ' ' + gridsPublicIP[1] + ' ' + gridsPublicIP[2], function () {
-                });
+            execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsPublicIP[0] + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsPublicIP[0] + ' ' + gridsPublicIP[1] + ' ' + gridsPublicIP[2], function () {
             });
 
 
