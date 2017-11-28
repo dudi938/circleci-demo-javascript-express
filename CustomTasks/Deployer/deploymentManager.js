@@ -222,10 +222,10 @@ function getVmIp(rg, vmName, ipType, callback) {
 
     execCommand('az vm list-ip-addresses -g ' + rg + ' -n  ' + vmName, function (data) {
 
-        if(ipType == 'privateIp'){
+        if (ipType == 'privateIp') {
             console.log(JSON.parse(data)[0].virtualMachine.network.privateIpAddresses[0]);
             myIP = JSON.parse(data)[0].virtualMachine.network.privateIpAddresses[0];
-        }else if(ipType == 'publicIp'){
+        } else if (ipType == 'publicIp') {
             console.log(JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0]);
             myIP = JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0].ipAddress;
         }
@@ -295,7 +295,7 @@ function deployNodesServer(browser, vmQuantity, machineType, callback) {
 
         //replace tokens
         //replace machine size in the parameters.json file
-                 
+
         replace('__AZURE_REGION__', CHFIR_NODE_PARAMETERS_BASE, location, CHFIR_NODE_PARAMETERS, function () {
             replace('__VIRTUAL_MACHINE_SIZE__', CHFIR_NODE_PARAMETERS, machineType, CHFIR_NODE_PARAMETERS, function () {
                 var serverIndex;
@@ -341,7 +341,7 @@ function deployNodesServer(browser, vmQuantity, machineType, callback) {
                                 }
 
 
-                                getVmIp(resourceGroup, currentVmName,'privateIp', function (IP) {
+                                getVmIp(resourceGroup, currentVmName, 'privateIp', function (IP) {
 
                                     console.log('IP = ' + IP);
 
@@ -417,62 +417,62 @@ function deployNodesServer(browser, vmQuantity, machineType, callback) {
         //replace machine size in the parameters.json file
 
         replace('__AZURE_REGION__', IE11_NODE_PARAMETERS_BASE, location, IE11_NODE_PARAMETERS, function () {
-            
-                var serverIndex;
-                if (browser == EDGE_BROWSER) {
-                    serverIndex = edgeServersDeployed;
-                } else if (browser == IE_BROWSER) {
-                    serverIndex = ie11ServersDeployed;
-                }
 
-                //replace index of resource's in the parameters.json file
-                var currentVmName = 'VM-Node' + '-' + browser.slice(0, 3) + serverIndex;
-                tokens2value(IE11_NODE_PARAMETERS, '-' + browser.slice(0, 3) + serverIndex, IE11_NODE_PARAMETERS, function () {
+            var serverIndex;
+            if (browser == EDGE_BROWSER) {
+                serverIndex = edgeServersDeployed;
+            } else if (browser == IE_BROWSER) {
+                serverIndex = ie11ServersDeployed;
+            }
 
-
-                    // //calc memory size
-                    // var memorySize;
-                    // if (machineType === BIG_NODES_SERVER) {
-                    //     memorySize = 15;
-                    // } else {
-                    //     memorySize = 3;
-                    // }
-
-                    replace('__START_UP_SCRIPT_PARAMETERS__', IE11_NODE_TEMPLATE_BASE, browser , IE11_NODE_TEMPLATE, function () {
-
-                            execCommand('az group deployment create --name ' + resourceGroup + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + IE11_NODE_TEMPLATE + '   --parameters  ' + IE11_NODE_PARAMETERS, function () {
+            //replace index of resource's in the parameters.json file
+            var currentVmName = 'VM-Node' + '-' + browser.slice(0, 3) + serverIndex;
+            tokens2value(IE11_NODE_PARAMETERS, '-' + browser.slice(0, 3) + serverIndex, IE11_NODE_PARAMETERS, function () {
 
 
-                                if (browser == EDGE_BROWSER) {
+                // //calc memory size
+                // var memorySize;
+                // if (machineType === BIG_NODES_SERVER) {
+                //     memorySize = 15;
+                // } else {
+                //     memorySize = 3;
+                // }
 
-                                    edgeServersDeployed++;
+                replace('__START_UP_SCRIPT_PARAMETERS__', IE11_NODE_TEMPLATE_BASE, browser, IE11_NODE_TEMPLATE, function () {
 
-                                } else if (browser == IE_BROWSER) {
-
-                                    ie11ServersDeployed++;
-
-                                }
+                    execCommand('az group deployment create --name ' + resourceGroup + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + IE11_NODE_TEMPLATE + '   --parameters  ' + IE11_NODE_PARAMETERS, function () {
 
 
-                                getVmIp(resourceGroup, currentVmName,'privateIp', function (IP) {
+                        if (browser == EDGE_BROWSER) {
 
-                                    console.log('IP = ' + IP);
+                            edgeServersDeployed++;
 
-                                    if (browser == EDGE_BROWSER) {
-                                        edgeXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + 1 + '"/>';
-                                        console.log('edgeXMLNodesHostsLines = ' + edgeXMLNodesHostsLines);
-                                    } else if (browser == IE_BROWSER) {
-                                        ie11XMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + 1 + '"/>';
-                                        console.log('ie11XMLNodesHostsLines = ' + ie11XMLNodesHostsLines);
-                                    }
+                        } else if (browser == IE_BROWSER) {
 
-                                    deployNodesServer(browser, vmQuantity - 1, machineType, callback);
-                                });
-                            });
+                            ie11ServersDeployed++;
 
+                        }
+
+
+                        getVmIp(resourceGroup, currentVmName, 'privateIp', function (IP) {
+
+                            console.log('IP = ' + IP);
+
+                            if (browser == EDGE_BROWSER) {
+                                edgeXMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + 1 + '"/>';
+                                console.log('edgeXMLNodesHostsLines = ' + edgeXMLNodesHostsLines);
+                            } else if (browser == IE_BROWSER) {
+                                ie11XMLNodesHostsLines += '<host name="' + IP + '" port="4444" count="' + 1 + '"/>';
+                                console.log('ie11XMLNodesHostsLines = ' + ie11XMLNodesHostsLines);
+                            }
+
+                            deployNodesServer(browser, vmQuantity - 1, machineType, callback);
+                        });
                     });
 
                 });
+
+            });
         });
 
     }
@@ -492,11 +492,11 @@ function deployGridsServers(calback) {
             }
 
             //write grid's ip address to file
-            getVmIp(resourceGroup, 'VM-Grid0','privateIp', function (ip) {
+            getVmIp(resourceGroup, 'VM-Grid0', 'privateIp', function (ip) {
                 fs.appendFileSync(GRID_IP, ip + '\r\n');
-                getVmIp(resourceGroup, 'VM-Grid1','privateIp', function (ip) {
+                getVmIp(resourceGroup, 'VM-Grid1', 'privateIp', function (ip) {
                     fs.appendFileSync(GRID_IP, ip + '\r\n');
-                    getVmIp(resourceGroup, 'VM-Grid2','privateIp', function (ip) {
+                    getVmIp(resourceGroup, 'VM-Grid2', 'privateIp', function (ip) {
                         fs.appendFileSync(GRID_IP, ip + '\r\n');
                     });
                 });
@@ -678,22 +678,12 @@ function main() {
             break;
         case RUN_REPLICATION_SET:
 
-            var gridsIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
-
-
-            execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], function () {
+            var gridsPrivateIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
+            getVmIp(resourceGroup, 'VM-Grid0', 'publicIp', function (grid0PublicIp) {
+                execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + grid0PublicIp + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsPrivateIP[0] + ' ' + gridsPrivateIP[1] + ' ' + gridsPrivateIP[2], function () {
+                });
             });
 
-            // execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  ' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], function () {
-            // });
-
-            // exec('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  ' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], (err, stdout, stderr) => {
-            //     if (err) {
-            //         console.log(err);
-            //         return;
-            //     }
-            //     console.log(stdout);
-            // });
             break;
     }
 }
