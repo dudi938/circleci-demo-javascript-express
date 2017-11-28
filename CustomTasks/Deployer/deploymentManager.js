@@ -678,12 +678,22 @@ function main() {
             break;
         case RUN_REPLICATION_SET:
 
-            var gridsPrivateIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
-            getVmIp(resourceGroup, 'VM-Grid0', 'publicIp', function (grid0PublicIp) {
-                execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + grid0PublicIp + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsPrivateIP[0] + ' ' + gridsPrivateIP[1] + ' ' + gridsPrivateIP[2], function () {
-                });
+            var gridsIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
+
+
+            execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], function () {
             });
 
+            // execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  ' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], function () {
+            // });
+
+            // exec('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  ' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], (err, stdout, stderr) => {
+            //     if (err) {
+            //         console.log(err);
+            //         return;
+            //     }
+            //     console.log(stdout);
+            // });
             break;
     }
 }
@@ -691,5 +701,3 @@ function main() {
 
 // main function.
 main();
-
-
