@@ -457,32 +457,6 @@ function deployGridsServers(calback) {
                 });
             });
         });
-
-
-
-        // exec('az group deployment create --name '  +   resourceGroup  + 'Deployment' + ' --resource-group  ' + resourceGroup + '  --template-file  ' + GRID_TEMPLATE + '   --parameters  ' + GRID_PARAMETERS, (err, stdout, stderr) => {
-        //     if (err) {
-        //         console.error(err);
-        //         return;
-        //     }
-        //     console.log(stdout);
-        // }).on('close', function () {
-        //     if (typeof (calback) == 'function') {
-        //         calback();
-        //     }
-
-        //     //write grid's ip address to file
-        //     getVmIp(resourceGroup, 'VM-Grid0', function (ip) {
-        //         fs.appendFileSync(GRID_IP, ip + '\r\n');
-        //         getVmIp(resourceGroup, 'VM-Grid1', function (ip) {
-        //             fs.appendFileSync(GRID_IP, ip + '\r\n');
-        //             getVmIp(resourceGroup, 'VM-Grid2', function (ip) {
-        //                 fs.appendFileSync(GRID_IP, ip + '\r\n');
-        //             });
-        //         });
-        //     });
-
-        // });
     });
 }
 
@@ -635,18 +609,6 @@ function main() {
 
             execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsPublicIP[0] + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsPublicIP[0] + ' ' + gridsPublicIP[1] + ' ' + gridsPublicIP[2], function () {
             });
-
-
-            // execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  ' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], function () {
-            // });
-
-            // exec('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsIP[0] + '  ./configureReplicaset.sh  ' + ' ' + gridsIP[0] + ' ' + gridsIP[1] + ' ' + gridsIP[2], (err, stdout, stderr) => {
-            //     if (err) {
-            //         console.log(err);
-            //         return;
-            //     }
-            //     console.log(stdout);
-            // });
             break;
     }
 }
