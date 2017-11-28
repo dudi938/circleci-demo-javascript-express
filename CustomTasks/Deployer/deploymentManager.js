@@ -63,15 +63,15 @@ const GRID_TEMPLATE = "./Templates/Grid/template.json";
 const GRID_PARAMETERS_BASE = "./Templates/Grid/parametersWithTokens.json";
 const GRID_PARAMETERS = "./Templates/Grid/parameters.json";
 //ARM TEMPLATE FOR CHROME | FIRFOX NOD'S
-const CHFIR_NODE_TEMPLATE_BASE = "./Templates/ndes/templateWithTokens.json";
-const CHFIR_NODE_TEMPLATE = "./Templates/ndes/template.json";
-const CHFIR_NODE_PARAMETERS_BASE = "./Templates/ndes/parametersWithTokens.json";
-const CHFIR_NODE_PARAMETERS = "./Templates/ndes/parameters.json";
+const CHFIR_NODE_TEMPLATE_BASE = "./Templates/nods/templateWithTokens.json";
+const CHFIR_NODE_TEMPLATE = "./Templates/nods/template.json";
+const CHFIR_NODE_PARAMETERS_BASE = "./Templates/nods/parametersWithTokens.json";
+const CHFIR_NODE_PARAMETERS = "./Templates/nods/parameters.json";
 //ARM TEMPLATE FOR IE11 | EDGE NOD'S
-const IE11_NODE_TEMPLATE_BASE = "./Templates/ndes/win10/templateWithTokens.json";
-const IE11_NODE_TEMPLATE = "./Templates/ndes/win10/template.json";
-const IE11_NODE_PARAMETERS_BASE = "./Templates/ndes/win10/parametersWithTokens.json";
-const IE11_NODE_PARAMETERS = "./Templates/ndes/win10/parameters.json";
+const IE11_NODE_TEMPLATE_BASE = "./Templates/nods/win10/templateWithTokens.json";
+const IE11_NODE_TEMPLATE = "./Templates/nods/win10/template.json";
+const IE11_NODE_PARAMETERS_BASE = "./Templates/nods/win10/parametersWithTokens.json";
+const IE11_NODE_PARAMETERS = "./Templates/nods/win10/parameters.json";
 
 
 
