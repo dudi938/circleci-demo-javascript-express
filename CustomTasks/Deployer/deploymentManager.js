@@ -105,6 +105,22 @@ const RUN_REPLICATION_SET = 'RUN_REPLICATION_SET';
 var resourceGroupExist = new String("NULL");
 
 
+function printAllInputs(){
+
+    console.log('action =' +  inputArgs[1]);
+    console.log('gridsQuantity =' +  inputArgs[2]);
+    console.log('firefoxNodesQuantity =' +  inputArgs[3]);
+    console.log('chromeNodesQuantity =' +  inputArgs[4]);
+    console.log('edgeNodesQuantity =' +  inputArgs[5]);
+    console.log('ie11NodesQuantity =' +  inputArgs[6]);
+    console.log('location =' +  inputArgs[7]);
+    console.log('controllerBlobsContainerCS =' +  inputArgs[8]);
+    console.log('app_id =' +  inputArgs[9]);
+    console.log('app_key =' +  inputArgs[10]);
+    console.log('tenant =' +  inputArgs[11]);
+}
+
+
 function execCommand(command, callback) {
     console.log('RUN COMMAND - ' + command);
     var output;
@@ -600,6 +616,9 @@ function calcServersByNodes(calback) {
 }
 
 function main() {
+
+    printAllInputs();
+
     console.log('action = ' + action);
     switch (action) {
 
