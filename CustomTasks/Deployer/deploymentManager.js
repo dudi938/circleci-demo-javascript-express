@@ -102,7 +102,7 @@ const RUN_REPLICATION_SET = 'RUN_REPLICATION_SET';
 
 
 
-var resourceGroupExist = new String("NULL");;
+var resourceGroupExist = new String("NULL");
 
 
 function execCommand(command, callback) {
@@ -289,7 +289,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
 
         //replace tokens
         //replace machine size in the parameters.json file
-
+                 
         replace('__AZURE_REGION__', CHFIR_NODE_PARAMETERS_BASE, location, CHFIR_NODE_PARAMETERS, function () {
             replace('__VIRTUAL_MACHINE_SIZE__', CHFIR_NODE_PARAMETERS, machineType, CHFIR_NODE_PARAMETERS, function () {
                 var serverIndex;
@@ -316,7 +316,7 @@ function deployNodsServer(browser, vmQuantity, machineType, callback) {
                     var currentNodsQantity = getNextNodsQuanity(browser);
                     console.log('***currentNodsQantity = ' + currentNodsQantity + '***');
 
-                    replace('__START_UP_SCRIPT_PARAMETERS__', CHFIR_NODE_PARAMETERS, browser + '  ' + currentNodsQantity + '  ' + memorySize, CHFIR_NODE_TEMPLATE, function () {
+                    replace('__START_UP_SCRIPT_PARAMETERS__', CHFIR_NODE_TEMPLATE_BASE, browser + '  ' + currentNodsQantity + '  ' + memorySize, CHFIR_NODE_TEMPLATE, function () {
                         addSSHPublicKeyToTemplate(PUBLIC_KEY_PATH, CHFIR_NODE_TEMPLATE, CHFIR_NODE_TEMPLATE, function () {
 
 
