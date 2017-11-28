@@ -221,8 +221,8 @@ function getVmIp(rg, vmName, callback) {
 
 
     execCommand('az vm list-ip-addresses -g ' + rg + ' -n  ' + vmName, function (data) {
-        console.log(JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0]);
-        myIP = JSON.parse(data)[0].virtualMachine.network.publicIpAddresses[0].ipAddress;
+        console.log(JSON.parse(data)[0].virtualMachine.network.privateIpAddresses[0]);
+        myIP = JSON.parse(data)[0].virtualMachine.network.privateIpAddresses[0];
         if (typeof (callback) == 'function') {
             callback(myIP);
         }
