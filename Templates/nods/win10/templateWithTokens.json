@@ -224,7 +224,8 @@
                 "settings": {
                     "fileUris": [
                         "https://testimstorage.blob.core.windows.net/controller/mainScript.ps1"
-                    ]
+                    ],
+                     "commandToExecute":"powershell mainScript.ps1"
                 },
                 "protectedSettings": {}
             }
