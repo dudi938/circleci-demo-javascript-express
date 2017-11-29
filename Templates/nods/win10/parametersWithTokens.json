@@ -45,7 +45,7 @@
             "value": "pip-Node__INDEX__"
         },
         "extensions_CustomScriptExtension_name": {
-            "value": null
+            "value": "CustomScriptExtension"
         },
         "publicIpAddressType": {
             "value": "Dynamic"
