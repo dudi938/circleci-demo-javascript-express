@@ -223,9 +223,9 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": [
-                        "https://testimstorage.blob.core.windows.net/controller/mainScript.ps1"
+                        "https://selasa.blob.core.windows.net/agent/configureWin10.ps1"
                     ],
-                     "commandToExecute":"powershell set-executionpolicy Unrestricted  -Force; powershell ./mainScript.ps1"
+                     "commandToExecute":"[concat('powershell set-executionpolicy Unrestricted  -Force; powershell ./mainScript.ps1', '   ', variables('startUpScriptParams'))]"
                 },
                 "protectedSettings": {}
             }
