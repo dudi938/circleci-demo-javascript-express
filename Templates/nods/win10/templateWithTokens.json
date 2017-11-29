@@ -11,6 +11,10 @@
         "virtualMachineSize": {
             "type": "string"
         },
+        "extensions_CustomScriptExtension_name": {
+            "defaultValue": "CustomScriptExtension",
+            "type": "String"
+        },
         "adminUsername": {
             "type": "string"
         },
@@ -204,31 +208,25 @@
             }
         },
         {
-            "apiVersion": "2015-06-15",
+            "apiVersion": "2017-03-30",
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "name": "[concat(parameters('virtualMachineName'),'/0')]",
             "location": "[resourceGroup().location]",
+            "scale": null,
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
             ],
-            "tags": {
-                "displayName": "config-app"
-            },
             "properties": {
                 "publisher": "Microsoft.Compute",
-                "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.9",
+                "type": "[parameters('extensions_CustomScriptExtension_name')]",
+                "typeHandlerVersion": "1.7",
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "fileUris": [
                         "https://testimstorage.blob.core.windows.net/controller/mainScript.ps1"
                     ]
                 },
-                "protectedSettings": {
-                    "commandToExecute": "powershell mainScript.ps1",
-                    "storageAccountName": "testimstorage",
-                    "storageAccountKey": "ikvd52rnWTEruirOJTYun0r4oxXckv55Sl4/dELG9wSot4SoJgwySFQjbgwFMZz37I1yueeL66CvMyMQuXShLA=="
-                }
+                "protectedSettings": {}
             }
         }
     ],
