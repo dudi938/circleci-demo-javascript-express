@@ -95,30 +95,30 @@ const IE_BROWSER = 'ie11';
 
 //action typs
 const ACTION_GRID_DEPLOY = 'GRID_DEPLOY';
-const ACTION_Nodes_DEPLOY = 'NODES_DEPLOY';
+const ACTION_NODES_DEPLOY = 'NODES_DEPLOY';
 const ACTION_CREATE_RESOURCE_GROUP = 'ACTION_CREATE_RESOURCE_GROUP';
 const RUN_REPLICATION_SET = 'RUN_REPLICATION_SET';
-
+const RUN_EDIT_CAMELOT_PROPERTIES = "RUN_EDIT_CAMELOT_PROPERTIES";
 
 
 
 var resourceGroupExist = new String("NULL");
 
 
-function printAllInputs(){
+function printAllInputs() {
 
     console.log('********************Script Inputs***************');
-    console.log('action = ' +  inputArgs[1]);
-    console.log('gridsQuantity = ' +  inputArgs[2]);
-    console.log('firefoxNodesQuantity = ' +  inputArgs[3]);
-    console.log('chromeNodesQuantity = ' +  inputArgs[4]);
-    console.log('edgeNodesQuantity = ' +  inputArgs[5]);
-    console.log('ie11NodesQuantity = ' +  inputArgs[6]);
-    console.log('location = ' +  inputArgs[7]);
-    console.log('controllerBlobsContainerCS = ' +  inputArgs[8]);
-    console.log('app_id = ' +  inputArgs[9]);
-    console.log('app_key = ' +  inputArgs[10]);
-    console.log('tenant = ' +  inputArgs[11]);
+    console.log('action = ' + inputArgs[1]);
+    console.log('gridsQuantity = ' + inputArgs[2]);
+    console.log('firefoxNodesQuantity = ' + inputArgs[3]);
+    console.log('chromeNodesQuantity = ' + inputArgs[4]);
+    console.log('edgeNodesQuantity = ' + inputArgs[5]);
+    console.log('ie11NodesQuantity = ' + inputArgs[6]);
+    console.log('location = ' + inputArgs[7]);
+    console.log('controllerBlobsContainerCS = ' + inputArgs[8]);
+    console.log('app_id = ' + inputArgs[9]);
+    console.log('app_key = ' + inputArgs[10]);
+    console.log('tenant = ' + inputArgs[11]);
     console.log('********************Script Inputs***************');
 }
 
@@ -531,7 +531,7 @@ function main() {
     console.log('action = ' + action);
     switch (action) {
 
-        case ACTION_Nodes_DEPLOY:
+        case ACTION_NODES_DEPLOY:
             calcServersByNodes(function () {
 
                 deployNodesServer(CHROME_BROWSER, bigChromeServer, BIG_NODES_SERVER, function () {
@@ -608,6 +608,12 @@ function main() {
             var gridsPublicIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
 
             execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsPublicIP[0] + ' sh   /home/yossis/configureReplicaset.sh' + ' ' + gridsPublicIP[0] + ' ' + gridsPublicIP[1] + ' ' + gridsPublicIP[2], function () {
+            });
+            break;
+        case RUN_EDIT_CAMELOT_PROPERTIES:
+            var gridsPublicIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
+
+            execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsPublicIP[0] + ' sh   /home/yossis/editCamelotProperties.sh' + ' ' + gridsPublicIP[0] + ' ' + gridsPublicIP[1] + ' ' + gridsPublicIP[2], function () {
             });
             break;
     }

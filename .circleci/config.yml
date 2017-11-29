@@ -50,9 +50,9 @@ jobs:
       - run:
           name: Run Replication set script
           command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} RUN_REPLICATION_SET
-      #- run:
-         # name: Run *** script
-         # command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} RUN_REPLICATION_SET
+      - run:
+          name: Run  edit camelot properties script
+          command: node ./CustomTasks/Deployer/deploymentManager.js ${RESOURCE_GROUP} RUN_EDIT_CAMELOT_PROPERTIES
       - run:
           name: set script excecutable
           command: sudo chmod 444 ./sshkey                  
