@@ -247,34 +247,6 @@
                 "name": "startUpScriptExtentionCopy",
                 "count": 1
             }
-        },
-        {
-            "apiVersion": "2015-06-15",
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(parameters('virtualMachineName'),_extention)]",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName')]"
-            ],
-            "tags": {
-                "displayName": "config-app"
-            },
-            "properties": {
-                "publisher": "Microsoft.Compute",
-                "type": "CustomScriptExtension",
-                "typeHandlerVersion": "1.9",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                    "fileUris": [
-                        "https://testimstorage.blob.core.windows.net/controller/mainScript.ps1"
-                    ]
-                },
-                "protectedSettings": {
-                    "commandToExecute": "powershell mainScript.ps1",
-                    "storageAccountName": "testimstorage",
-                    "storageAccountKey": "ikvd52rnWTEruirOJTYun0r4oxXckv55Sl4/dELG9wSot4SoJgwySFQjbgwFMZz37I1yueeL66CvMyMQuXShLA=="
-                }
-            }
         }
     ],
     "outputs": {
