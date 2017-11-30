@@ -59,6 +59,9 @@
             "type": "Microsoft.Compute/availabilitySets",
             "name": "[parameters('availabilitySetsName')]",
             "apiVersion": "2017-03-30",
+            "sku": {
+                "name": "Aligned"
+            },
             "location": "[parameters('location')]",
             "properties": {
                 "platformUpdateDomainCount": 5,
@@ -72,10 +75,11 @@
             "apiVersion": "2016-04-30-preview",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'),copyIndex())]"
+                "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'),copyIndex())]",
+                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetsName'))]"
             ],
             "properties": {
-                 "availabilitySet": {
+                "availabilitySet": {
                     "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetsName'))]"
                 },
                 "osProfile": {
