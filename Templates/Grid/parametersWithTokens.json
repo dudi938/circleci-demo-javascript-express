@@ -43,6 +43,9 @@
         },
         "publicIpAddressSku": {
             "value": "Basic"
+        },
+        "availabilitySetsName": {
+            "value": "as-Geid"
         }
     }
 }
