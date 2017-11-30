@@ -69,15 +69,7 @@
             "properties": {
                 "platformUpdateDomainCount": 5,
                 "platformFaultDomainCount": 2
-                //"virtualMachines": [
-                   // {
-                        //"id": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_customerB_grid01_name'))]"
-                    //}
-                //]
             }
-            //"dependsOn": [
-            //   "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachines_customerB_grid01_name'))]"
-           // ]
         },
         {
             "name": "[concat(parameters('virtualMachineName'),copyIndex())]",
