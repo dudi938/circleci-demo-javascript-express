@@ -108,7 +108,7 @@
             }
         },
         {
-            "name": "[concat(parameters('virtualNetworkName'),copyIndex())]",
+            "name": "[concat(parameters('virtualNetworkName'),variables('resourceGroupName'))]",
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",
@@ -126,10 +126,6 @@
                         }
                     }
                 ]
-            },
-            "copy": {
-                "name": "virtualNetworkCopy",
-                "count": 3
             }
         },
         {
@@ -138,9 +134,9 @@
             "apiVersion": "2016-09-01",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'),copyIndex())]",
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('virtualNetworkName'),variables('resourceGroupName'))]",
                 "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'), copyIndex())]",
-                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'),copyIndex())]"
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'), variables('resourceGroupName'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -158,7 +154,7 @@
                     }
                 ],
                 "networkSecurityGroup": {
-                    "id": "[resourceId(variables('resourceGroupName'), 'Microsoft.Network/networkSecurityGroups', concat(parameters('networkSecurityGroupName'),copyIndex()))]"
+                    "id": "[resourceId(variables('resourceGroupName'), 'Microsoft.Network/networkSecurityGroups', concat(parameters('networkSecurityGroupName'), variables('resourceGroupName')))]"
                 }
             },
             "copy": {
@@ -183,7 +179,7 @@
             }
         },
         {
-            "name": "[concat(parameters('networkSecurityGroupName'),copyIndex())]",
+            "name": "[concat(parameters('networkSecurityGroupName'), variables('resourceGroupName'))]",
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2017-06-01",
             "location": "[parameters('location')]",
