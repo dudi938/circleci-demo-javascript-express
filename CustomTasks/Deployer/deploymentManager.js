@@ -611,6 +611,10 @@ function main() {
             var gridsPublicIP = fs.readFileSync(GRID_IP).toString().split('\r\n');
 
             execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsPublicIP[0] + ' sh   /home/yossis/editCamelotProperties.sh' + ' ' + gridsPublicIP[0] + ' ' + gridsPublicIP[1] + ' ' + gridsPublicIP[2], function () {
+                execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsPublicIP[1] + ' sh   /home/yossis/editCamelotProperties.sh' + ' ' + gridsPublicIP[0] + ' ' + gridsPublicIP[1] + ' ' + gridsPublicIP[2], function () {
+                    execCommand('sudo ssh -i ' + PRIVATE_KEY_PATH + '   -oStrictHostKeyChecking=no  yossis@' + gridsPublicIP[2] + ' sh   /home/yossis/editCamelotProperties.sh' + ' ' + gridsPublicIP[0] + ' ' + gridsPublicIP[1] + ' ' + gridsPublicIP[2], function () {
+                    });
+                });
             });
             break;
     }
