@@ -48,14 +48,13 @@
             "type": "String"
         },
         "lbPublicIpAddressName": {
+            "defaultValue": "lbPIP-Grid",
             "type": "String"
         },
         "loadBalancersName": {
+            "defaultValue": "lb-Grid",
             "type": "String"
         }
-
-
-        
     },
     "variables": {
         "resourceGroupName": "[resourceGroup().name]",
