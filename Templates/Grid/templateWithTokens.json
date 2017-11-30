@@ -46,6 +46,9 @@
         },
         "availabilitySetsName": {
             "type": "String"
+        },
+        "lbPublicIpAddressName": {
+            "type": "String"
         }
     },
     "variables": {
@@ -284,6 +287,85 @@
             "copy": {
                 "name": "startUpScriptExtentionCopy",
                 "count": 3
+            }
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers",
+            "name": "[parameters('loadBalancersName')]",
+            "apiVersion": "2017-06-01",
+            "location": "[parameters('location')]",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "frontendIPConfigurations": [
+                    {
+                        "name": "LoadBalancerFrontEnd",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('lbPublicIPAddressesName'))]"
+                            }
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "[parameters('availabilitySetsName')]"
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "gridrule-4444",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "frontendIPConfiguration": {
+                                "id": "[parameters('loadBalancers_customerB_LB_id')]"
+                            },
+                            "frontendPort": 4444,
+                            "backendPort": 4444,
+                            "enableFloatingIP": false,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "loadDistribution": "SourceIP",
+                            "backendAddressPool": {
+                                "id": "[parameters('availabilitySetsName')]"
+                            },
+                            "probe": {
+                                "id": "[parameters('availabilitySetsName')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "grid-4444",
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": 4444,
+                            "intervalInSeconds": 10,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "inboundNatRules": [],
+                "outboundNatRules": [],
+                "inboundNatPools": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetsName'))]",
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('lbPublicIpAddressName'))]"
+            ]
+        },
+        {
+            "name": "[parameters('lbPublicIpAddressName')]",
+            "type": "Microsoft.Network/publicIpAddresses",
+            "apiVersion": "2017-08-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
+            },
+            "sku": {
+                "name": "[parameters('publicIpAddressSku')]"
             }
         }
     ],

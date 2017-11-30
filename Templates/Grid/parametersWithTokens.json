@@ -46,6 +46,9 @@
         },
         "availabilitySetsName": {
             "value": "as-Geid"
+        },
+        "lbPublicIpAddressName": {
+            "value": "lbPIP-Grid"
         }
     }
 }
