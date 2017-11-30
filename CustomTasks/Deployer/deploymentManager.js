@@ -73,12 +73,9 @@ const IE11_NODE_TEMPLATE = "./Templates/nods/win10/template.json";
 const IE11_NODE_PARAMETERS_BASE = "./Templates/nods/win10/parametersWithTokens.json";
 const IE11_NODE_PARAMETERS = "./Templates/nods/win10/parameters.json";
 
-
-
 const GRID_IP = './grid_ip';
 const PUBLIC_KEY_PATH = './sshkey.pub';
 const PRIVATE_KEY_PATH = './sshkey';
-
 
 //XML test  file
 const TEST_XML_BASE = "./testWithTokens.xml";
