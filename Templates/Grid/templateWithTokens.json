@@ -56,16 +56,10 @@
     },
     "resources": [
         {
-            "comments": "Generalized from resource: '/subscriptions/1a1ab812-3076-4944-acf7-2938e3ea064c/resourceGroups/CustomerB-RG/providers/Microsoft.Compute/availabilitySets/GRID-AS'.",
             "type": "Microsoft.Compute/availabilitySets",
-            "sku": {
-                "name": "Aligned"
-            },
             "name": "[parameters('availabilitySetsName')]",
             "apiVersion": "2017-03-30",
             "location": "[parameters('location')]",
-            "tags": {},
-            "scale": null,
             "properties": {
                 "platformUpdateDomainCount": 5,
                 "platformFaultDomainCount": 2,
