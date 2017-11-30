@@ -68,7 +68,8 @@
             "scale": null,
             "properties": {
                 "platformUpdateDomainCount": 5,
-                "platformFaultDomainCount": 2
+                "platformFaultDomainCount": 2,
+                "virtualMachines": []
             }
         },
         {
