@@ -12,7 +12,7 @@
             "value": "__VIRTUAL_MACHINE_SIZE__"
         },
         "adminUsername": {
-            "value": "yossis"
+            "value": "testim"
         },
         "virtualNetworkName": {
             "value": "vnet-Node__NODE_INDEX__"

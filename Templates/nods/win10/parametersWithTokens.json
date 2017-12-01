@@ -12,7 +12,7 @@
             "value": "Standard_D2s_v3"
         },
         "adminUsername": {
-            "value": "yossis"
+            "value": "testim"
         },
         "virtualNetworkName": {
             "value": "vnet-Node__NODE_INDEX__"

@@ -12,7 +12,7 @@
             "value": "Standard_DS3_v2"
         },
         "adminUsername": {
-            "value": "yossis"
+            "value": "testim"
         },
         "virtualNetworkName": {
             "value": "vnet-Grid_"
