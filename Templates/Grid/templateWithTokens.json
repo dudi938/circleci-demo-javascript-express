@@ -320,7 +320,7 @@
                         "properties": {
                             "provisioningState": "Succeeded",
                             "frontendIPConfiguration": {
-                                "id": "[parameters('loadBalancers_customerB_LB_id')]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses','lbPIP-Grid')]"
                             },
                             "frontendPort": 4444,
                             "backendPort": 4444,
