@@ -304,7 +304,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('lbPublicIPAddressesName'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'lbPIP-Grid')]"
                             }
                         }
                     }
