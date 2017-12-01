@@ -13,5 +13,12 @@ sudo apt-get update
 #sudo apt-get install -y mongodb-org --force-yes
 sudo apt-get install -y mongodb-org=3.2.17 mongodb-org-server=3.2.17 mongodb-org-shell=3.2.17 mongodb-org-mongos=3.2.17 mongodb-org-tools=3.2.17
 sudo service mongod stop
-sudo bash -c 'echo "replSet=csReplicaSet" >> /etc/mongod.conf'
+
+sudo bash -c 'sed -i "s/127.0.0.1/[127.0.0.1,0.0.0.0]/g" /etc/mongod.conf'
+
+sudo bash -c 'echo "replication:" >> /etc/mongod.conf'
+
+sudo bash -c 'echo "  replSetName: csReplicaSet" >> /etc/mongod.conf'
+
 sudo service mongod start
+

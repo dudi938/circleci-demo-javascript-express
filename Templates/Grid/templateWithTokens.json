@@ -47,10 +47,6 @@
         "availabilitySetsName": {
             "type": "String"
         },
-        "lbPublicIpAddressName": {
-            "defaultValue": "lbPIP-Grid",
-            "type": "String"
-        },
         "loadBalancersName": {
             "defaultValue": "lb-Grid",
             "type": "String"
@@ -358,11 +354,11 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetsName'))]",
-                "[concat('Microsoft.Network/publicIpAddresses/', parameters('lbPublicIpAddressName'))]"
+                "[concat('Microsoft.Network/publicIpAddresses/', 'lbPIP-Grid')]"
             ]
         },
         {
-            "name": "[parameters('lbPublicIpAddressName')]",
+            "name": "lbPIP-Grid",
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",
