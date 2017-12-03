@@ -184,7 +184,7 @@
                         }
                     },
                     {
-                        "name": "5900 - inbound",
+                        "name": "port-5900-inbound",
                         "properties": {
                             "priority": 500,
                             "protocol": "TCP",
