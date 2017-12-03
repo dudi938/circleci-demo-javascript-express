@@ -47,8 +47,10 @@
         "availabilitySetsName": {
             "type": "String"
         },
-        "loadBalancersName": {
-            "defaultValue": "lb-Grid",
+        "loadBalancers_lb_name": {
+            "type": "String"
+        },
+        "publicIPAddresses_lb_pip_name": {
             "type": "String"
         }
     },
@@ -174,7 +176,12 @@
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIpAddress": {
                                 "id": "[resourceId(variables('resourceGroupName'),'Microsoft.Network/publicIpAddresses', concat(parameters('publicIpAddressName'),copyIndex()))]"
-                            }
+                            },
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_lb_name')), '/backendAddressPools/', parameters('loadBalancers_lb_name'),'-pool')]"
+                                }
+                            ]
                         }
                     }
                 ],
@@ -297,21 +304,20 @@
             "location": "[parameters('location')]",
             "scale": null,
             "properties": {
-                "provisioningState": "Succeeded",
                 "frontendIPConfigurations": [
                     {
                         "name": "LoadBalancerFrontEnd",
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', 'lbPIP-Grid')]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_lb_pip_name'))]"
                             }
                         }
                     }
                 ],
                 "backendAddressPools": [
                     {
-                        "name": "[parameters('availabilitySetsName')]"
+                        "name": "[concat(parameters('loadBalancersName'),'-pool')]"
                     }
                 ],
                 "loadBalancingRules": [
@@ -320,7 +326,7 @@
                         "properties": {
                             "provisioningState": "Succeeded",
                             "frontendIPConfiguration": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses','lbPIP-Grid')]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddresses_lb_pip_name'))]"
                             },
                             "frontendPort": 4444,
                             "backendPort": 4444,
@@ -353,12 +359,11 @@
                 "inboundNatPools": []
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Compute/availabilitySets', parameters('availabilitySetsName'))]",
-                "[concat('Microsoft.Network/publicIpAddresses/', 'lbPIP-Grid')]"
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIPAddresses_lb_pip_name'))]"
             ]
         },
         {
-            "name": "lbPIP-Grid",
+            "name": "parameters('publicIPAddresses_lb_pip_name')",
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",

@@ -182,6 +182,19 @@
                             "destinationAddressPrefix": "*",
                             "destinationPortRange": "3389"
                         }
+                    },
+                    {
+                        "name": "5900 - inbound",
+                        "properties": {
+                            "priority": 500,
+                            "protocol": "TCP",
+                            "access": "Allow",
+                            "direction": "Inbound",
+                            "sourceAddressPrefix": "*",
+                            "sourcePortRange": "*",
+                            "destinationAddressPrefix": "*",
+                            "destinationPortRange": "5900"
+                        }
                     }
                 ]
             }
