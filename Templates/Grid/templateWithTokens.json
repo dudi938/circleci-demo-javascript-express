@@ -47,10 +47,10 @@
         "availabilitySetsName": {
             "type": "String"
         },
-        "loadBalancers_lb_name": {
+        "loadBalancersName": {
             "type": "String"
         },
-        "publicIPAddresses_lb_pip_name": {
+        "publicIPAddresses_lb_name": {
             "type": "String"
         }
     },
@@ -179,7 +179,7 @@
                             },
                             "loadBalancerBackendAddressPools": [
                                 {
-                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancers_lb_name')), '/backendAddressPools/', parameters('loadBalancers_lb_name'),'-pool')]"
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('loadBalancersName')), '/backendAddressPools/', parameters('loadBalancersName'),'-pool')]"
                                 }
                             ]
                         }
@@ -310,7 +310,7 @@
                         "properties": {
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_lb_pip_name'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_lb_name'))]"
                             }
                         }
                     }
@@ -326,7 +326,7 @@
                         "properties": {
                             "provisioningState": "Succeeded",
                             "frontendIPConfiguration": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddresses_lb_pip_name'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddresses_lb_name'))]"
                             },
                             "frontendPort": 4444,
                             "backendPort": 4444,
@@ -359,11 +359,11 @@
                 "inboundNatPools": []
             },
             "dependsOn": [
-                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIPAddresses_lb_pip_name'))]"
+                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIPAddresses_lb_name'))]"
             ]
         },
         {
-            "name": "parameters('publicIPAddresses_lb_pip_name')",
+            "name": "parameters('publicIPAddresses_lb_name')",
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",

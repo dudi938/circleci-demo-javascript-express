@@ -47,10 +47,10 @@
         "availabilitySetsName": {
             "value": "as-Geid"
         },
-        "loadBalancers_lb_name": {
+        "loadBalancersName": {
             "value": "lb-grid"
         },
-        "publicIPAddresses_lb_pip_name": {
+        "publicIPAddresses_lb_name": {
             "value": "lb-pip"
         }
     }
