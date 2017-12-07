@@ -363,7 +363,7 @@
             ]
         },
         {
-            "name": "parameters('publicIPAddresses_lb_name')",
+            "name": "[parameters('publicIPAddresses_lb_name')]",
             "type": "Microsoft.Network/publicIpAddresses",
             "apiVersion": "2017-08-01",
             "location": "[parameters('location')]",

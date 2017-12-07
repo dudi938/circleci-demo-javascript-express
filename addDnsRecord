@@ -1,0 +1,5 @@
+curl -X POST "https://api.cloudflare.com/client/v4/zones/69594620ba7b362e5fe43e271e9f370a/dns_records" \
+     -H "X-Auth-Email: info@testim.io" \
+     -H "X-Auth-Key: c4c26fa4acca9f476a7d9e362c4993e9c8a55" \
+     -H "Content-Type: application/json" \
+     --data '{"type":"A","name":"SELA.COM","content":"127.0.0.1","ttl":120,"proxied":false}'
